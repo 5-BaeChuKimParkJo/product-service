@@ -1,7 +1,7 @@
 package com.chalnakchalnak.product_service.common.exception;
 
-import com.chalnakchalnak.product_service.common.entity.BaseResponseEntity;
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
+import com.chalnakchalnak.product_service.common.entity.ExceptionResponseEntity;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +20,15 @@ public class BaseExceptionHandler {
      */
 
     @ExceptionHandler(BaseException.class)
-    protected ResponseEntity<BaseResponseEntity<Void>> BaseError(BaseException e) {
-        BaseResponseEntity<Void> response = new BaseResponseEntity<>(e.getStatus());
+    protected ResponseEntity<ExceptionResponseEntity<Void>> BaseError(BaseException e) {
+        ExceptionResponseEntity<Void> response = new ExceptionResponseEntity<>(e.getStatus());
         log.error("BaseException -> {}({})", e.getStatus(), e.getStatus().getMessage(), e);
         return new ResponseEntity<>(response, response.httpStatus());
     }
 
     @ExceptionHandler(RuntimeException.class)
-    protected ResponseEntity<BaseResponseEntity<Void>> RuntimeError(RuntimeException e) {
-        BaseResponseEntity<Void> response = new BaseResponseEntity<>(BaseResponseStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    protected ResponseEntity<ExceptionResponseEntity<Void>> RuntimeError(RuntimeException e) {
+        ExceptionResponseEntity<Void> response = new ExceptionResponseEntity<>(BaseResponseStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         log.error("RuntimeException: ", e);
         for (StackTraceElement s : e.getStackTrace()) {
             System.out.println(s);
@@ -37,7 +37,7 @@ public class BaseExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<BaseResponseEntity<Void>> handleValidationException(MethodArgumentNotValidException e) {
+    protected ResponseEntity<ExceptionResponseEntity<Void>> handleValidationException(MethodArgumentNotValidException e) {
         log.warn("ValidationException: {}", e.getMessage());
 
         String errorCode = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
@@ -50,19 +50,19 @@ public class BaseExceptionHandler {
             status = BaseResponseStatus.INVALID_INPUT; // 기본 fallback
         }
 
-        BaseResponseEntity<Void> response = new BaseResponseEntity<>(status);
+        ExceptionResponseEntity<Void> response = new ExceptionResponseEntity<>(status);
         return new ResponseEntity<>(response, response.httpStatus());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    protected ResponseEntity<BaseResponseEntity<Void>> handleJsonParseException(HttpMessageNotReadableException e) {
+    protected ResponseEntity<ExceptionResponseEntity<Void>> handleJsonParseException(HttpMessageNotReadableException e) {
         log.warn("Json parsing error: {}", e.getMessage());
 
         // BaseException이 중첩돼 있는지 순회하면서 찾음
         Throwable cause = e.getCause();
         while (cause != null) {
             if (cause instanceof BaseException baseEx) {
-                BaseResponseEntity<Void> response = new BaseResponseEntity<>(baseEx.getStatus());
+                ExceptionResponseEntity<Void> response = new ExceptionResponseEntity<>(baseEx.getStatus());
                 return new ResponseEntity<>(response, response.httpStatus());
             }
 
@@ -70,9 +70,7 @@ public class BaseExceptionHandler {
         }
 
         // BaseException이 아닌 경우는 일반 INVALID_INPUT으로 처리
-        BaseResponseEntity<Void> response = new BaseResponseEntity<>(BaseResponseStatus.INVALID_INPUT);
+        ExceptionResponseEntity<Void> response = new ExceptionResponseEntity<>(BaseResponseStatus.INVALID_INPUT);
         return new ResponseEntity<>(response, response.httpStatus());
     }
-
-
 }

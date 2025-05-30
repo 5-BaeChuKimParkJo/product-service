@@ -1,0 +1,50 @@
+package com.chalnakchalnak.product_service.application.port.in.dto;
+
+import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductCondition;
+import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+public class ProductSaveDto {
+
+    private String productUuid;
+    private String saleMemberUuid;
+    private String title;
+    private String categoryId;
+    private String description;
+    private ProductCondition productCondition;
+    private Boolean isDirectDeal;
+    private String directDealLocation;
+    private String thumbnailUrl;
+    private Long price;
+    private String ticketId;
+
+    @Builder
+    public ProductSaveDto(String productUuid,
+                          String saleMemberUuid,
+                          String title,
+                          String categoryId,
+                          String description,
+                          ProductCondition productCondition,
+                          Boolean isDirectDeal,
+                          String directDealLocation,
+                          String thumbnailUrl,
+                          Long price,
+                          String ticketId) {
+        this.productUuid = productUuid;
+        this.saleMemberUuid = saleMemberUuid;
+        this.title = title;
+        this.categoryId = categoryId;
+        this.description = description;
+        this.productCondition = productCondition;
+        this.isDirectDeal = isDirectDeal;
+        this.directDealLocation = directDealLocation;
+        this.thumbnailUrl = thumbnailUrl;
+        this.price = price;
+        this.ticketId = ticketId;
+    }
+
+}

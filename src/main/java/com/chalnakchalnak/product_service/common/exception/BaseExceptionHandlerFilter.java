@@ -1,7 +1,8 @@
 package com.chalnakchalnak.product_service.common.exception;
 
-import com.chalnakchalnak.product_service.common.entity.BaseResponseEntity;
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
+import com.chalnakchalnak.product_service.common.entity.ExceptionResponseEntity;
+import com.chalnakchalnak.product_service.common.exception.BaseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -38,7 +39,7 @@ public class BaseExceptionHandlerFilter extends OncePerRequestFilter {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        BaseResponseEntity baseResponse = new BaseResponseEntity(be.getStatus());
+        ExceptionResponseEntity baseResponse = new ExceptionResponseEntity(be.getStatus());
         try {
             response.getWriter().write(objectMapper.writeValueAsString(baseResponse));
         } catch (IOException e) {
