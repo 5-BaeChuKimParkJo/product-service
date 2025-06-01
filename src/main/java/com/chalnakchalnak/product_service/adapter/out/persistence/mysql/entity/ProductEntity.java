@@ -22,7 +22,7 @@ public class ProductEntity extends BaseEntity {
     @Column(name = "product_uuid", unique = true, nullable = false, length = 50)
     private String productUuid;
 
-    @Column(name = "sale_member_uuid", unique = true, nullable = false, length = 50)
+    @Column(name = "sale_member_uuid", nullable = false, length = 50)
     private String saleMemberUuid;
 
     @Column(name = "title", nullable = false, length = 50)
@@ -32,7 +32,7 @@ public class ProductEntity extends BaseEntity {
     private String categoryId;
 
     @Lob
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "LONGTEXT")
     private String description;
 
     @Column(name = "product_condition", nullable = false)
@@ -60,8 +60,8 @@ public class ProductEntity extends BaseEntity {
     @Column(name = "price")
     private Long price;
 
-    @Column(name = "ticket_id")
-    private String ticketId;
+    @Column(name = "ticket_uuid")
+    private String ticketUuid;
 
     @Builder
     public ProductEntity(String productUuid,
@@ -77,7 +77,7 @@ public class ProductEntity extends BaseEntity {
                          String thumbnailUrl,
                          Long viewCount,
                          Long price,
-                         String ticketId) {
+                         String ticketUuid) {
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
         this.title = title;
@@ -91,7 +91,7 @@ public class ProductEntity extends BaseEntity {
         this.thumbnailUrl = thumbnailUrl;
         this.viewCount = viewCount;
         this.price = price;
-        this.ticketId = ticketId;
+        this.ticketUuid = ticketUuid;
     }
 
 }

@@ -10,6 +10,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductSaveDto {
 
+//    private String productUuid;
+//    private String saleMemberUuid;
+//    private String title;
+//    private String categoryId;
+//    private String description;
+//    private ProductCondition productCondition;
+//    private Boolean isDirectDeal;
+//    private String directDealLocation;
+//    private Boolean isHide;
+//    private Status status;
+//    private String thumbnailUrl;
+//    private Long viewCount;
+//    private Long price;
+//    private String ticketUuid;
+
+
     private String productUuid;
     private String saleMemberUuid;
     private String title;
@@ -20,7 +36,7 @@ public class ProductSaveDto {
     private String directDealLocation;
     private String thumbnailUrl;
     private Long price;
-    private String ticketId;
+    private String ticketUuid;
 
     @Builder
     public ProductSaveDto(String productUuid,
@@ -33,7 +49,7 @@ public class ProductSaveDto {
                           String directDealLocation,
                           String thumbnailUrl,
                           Long price,
-                          String ticketId) {
+                          String ticketUuid) {
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
         this.title = title;
@@ -44,7 +60,7 @@ public class ProductSaveDto {
         this.directDealLocation = directDealLocation;
         this.thumbnailUrl = thumbnailUrl;
         this.price = price;
-        this.ticketId = ticketId;
+        this.ticketUuid = ticketUuid;
     }
 
 }

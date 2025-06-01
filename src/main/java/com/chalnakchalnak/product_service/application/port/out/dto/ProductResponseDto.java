@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductCondition;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
+import jakarta.persistence.Column;
+import jakarta.persistence.Lob;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,58 +19,50 @@ public class ProductResponseDto {
     private String saleMemberUuid;
     private String title;
     private String categoryId;
-    private String categoryName;
     private String description;
-    private Status status;
     private ProductCondition productCondition;
     private Boolean isDirectDeal;
     private String directDealLocation;
+    private Boolean isHide;
+    private Status status;
     private String thumbnailUrl;
-    private List<String> productImageUrlList;
-    private String nickname;
-    private String profileImageUrl;
-    private String gradeName;
-    private Long likeCount;
     private Long viewCount;
-    private LocalDateTime  createdAt;
+    private Long price;
+    private String ticketUuid;
+    private LocalDateTime createdAt;
 
     @Builder
     public ProductResponseDto(String productUuid,
                               String saleMemberUuid,
                               String title,
                               String categoryId,
-                              String categoryName,
                               String description,
-                              Status status,
                               ProductCondition productCondition,
                               Boolean isDirectDeal,
                               String directDealLocation,
+                              Boolean isHide,
+                              Status status,
                               String thumbnailUrl,
-                              List<String> productImageUrlList,
-                              String nickname,
-                              String profileImageUrl,
-                              String gradeName,
-                              Long likeCount,
                               Long viewCount,
+                              Long price,
+                              String ticketUuid,
                               LocalDateTime createdAt) {
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
         this.title = title;
         this.categoryId = categoryId;
-        this.categoryName = categoryName;
         this.description = description;
-        this.status = status;
         this.productCondition = productCondition;
         this.isDirectDeal = isDirectDeal;
         this.directDealLocation = directDealLocation;
+        this.isHide = isHide;
+        this.status = status;
         this.thumbnailUrl = thumbnailUrl;
-        this.productImageUrlList = productImageUrlList;
-        this.nickname = nickname;
-        this.profileImageUrl = profileImageUrl;
-        this.gradeName = gradeName;
-        this.likeCount = likeCount;
         this.viewCount = viewCount;
+        this.price = price;
+        this.ticketUuid = ticketUuid;
         this.createdAt = createdAt;
     }
+
 
 }

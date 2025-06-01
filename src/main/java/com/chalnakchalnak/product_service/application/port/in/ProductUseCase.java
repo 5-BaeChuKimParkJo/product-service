@@ -1,8 +1,16 @@
 package com.chalnakchalnak.product_service.application.port.in;
 
-import com.chalnakchalnak.product_service.application.port.in.dto.ProductRequestDto;
+import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateRequestDto;
+import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
+import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 
 public interface ProductUseCase {
 
-    void createProduct(ProductRequestDto productRequestDto);
+    ProductResponseDto getProduct(String productUuid);
+
+    void createProduct(ProductCreateRequestDto productRequestDto);
+
+    void updateProduct(ProductUpdateRequestDto productUpdateRequestDto);
+
+    void deleteProduct(String productUuid);
 }

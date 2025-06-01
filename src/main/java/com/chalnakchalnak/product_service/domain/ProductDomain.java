@@ -69,15 +69,15 @@ public class ProductDomain {
         this.productImageUrList = productImageUrList;
     }
 
-    public void setProductUuid() {
-        this.productUuid = UUID.randomUUID().toString();
-    }
-
     public void setThumbnailUrl(int index) {
         if (productImageUrList.size() < index) {
             throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
         }
         this.thumbnailUrl = productImageUrList.get(index);
+    }
+
+    public void plusViewCount() {
+        this.viewCount++;
     }
 
     public void setToggleHide() {
@@ -95,10 +95,15 @@ public class ProductDomain {
 
     public void cancelDirectDeal() {
         this.isDirectDeal = false;
+        this.directDealLocation = null;
     }
 
     public void setDirectDeal(String directDealLocation) {
         this.isDirectDeal = true;
         this.directDealLocation = directDealLocation;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
