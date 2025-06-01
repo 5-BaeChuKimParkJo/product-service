@@ -54,7 +54,6 @@ public class ProductCustomRepositoryImpl implements ProductJpaCustomRepository{
         if (productUpdateRequestDto.getTicketUuid() != null || productUpdateRequestDto.getTicketUuid() == null) {
             update.set(c.ticketUuid, productUpdateRequestDto.getTicketUuid());
         }
-        // 필수 조건: 어떤 엔티티를 업데이트할지 지정
         return update
                 .where(c.productUuid.eq(productUpdateRequestDto.getProductUuid()))
                 .execute();
