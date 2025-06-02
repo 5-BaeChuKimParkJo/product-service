@@ -40,7 +40,7 @@ public enum BaseResponseStatus {
     /**
      * 3000: product service error
      */
-
+    FAILED_TO_SAVE_TICKET(HttpStatus.INTERNAL_SERVER_ERROR, 2001, "티켓 저장에 실패했습니다."),
 
     /**
      * 6000: gpt-api error

@@ -1,5 +1,6 @@
 package com.chalnakchalnak.product_service.application.service;
 
+import com.chalnakchalnak.product_service.adapter.in.feign.dto.BuyCouponRequestDto;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
 import com.chalnakchalnak.product_service.application.mapper.ProductServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
@@ -7,10 +8,14 @@ import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateR
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
+import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
+import com.chalnakchalnak.product_service.common.exception.BaseException;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductService implements ProductUseCase {
@@ -44,5 +49,25 @@ public class ProductService implements ProductUseCase {
     @Override
     public void deleteProduct(String productUuid) {
         productRepositoryPort.deleteProduct(productUuid);
+    }
+
+    @Override
+    public Boolean buyCoupon(BuyCouponRequestDto buyCouponRequestDto) {
+
+        try {
+            ProductResponseDto productResponseDto = productRepositoryPort.getProduct(buyCouponRequestDto.getProductUuid());
+            if (!"".equals(productResponseDto.getTicketUuid())) {
+                return false;
+            }
+
+            ProductDomain productDomain = productServiceMapper.toProductDomain(buyCouponRequestDto);
+
+            productDomain.setTicket(buyCouponRequestDto.getCouponUuid());
+            productRepositoryPort.updateProduct(productServiceMapper.toUpdateSaveDto(productDomain));
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
     }
 }
