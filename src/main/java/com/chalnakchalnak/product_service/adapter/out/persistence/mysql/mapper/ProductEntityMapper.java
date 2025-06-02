@@ -1,8 +1,7 @@
 package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.mapper;
 
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductEntity;
-import com.chalnakchalnak.product_service.application.port.in.dto.ProductSaveDto;
-import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
+import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +44,7 @@ public class ProductEntityMapper {
                 .build();
     }
 
-    public ProductEntity toEntity(ProductSaveDto productSaveDto) {
+    public ProductEntity toEntity(ProductCreateSaveDto productSaveDto) {
         return ProductEntity.builder()
                 .productUuid(productSaveDto.getProductUuid())
                 .saleMemberUuid(productSaveDto.getSaleMemberUuid())
@@ -55,10 +54,9 @@ public class ProductEntityMapper {
                 .productCondition(productSaveDto.getProductCondition())
                 .isDirectDeal(productSaveDto.getIsDirectDeal())
                 .directDealLocation(productSaveDto.getDirectDealLocation())
-                .isHide(false)
-                .status(Status.ONGOING)
+                .isHide(productSaveDto.getIsHide())
+                .status(productSaveDto.getStatus())
                 .thumbnailUrl(productSaveDto.getThumbnailUrl())
-                .viewCount(0L)
                 .price(productSaveDto.getPrice())
                 .ticketUuid(productSaveDto.getTicketUuid())
                 .build();

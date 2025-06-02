@@ -1,8 +1,9 @@
 package com.chalnakchalnak.product_service.application.mapper;
 
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateRequestDto;
-import com.chalnakchalnak.product_service.application.port.in.dto.ProductSaveDto;
+import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
+import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
 import org.springframework.stereotype.Component;
 
@@ -11,19 +12,19 @@ import java.util.UUID;
 @Component
 public class ProductServiceMapper {
 
-    public ProductDomain toProductDomain(ProductCreateRequestDto productRequestDto) {
+    public ProductDomain toProductDomain(ProductCreateRequestDto productCreateRequestDto) {
         return ProductDomain.builder()
                 .productUuid(UUID.randomUUID().toString())
-                .saleMemberUuid(productRequestDto.getSaleMemberUuid())
-                .productImageUrList(productRequestDto.getProductImageUrList())
-                .isDirectDeal(productRequestDto.getIsDirectDeal())
-                .directDealLocation(productRequestDto.getDirectDealLocation())
-                .title(productRequestDto.getTitle())
-                .productCondition(productRequestDto.getProductCondition())
-                .categoryId(productRequestDto.getCategoryId())
-                .description(productRequestDto.getDescription())
-                .price(productRequestDto.getPrice())
-                .ticketUuid(productRequestDto.getTicketUuid())
+                .saleMemberUuid(productCreateRequestDto.getSaleMemberUuid())
+                .productImageUrList(productCreateRequestDto.getProductImageUrList())
+                .isDirectDeal(productCreateRequestDto.getIsDirectDeal())
+                .directDealLocation(productCreateRequestDto.getDirectDealLocation())
+                .title(productCreateRequestDto.getTitle())
+                .productCondition(productCreateRequestDto.getProductCondition())
+                .categoryId(productCreateRequestDto.getCategoryId())
+                .description(productCreateRequestDto.getDescription())
+                .price(productCreateRequestDto.getPrice())
+                .ticketUuid(productCreateRequestDto.getTicketUuid())
                 .build();
     }
 
@@ -44,8 +45,8 @@ public class ProductServiceMapper {
                 .build();
     }
 
-    public ProductSaveDto toProductSaveDto(ProductDomain productDomain) {
-        return ProductSaveDto.builder()
+    public ProductCreateSaveDto toProductSaveDto(ProductDomain productDomain) {
+        return ProductCreateSaveDto.builder()
                 .productUuid(UUID.randomUUID().toString())
                 .saleMemberUuid(productDomain.getSaleMemberUuid())
                 .title(productDomain.getTitle())
@@ -55,15 +56,15 @@ public class ProductServiceMapper {
                 .isDirectDeal(productDomain.getIsDirectDeal())
                 .directDealLocation(productDomain.getDirectDealLocation())
                 .thumbnailUrl(productDomain.getThumbnailUrl())
+                .viewCount(0L)
                 .price(productDomain.getPrice())
                 .ticketUuid(productDomain.getTicketUuid())
                 .build();
     }
 
-    public ProductUpdateRequestDto toUpdateRequestDto(ProductDomain productDomain) {
-        return ProductUpdateRequestDto.builder()
+    public ProductUpdateSaveDto toUpdateSaveDto(ProductDomain productDomain) {
+        return ProductUpdateSaveDto.builder()
                 .productUuid(productDomain.getProductUuid())
-                .saleMemberUuid(productDomain.getSaleMemberUuid())
                 .title(productDomain.getTitle())
                 .categoryId(productDomain.getCategoryId())
                 .description(productDomain.getDescription())
@@ -73,7 +74,6 @@ public class ProductServiceMapper {
                 .isHide(productDomain.getIsHide())
                 .status(productDomain.getStatus())
                 .thumbnailUrl(productDomain.getThumbnailUrl())
-                .viewCount(productDomain.getViewCount())
                 .price(productDomain.getPrice())
                 .ticketUuid(productDomain.getTicketUuid())
                 .build();

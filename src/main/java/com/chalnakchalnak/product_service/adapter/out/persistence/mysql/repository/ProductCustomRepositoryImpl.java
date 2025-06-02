@@ -1,7 +1,8 @@
 package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.repository;
 
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.QProductEntity;
-import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
+import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductEntity;
+import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,47 +16,50 @@ public class ProductCustomRepositoryImpl implements ProductJpaCustomRepository{
 
     @Override
     @Transactional
-    public long updateProductDynamic(ProductUpdateRequestDto productUpdateRequestDto) {
+    public long updateProductDynamic(ProductUpdateSaveDto productUpdateSaveDto) {
+
         QProductEntity c = QProductEntity.productEntity;
 
         var update = queryFactory.update(c);
 
         // 동적 업데이트 구성
-        if (productUpdateRequestDto.getTitle() != null) {
-            update.set(c.title, productUpdateRequestDto.getTitle());
+        if (productUpdateSaveDto.getTitle() != null) {
+            update.set(c.title, productUpdateSaveDto.getTitle());
         }
-        if (productUpdateRequestDto.getCategoryId() != null) {
-            update.set(c.categoryId, productUpdateRequestDto.getCategoryId());
+        if (productUpdateSaveDto.getCategoryId() != null) {
+            update.set(c.categoryId, productUpdateSaveDto.getCategoryId());
         }
-        if (productUpdateRequestDto.getDescription() != null) {
-            update.set(c.description, productUpdateRequestDto.getDescription());
+        if (productUpdateSaveDto.getDescription() != null) {
+            update.set(c.description, productUpdateSaveDto.getDescription());
         }
-        if (productUpdateRequestDto.getProductCondition() != null) {
-            update.set(c.productCondition, productUpdateRequestDto.getProductCondition());
+        if (productUpdateSaveDto.getProductCondition() != null) {
+            update.set(c.productCondition, productUpdateSaveDto.getProductCondition());
         }
-        if (productUpdateRequestDto.getIsDirectDeal() != null) {
-            update.set(c.isDirectDeal, productUpdateRequestDto.getIsDirectDeal());
+        if (productUpdateSaveDto.getIsDirectDeal() != null) {
+            update.set(c.isDirectDeal, productUpdateSaveDto.getIsDirectDeal());
+            if (productUpdateSaveDto.getIsDirectDeal() == false) {
+                update.set(c.directDealLocation, "");
+            } else {
+                update.set(c.directDealLocation, productUpdateSaveDto.getDirectDealLocation());
+            }
         }
-        if (productUpdateRequestDto.getDirectDealLocation() != null || productUpdateRequestDto.getDirectDealLocation() == null) {
-            update.set(c.directDealLocation, productUpdateRequestDto.getDirectDealLocation());
+        if (productUpdateSaveDto.getIsHide() != null) {
+            update.set(c.isHide, productUpdateSaveDto.getIsHide());
         }
-        if (productUpdateRequestDto.getIsHide() != null) {
-            update.set(c.isHide, productUpdateRequestDto.getIsHide());
+        if (productUpdateSaveDto.getStatus() != null) {
+            update.set(c.status, productUpdateSaveDto.getStatus());
         }
-        if (productUpdateRequestDto.getStatus() != null) {
-            update.set(c.status, productUpdateRequestDto.getStatus());
+        if (productUpdateSaveDto.getThumbnailUrl() != null) {
+            update.set(c.thumbnailUrl, productUpdateSaveDto.getThumbnailUrl());
         }
-        if (productUpdateRequestDto.getThumbnailUrl() != null) {
-            update.set(c.thumbnailUrl, productUpdateRequestDto.getThumbnailUrl());
+        if (productUpdateSaveDto.getPrice() != null) {
+            update.set(c.price, productUpdateSaveDto.getPrice());
         }
-        if (productUpdateRequestDto.getPrice() != null) {
-            update.set(c.price, productUpdateRequestDto.getPrice());
-        }
-        if (productUpdateRequestDto.getTicketUuid() != null || productUpdateRequestDto.getTicketUuid() == null) {
-            update.set(c.ticketUuid, productUpdateRequestDto.getTicketUuid());
+        if (productUpdateSaveDto.getTicketUuid() != null || productUpdateSaveDto.getTicketUuid() == null) {
+            update.set(c.ticketUuid, productUpdateSaveDto.getTicketUuid());
         }
         return update
-                .where(c.productUuid.eq(productUpdateRequestDto.getProductUuid()))
+                .where(c.productUuid.eq(productUpdateSaveDto.getProductUuid()))
                 .execute();
     }
 

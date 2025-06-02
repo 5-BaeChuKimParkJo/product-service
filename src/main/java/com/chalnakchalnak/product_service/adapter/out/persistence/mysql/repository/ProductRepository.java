@@ -2,8 +2,8 @@ package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.reposit
 
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductEntity;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.mapper.ProductEntityMapper;
-import com.chalnakchalnak.product_service.application.port.in.dto.ProductSaveDto;
-import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
+import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
+import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
@@ -27,13 +27,13 @@ public class ProductRepository implements ProductRepositoryPort {
     }
 
     @Override
-    public void createProduct(ProductSaveDto productSaveDto) {
+    public void createProduct(ProductCreateSaveDto productSaveDto) {
         productJpaRepository.save(productEntityMapper.toEntity(productSaveDto));
     }
 
     @Override
-    public void updateProduct(ProductUpdateRequestDto productUpdateDto) {
-        productJpaCustomRepository.updateProductDynamic(productUpdateDto);
+    public void updateProduct(ProductUpdateSaveDto productUpdateSaveDto) {
+        productJpaCustomRepository.updateProductDynamic(productUpdateSaveDto);
     }
 
     @Override

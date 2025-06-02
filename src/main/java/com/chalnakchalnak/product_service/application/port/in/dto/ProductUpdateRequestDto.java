@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductUpdateRequestDto {
 
-    private Long id;
     private String productUuid;
-    private String saleMemberUuid;
     private String title;
     private String categoryId;
     private String description;
@@ -22,14 +20,11 @@ public class ProductUpdateRequestDto {
     private Boolean isHide;
     private Status status;
     private String thumbnailUrl;
-    private Long viewCount;
     private Long price;
     private String ticketUuid;
 
     @Builder
-    public ProductUpdateRequestDto(Long id,
-                                   String productUuid,
-                                   String saleMemberUuid,
+    public ProductUpdateRequestDto(String productUuid,
                                    String title,
                                    String categoryId,
                                    String description,
@@ -39,12 +34,9 @@ public class ProductUpdateRequestDto {
                                    Boolean isHide,
                                    Status status,
                                    String thumbnailUrl,
-                                   Long viewCount,
                                    Long price,
                                    String ticketUuid) {
-        this.id = id;
         this.productUuid = productUuid;
-        this.saleMemberUuid = saleMemberUuid;
         this.title = title;
         this.categoryId = categoryId;
         this.description = description;
@@ -54,7 +46,6 @@ public class ProductUpdateRequestDto {
         this.isHide = isHide;
         this.status = status;
         this.thumbnailUrl = thumbnailUrl;
-        this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;
     }

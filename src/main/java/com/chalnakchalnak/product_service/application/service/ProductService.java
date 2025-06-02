@@ -1,5 +1,6 @@
 package com.chalnakchalnak.product_service.application.service;
 
+import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
 import com.chalnakchalnak.product_service.application.mapper.ProductServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateRequestDto;
@@ -23,22 +24,21 @@ public class ProductService implements ProductUseCase {
     }
 
     @Override
-    public void createProduct(ProductCreateRequestDto productRequestDto) {
-        ProductDomain productDomain = productServiceMapper.toProductDomain(productRequestDto);
+    public void createProduct(ProductCreateRequestDto productCreateRequestDto) {
+        ProductDomain productDomain = productServiceMapper.toProductDomain(productCreateRequestDto);
         // 이미지가 있는 경우는 썸네일 지정: 0번째 사진
         if(!productDomain.getProductImageUrList().isEmpty()) {
             productDomain.setThumbnailUrl(0);
         }
+        productDomain.setIsHide(false);
+        productDomain.setStatus(Status.ACTIVE);
         productRepositoryPort.createProduct(productServiceMapper.toProductSaveDto(productDomain));
     }
 
     @Override
     public void updateProduct(ProductUpdateRequestDto productUpdateRequestDto) {
         ProductDomain productDomain = productServiceMapper.toProductDomain(productUpdateRequestDto);
-        if (!productDomain.getIsDirectDeal()) {
-            productDomain.cancelDirectDeal();
-        }
-        productRepositoryPort.updateProduct(productServiceMapper.toUpdateRequestDto(productDomain));
+        productRepositoryPort.updateProduct(productServiceMapper.toUpdateSaveDto(productDomain));
     }
 
     @Override

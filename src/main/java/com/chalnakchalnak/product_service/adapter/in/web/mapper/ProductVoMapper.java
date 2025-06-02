@@ -47,6 +47,21 @@ public class ProductVoMapper {
                 .build();
     }
 
+    public ProductCreateRequestDto toProductCreateRequestDto(ProductCreateRequestVo productRequestVo, String memberUuid) {
+        return ProductCreateRequestDto.builder()
+                .saleMemberUuid(memberUuid)
+                .productImageUrList(productRequestVo.getProductImageUrList())
+                .isDirectDeal(productRequestVo.getIsDirectDeal())
+                .directDealLocation(productRequestVo.getDirectDealLocation())
+                .title(productRequestVo.getTitle())
+                .productCondition(productRequestVo.getProductCondition())
+                .categoryId(productRequestVo.getCategoryId())
+                .description(productRequestVo.getDescription())
+                .price(productRequestVo.getPrice())
+                .ticketUuid(productRequestVo.getTicketUuid())
+                .build();
+    }
+
     public ProductUpdateRequestDto toProductUpdateRequestDto(ProductUpdateRequestVo productUpdateRequestVo) {
         return ProductUpdateRequestDto.builder()
                 .productUuid(productUpdateRequestVo.getProductUuid())
@@ -61,21 +76,6 @@ public class ProductVoMapper {
                 .thumbnailUrl(productUpdateRequestVo.getThumbnailUrl())
                 .price(productUpdateRequestVo.getPrice())
                 .ticketUuid(productUpdateRequestVo.getTicketUuid())
-                .build();
-    }
-
-    public ProductCreateRequestDto toProductCreateRequestDto(ProductCreateRequestVo productRequestVo, String memberUuid) {
-        return ProductCreateRequestDto.builder()
-                .saleMemberUuid(memberUuid)
-                .productImageUrList(productRequestVo.getProductImageUrList())
-                .isDirectDeal(productRequestVo.getIsDirectDeal())
-                .directDealLocation(productRequestVo.getDirectDealLocation())
-                .title(productRequestVo.getTitle())
-                .productCondition(productRequestVo.getProductCondition())
-                .categoryId(productRequestVo.getCategoryId())
-                .description(productRequestVo.getDescription())
-                .price(productRequestVo.getPrice())
-                .ticketUuid(productRequestVo.getTicketUuid())
                 .build();
     }
 

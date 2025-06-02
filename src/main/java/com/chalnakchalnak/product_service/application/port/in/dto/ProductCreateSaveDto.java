@@ -8,23 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ProductSaveDto {
-
-//    private String productUuid;
-//    private String saleMemberUuid;
-//    private String title;
-//    private String categoryId;
-//    private String description;
-//    private ProductCondition productCondition;
-//    private Boolean isDirectDeal;
-//    private String directDealLocation;
-//    private Boolean isHide;
-//    private Status status;
-//    private String thumbnailUrl;
-//    private Long viewCount;
-//    private Long price;
-//    private String ticketUuid;
-
+public class ProductCreateSaveDto {
 
     private String productUuid;
     private String saleMemberUuid;
@@ -34,22 +18,28 @@ public class ProductSaveDto {
     private ProductCondition productCondition;
     private Boolean isDirectDeal;
     private String directDealLocation;
+    private Boolean isHide;
+    private Status status;
     private String thumbnailUrl;
+    private Long viewCount;
     private Long price;
     private String ticketUuid;
 
     @Builder
-    public ProductSaveDto(String productUuid,
-                          String saleMemberUuid,
-                          String title,
-                          String categoryId,
-                          String description,
-                          ProductCondition productCondition,
-                          Boolean isDirectDeal,
-                          String directDealLocation,
-                          String thumbnailUrl,
-                          Long price,
-                          String ticketUuid) {
+    public ProductCreateSaveDto(String productUuid,
+                                String saleMemberUuid,
+                                String title,
+                                String categoryId,
+                                String description,
+                                ProductCondition productCondition,
+                                Boolean isDirectDeal,
+                                String directDealLocation,
+                                Boolean isHide,
+                                Status status,
+                                String thumbnailUrl,
+                                Long viewCount,
+                                Long price,
+                                String ticketUuid) {
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
         this.title = title;
@@ -58,7 +48,10 @@ public class ProductSaveDto {
         this.productCondition = productCondition;
         this.isDirectDeal = isDirectDeal;
         this.directDealLocation = directDealLocation;
+        this.isHide = isHide;
+        this.status = status;
         this.thumbnailUrl = thumbnailUrl;
+        this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;
     }

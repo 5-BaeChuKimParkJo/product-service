@@ -80,9 +80,8 @@ public class ProductDomain {
         this.viewCount++;
     }
 
-    public void setToggleHide() {
-        if(this.isHide) isHide = false;
-        else isHide = true;
+    public void setIsHide(Boolean isHide) {
+        this.isHide = isHide;
     }
 
     public void setTicket(String ticketUuid) {
@@ -91,11 +90,6 @@ public class ProductDomain {
 
     public void cancelTicket() {
         this.ticketUuid = null;
-    }
-
-    public void cancelDirectDeal() {
-        this.isDirectDeal = false;
-        this.directDealLocation = null;
     }
 
     public void setDirectDeal(String directDealLocation) {
