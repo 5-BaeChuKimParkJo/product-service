@@ -11,21 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductVoMapper {
 
-//    private String productUuid;
-//    private String saleMemberUuid;
-//    private String title;
-//    private String categoryId;
-//    private String description;
-//    private ProductCondition productCondition;
-//    private Boolean isDirectDeal;
-//    private String directDealLocation;
-//    private Boolean isHide;
-//    private Status status;
-//    private String thumbnailUrl;
-//    private Long viewCount;
-//    private Long price;
-//    private String ticketId;
-//    private LocalDateTime createdAt;
 
     public ProductResponseVo toProductResponseVo(ProductResponseDto productResponseDto) {
         return ProductResponseVo.builder()

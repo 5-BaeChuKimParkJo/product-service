@@ -1,6 +1,5 @@
 package com.chalnakchalnak.product_service.application.mapper;
 
-import com.chalnakchalnak.product_service.adapter.in.feign.dto.BuyCouponRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
@@ -43,14 +42,6 @@ public class ProductServiceMapper {
                 .thumbnailUrl(productUpdateRequestDto.getThumbnailUrl())
                 .price(productUpdateRequestDto.getPrice())
                 .ticketUuid(productUpdateRequestDto.getTicketUuid())
-                .build();
-    }
-
-    public ProductDomain toProductDomain(BuyCouponRequestDto buyCouponRequestDto) {
-        return ProductDomain.builder()
-                .productUuid(buyCouponRequestDto.getProductUuid())
-                .saleMemberUuid(buyCouponRequestDto.getMemberUuid())
-                .ticketUuid(buyCouponRequestDto.getCouponUuid())
                 .build();
     }
 

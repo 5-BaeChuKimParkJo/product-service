@@ -45,6 +45,11 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 //	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
+	// S3
+	implementation platform("software.amazon.awssdk:bom:2.25.16") // 최신 BOM 버전 추천
+	implementation 'software.amazon.awssdk:s3'
+	implementation 'software.amazon.awssdk:auth'
+
 }
 
 tasks.named('test') {

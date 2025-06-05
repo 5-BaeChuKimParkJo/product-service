@@ -2,6 +2,7 @@ package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.reposit
 
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductEntity;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.mapper.ProductEntityMapper;
+import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.repository.custom.ProductJpaCustomRepository;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
@@ -10,6 +11,7 @@ import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
