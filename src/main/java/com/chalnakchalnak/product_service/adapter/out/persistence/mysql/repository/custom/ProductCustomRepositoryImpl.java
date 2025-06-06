@@ -1,7 +1,6 @@
-package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.repository;
+package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.repository.custom;
 
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.QProductEntity;
-import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductEntity;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ProductCustomRepositoryImpl implements ProductJpaCustomRepository{
+public class ProductCustomRepositoryImpl implements ProductJpaCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
