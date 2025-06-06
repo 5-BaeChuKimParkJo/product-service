@@ -8,17 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductImageDomain {
 
-    private String presignedUrl;
     private String uploadFileUrl;
     private String productUuid;
     private int index;
 
     @Builder
-    public ProductImageDomain(String presignedUrl,
-                              String uploadFileUrl,
+    public ProductImageDomain(String uploadFileUrl,
                               String productUuid,
                               int index) {
-        this.presignedUrl = presignedUrl;
         this.uploadFileUrl = uploadFileUrl;
         this.productUuid = productUuid;
         this.index = index;

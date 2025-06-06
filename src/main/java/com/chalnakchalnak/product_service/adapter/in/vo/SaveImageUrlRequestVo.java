@@ -6,8 +6,7 @@ import lombok.Getter;
 @Getter
 public class SaveImageUrlRequestVo {
 
-    private String presignedUrl;
     private String uploadFileUrl;
     private String productUuid;
-    private int index;
+    private int idx;
 }

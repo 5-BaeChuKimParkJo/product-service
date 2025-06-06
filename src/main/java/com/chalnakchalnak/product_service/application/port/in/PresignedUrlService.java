@@ -4,7 +4,7 @@ import com.chalnakchalnak.product_service.application.port.in.dto.PresignedUrlRe
 import com.chalnakchalnak.product_service.application.port.in.dto.SaveImageUrlRequestDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.PresignedUrlResponseDto;
 
-public interface S3UseCase {
+public interface PresignedUrlService {
 
     PresignedUrlResponseDto generatePresignedUrl(PresignedUrlRequestDto presignedUrlRequestDto);
 

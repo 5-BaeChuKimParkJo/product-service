@@ -8,19 +8,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductImageUrlSaveDto {
 
-    private String presignedUrl;
     private String uploadFileUrl;
     private String productUuid;
-    private int index;
+    private int idx;
 
     @Builder
-    public ProductImageUrlSaveDto(String presignedUrl,
-                                  String uploadFileUrl,
+    public ProductImageUrlSaveDto(String uploadFileUrl,
                                   String productUuid,
-                                  int index) {
-        this.presignedUrl = presignedUrl;
+                                  int idx) {
         this.uploadFileUrl = uploadFileUrl;
         this.productUuid = productUuid;
-        this.index = index;
+        this.idx = idx;
     }
 }

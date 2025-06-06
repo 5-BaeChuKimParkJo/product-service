@@ -4,7 +4,7 @@ import com.chalnakchalnak.product_service.adapter.in.vo.PresignedUrlRequestVo;
 import com.chalnakchalnak.product_service.adapter.in.vo.PresignedUrlResponseVo;
 import com.chalnakchalnak.product_service.adapter.in.vo.SaveImageUrlRequestVo;
 import com.chalnakchalnak.product_service.adapter.in.web.mapper.PresignedUrlVoMapper;
-import com.chalnakchalnak.product_service.application.port.in.S3UseCase;
+import com.chalnakchalnak.product_service.application.port.in.PresignedUrlService;
 import com.chalnakchalnak.product_service.application.port.out.dto.PresignedUrlResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/product")
-public class S3Controller {
+public class PresignedUrlController {
 
-    private final S3UseCase s3UseCase;
+    private final PresignedUrlService s3UseCase;
     private final PresignedUrlVoMapper presignedUrlVoMapper;
 
     @Operation(summary = "AWS S3 Presigned url 요청")

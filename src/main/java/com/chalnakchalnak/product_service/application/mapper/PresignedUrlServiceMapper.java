@@ -11,7 +11,6 @@ public class PresignedUrlServiceMapper {
 
     public ProductImageDomain toProductImageDomain(SaveImageUrlRequestDto saveImageUrlRequestDto) {
         return ProductImageDomain.builder()
-                .presignedUrl(saveImageUrlRequestDto.getPresignedUrl())
                 .uploadFileUrl(saveImageUrlRequestDto.getUploadFileUrl())
                 .productUuid(saveImageUrlRequestDto.getProductUuid())
                 .build();
@@ -19,7 +18,6 @@ public class PresignedUrlServiceMapper {
 
     public ProductImageUrlSaveDto toProductImageUrlSaveDto(ProductImageDomain productImageDomain) {
         return ProductImageUrlSaveDto.builder()
-                .presignedUrl(productImageDomain.getPresignedUrl())
                 .uploadFileUrl(productImageDomain.getUploadFileUrl())
                 .productUuid(productImageDomain.getProductUuid())
                 .build();
@@ -27,10 +25,9 @@ public class PresignedUrlServiceMapper {
 
     public ProductImageEntity toEntity(ProductImageUrlSaveDto productImageUrlSaveDto) {
         return ProductImageEntity.builder()
-                .presignedUrl(productImageUrlSaveDto.getPresignedUrl())
-                .uploadFileUrl(productImageUrlSaveDto.getUploadFileUrl())
+                .image_url(productImageUrlSaveDto.getUploadFileUrl())
                 .productUuid(productImageUrlSaveDto.getProductUuid())
-                .index(productImageUrlSaveDto.getIndex())
+                .idx(productImageUrlSaveDto.getIdx())
                 .build();
     }
 }

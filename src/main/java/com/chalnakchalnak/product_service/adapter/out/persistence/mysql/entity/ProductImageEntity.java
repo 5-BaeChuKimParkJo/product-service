@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "product")
+@Table(name = "product_image")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductImageEntity extends BaseEntity {
@@ -19,29 +19,23 @@ public class ProductImageEntity extends BaseEntity {
     @JsonIgnore
     private Long id;
 
-    @Column(name = "presigned_url", unique = true, nullable = false)
-    private String presignedUrl;
-
-    @Column(name = "upload_file_url", unique = true, nullable = false)
-    private String uploadFileUrl;
+    @Column(name = "image_url", nullable = false)
+    private String image_url;
 
     @Column(name = "product_uuid", nullable = false)
     private String productUuid;
 
-    @Column(name = "index", nullable = false)
-    private int index;
+    @Column(name = "idx", nullable = false)
+    private int idx;
 
     @Builder
     public ProductImageEntity(Long id,
-                              String presignedUrl,
-                              String uploadFileUrl,
+                              String image_url,
                               String productUuid,
-                              int index) {
+                              int idx) {
         this.id = id;
-        this.presignedUrl = presignedUrl;
-        this.uploadFileUrl = uploadFileUrl;
+        this.image_url = image_url;
         this.productUuid = productUuid;
-        this.index = index;
+        this.idx = idx;
     }
-
 }

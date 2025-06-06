@@ -1,9 +1,8 @@
 package com.chalnakchalnak.product_service.application.service;
 
 import com.chalnakchalnak.product_service.adapter.in.web.mapper.PresignedUrlVoMapper;
-import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.repository.ProductImageRepository;
 import com.chalnakchalnak.product_service.application.mapper.PresignedUrlServiceMapper;
-import com.chalnakchalnak.product_service.application.port.in.S3UseCase;
+import com.chalnakchalnak.product_service.application.port.in.PresignedUrlService;
 import com.chalnakchalnak.product_service.application.port.in.dto.PresignedUrlRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.SaveImageUrlRequestDto;
@@ -20,12 +19,14 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class S3Service implements S3UseCase {
+public class PresignedUrlServiceImpl implements PresignedUrlService {
 
     private final ProductImageRepositoryPort productImageRepositoryPort;
     private final ProductRepositoryPort productRepositoryPort;
@@ -55,7 +56,8 @@ public class S3Service implements S3UseCase {
         PresignedPutObjectRequest presignedRequest = s3Presigner.presignPutObject(presignRequest);
 
         String presignedUrl = presignedRequest.url().toString();
-        String uploadFileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + presignedUrlRequestDto.getFileName();
+        String uploadFileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/"
+                + URLEncoder.encode(presignedUrlRequestDto.getFileName(), StandardCharsets.UTF_8);
 
         return presignedUrlVoMapper.toPresignedUrlResponseDto(presignedUrl, uploadFileUrl);
     }
@@ -69,7 +71,8 @@ public class S3Service implements S3UseCase {
 
             productRepositoryPort.updateProduct(ProductUpdateSaveDto.builder()
                                                 .productUuid(saveImageUrlRequestDto.getProductUuid())
-                                                .thumbnailUrl(saveImageUrlRequestDto.getPresignedUrl()).build());
+                                                .thumbnailUrl(saveImageUrlRequestDto.getUploadFileUrl())
+                                                .build());
         }
 
         productImageRepositoryPort

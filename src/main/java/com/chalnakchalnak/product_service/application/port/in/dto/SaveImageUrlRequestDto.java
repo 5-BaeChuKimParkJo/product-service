@@ -6,17 +6,15 @@ import lombok.Getter;
 @Getter
 public class SaveImageUrlRequestDto {
 
-    private String presignedUrl;
     private String uploadFileUrl;
     private String productUuid;
-    private int index;
+    private int idx;
 
     @Builder
-    public SaveImageUrlRequestDto(String presignedUrl, String uploadFileUrl, String productUuid, int index) {
-        this.presignedUrl = presignedUrl;
+    public SaveImageUrlRequestDto(String uploadFileUrl, String productUuid, int idx) {
         this.uploadFileUrl = uploadFileUrl;
         this.productUuid = productUuid;
-        this.index = index;
+        this.idx = idx;
     }
 
 }
