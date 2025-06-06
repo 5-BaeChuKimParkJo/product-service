@@ -35,7 +35,7 @@ public class PresignedUrlController {
         return presignedUrlVoMapper.toPresignedResponseVo(presignedUrlResponseDto);
     }
 
-    @Operation(summary = "이미지 url db저장")
+    @Operation(summary = "이미지 url DB저장")
     @PostMapping("/save-url")
     public void saveImageUrl(@Valid @RequestBody SaveImageUrlRequestVo saveImageUrlRequestVo) {
         s3UseCase.saveImageUrl(presignedUrlVoMapper.toSaveImageUrlRequestDto(saveImageUrlRequestVo));
