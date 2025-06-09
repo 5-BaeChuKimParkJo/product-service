@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 public class ProductUpdateRequestDto {
@@ -22,6 +24,7 @@ public class ProductUpdateRequestDto {
     private String thumbnailUrl;
     private Long price;
     private String ticketUuid;
+    private List<String> tagList;
 
     @Builder
     public ProductUpdateRequestDto(String productUuid,
@@ -35,7 +38,8 @@ public class ProductUpdateRequestDto {
                                    Status status,
                                    String thumbnailUrl,
                                    Long price,
-                                   String ticketUuid) {
+                                   String ticketUuid,
+                                   List<String> tagList) {
         this.productUuid = productUuid;
         this.title = title;
         this.categoryId = categoryId;
@@ -48,5 +52,6 @@ public class ProductUpdateRequestDto {
         this.thumbnailUrl = thumbnailUrl;
         this.price = price;
         this.ticketUuid = ticketUuid;
+        this.tagList = tagList;
     }
 }

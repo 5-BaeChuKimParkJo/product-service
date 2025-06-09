@@ -1,5 +1,7 @@
 package com.chalnakchalnak.product_service.domain;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductCondition;
@@ -10,13 +12,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Locale;
 import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 public class ProductDomain {
 
-    private Long id;
     private String productUuid;
     private String saleMemberUuid;
     private String title;
@@ -31,12 +33,13 @@ public class ProductDomain {
     private Long viewCount;
     private Long price;
     private String ticketUuid;
-
+    private List<String> tagList;
     private List<String> productImageUrList;
+    private Boolean isDeleted;
+    private LocalDateTime createdAt;
 
     @Builder
-    public ProductDomain(Long id,
-                         String productUuid,
+    public ProductDomain(String productUuid,
                          String saleMemberUuid,
                          String title,
                          String categoryId,
@@ -50,8 +53,10 @@ public class ProductDomain {
                          Long viewCount,
                          Long price,
                          String ticketUuid,
-                         List<String> productImageUrList) {
-        this.id = id;
+                         List<String> productImageUrList,
+                         List<String> tagList,
+                         Boolean isDeleted,
+                         LocalDateTime createdAt) {
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
         this.title = title;
@@ -67,6 +72,9 @@ public class ProductDomain {
         this.price = price;
         this.ticketUuid = ticketUuid;
         this.productImageUrList = productImageUrList;
+        this.tagList = tagList;
+        this.isDeleted = isDeleted;
+        this.createdAt = createdAt;
     }
 
     public void setThumbnailUrl(int index) {
@@ -99,5 +107,9 @@ public class ProductDomain {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void deleteProduct() {
+        this.isDeleted = true;
     }
 }
