@@ -4,6 +4,8 @@ import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.P
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class ProductUpdateRequestVo {
 
@@ -19,4 +21,5 @@ public class ProductUpdateRequestVo {
     private String thumbnailUrl;
     private Long price;
     private String ticketUuid;
+    private List<String> tagList;
 }

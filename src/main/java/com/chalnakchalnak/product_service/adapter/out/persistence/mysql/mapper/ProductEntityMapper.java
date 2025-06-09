@@ -3,6 +3,7 @@ package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.mapper;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductEntity;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
+import com.chalnakchalnak.product_service.domain.ProductDomain;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -43,6 +44,28 @@ public class ProductEntityMapper {
                 .thumbnailUrl(productSaveDto.getThumbnailUrl())
                 .price(productSaveDto.getPrice())
                 .ticketUuid(productSaveDto.getTicketUuid())
+                .isDeleted(false)
+                .build();
+    }
+
+    public ProductDomain from(ProductEntity productEntity) {
+        return ProductDomain.builder()
+                .productUuid(productEntity.getProductUuid())
+                .saleMemberUuid(productEntity.getSaleMemberUuid())
+                .title(productEntity.getTitle())
+                .categoryId(productEntity.getCategoryId())
+                .description(productEntity.getDescription())
+                .productCondition(productEntity.getProductCondition())
+                .isDirectDeal(productEntity.getIsDirectDeal())
+                .directDealLocation(productEntity.getDirectDealLocation())
+                .isHide(productEntity.getIsHide())
+                .status(productEntity.getStatus())
+                .thumbnailUrl(productEntity.getThumbnailUrl())
+                .viewCount(productEntity.getViewCount())
+                .price(productEntity.getPrice())
+                .ticketUuid(productEntity.getTicketUuid())
+                .isDeleted(productEntity.getIsDeleted())
+                .createdAt(productEntity.getCreatedAt())
                 .build();
     }
 }

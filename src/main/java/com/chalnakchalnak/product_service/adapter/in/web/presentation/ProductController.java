@@ -46,49 +46,8 @@ public class ProductController {
         productUseCase.deleteProduct(productUuid);
     }
 
-//    @Operation(summary = "상품 미리보기 단일 조회")
-//    @GetMapping("/preview/{productUuid}")
-//    public ProductPreviewResponseVo getProductPreview(@PathVariable String productUuid) {
-//        return null;
-//    }
-//
-//    @Operation(summary = "상품 미리보기 리스트 조회")
-//    @GetMapping("/preview/list?sort={sort}")
-//    public List<ProductPreviewResponseVo> getProductPreviewList(@RequestParam String sort) {
-//        return null;
-//    }
-//
-//    @Operation(summary = "상품 상세 조회")
-//    @GetMapping("/{productUuid}")
-//    public ProductDetailResponseVo getProductDetail(@PathVariable String productUuid) {
-//        return null;
-//    }
-//
-//    @Operation(summary = "일반 상품 이미지 등록")
-//    @PostMapping("/image")
-//    public ProductImageUrlVo uploadProductImage(@RequestBody ProductRequestVo productRequestVo) {
-//        return null;
-//    }
-
     @Operation(summary = "일반 상품 이미지 삭제")
     @DeleteMapping("/image")
     public void deleteProductImage() {
     }
-
-
-
-
-
-
-
-    @Operation(summary = "상품 찜하기")
-    @PutMapping("/like/{productUuid}")
-    public void likeProduct(@PathVariable String productUuid) {
-    }
-
-//    @Operation(summary = "추천 상품 내역 조회(일반)")
-//    @GetMapping("/recommend")
-//    public List<ProductPreviewResponseVo> getRecommendedProductList() {
-//        return null;
-//    }
 }

@@ -63,6 +63,9 @@ public class ProductEntity extends BaseEntity {
     @Column(name = "ticket_uuid")
     private String ticketUuid;
 
+    @Column(name = "is_deleted", columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean isDeleted = false;
+
     @Builder
     public ProductEntity(String productUuid,
                          String saleMemberUuid,
@@ -77,7 +80,8 @@ public class ProductEntity extends BaseEntity {
                          String thumbnailUrl,
                          Long viewCount,
                          Long price,
-                         String ticketUuid) {
+                         String ticketUuid,
+                         Boolean isDeleted) {
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
         this.title = title;
@@ -92,6 +96,7 @@ public class ProductEntity extends BaseEntity {
         this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;
+        this.isDeleted = isDeleted;
     }
 
 }

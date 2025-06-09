@@ -8,6 +8,8 @@ import com.chalnakchalnak.product_service.application.port.out.dto.ProductRespon
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateRequestDto;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class ProductVoMapper {
 
@@ -34,6 +36,7 @@ public class ProductVoMapper {
 
     public ProductCreateRequestDto toProductCreateRequestDto(ProductCreateRequestVo productRequestVo, String memberUuid) {
         return ProductCreateRequestDto.builder()
+                .productUuid(UUID.randomUUID().toString())
                 .saleMemberUuid(memberUuid)
                 .productImageUrList(productRequestVo.getProductImageUrList())
                 .isDirectDeal(productRequestVo.getIsDirectDeal())
@@ -44,6 +47,7 @@ public class ProductVoMapper {
                 .description(productRequestVo.getDescription())
                 .price(productRequestVo.getPrice())
                 .ticketUuid(productRequestVo.getTicketUuid())
+                .tagList(productRequestVo.getTagList())
                 .build();
     }
 
@@ -61,6 +65,7 @@ public class ProductVoMapper {
                 .thumbnailUrl(productUpdateRequestVo.getThumbnailUrl())
                 .price(productUpdateRequestVo.getPrice())
                 .ticketUuid(productUpdateRequestVo.getTicketUuid())
+                .tagList(productUpdateRequestVo.getTagList())
                 .build();
     }
 

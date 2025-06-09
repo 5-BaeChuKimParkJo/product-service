@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 public class ProductCreateRequestDto {
 
+    private String productUuid;
     private String saleMemberUuid;
     private List<String> productImageUrList;
     private Boolean isDirectDeal;
@@ -19,9 +20,11 @@ public class ProductCreateRequestDto {
     private String description;
     private Long price;
     private String ticketUuid;
+    private List<String> tagList;
 
     @Builder
-    public ProductCreateRequestDto(String saleMemberUuid,
+    public ProductCreateRequestDto(String productUuid,
+                                   String saleMemberUuid,
                                    List<String> productImageUrList,
                                    Boolean isDirectDeal,
                                    String directDealLocation,
@@ -30,7 +33,9 @@ public class ProductCreateRequestDto {
                                    String categoryId,
                                    String description,
                                    Long price,
-                                   String ticketUuid) {
+                                   String ticketUuid,
+                                   List<String> tagList) {
+        this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
         this.productImageUrList = productImageUrList;
         this.isDirectDeal = isDirectDeal;
@@ -41,6 +46,6 @@ public class ProductCreateRequestDto {
         this.description = description;
         this.price = price;
         this.ticketUuid = ticketUuid;
+        this.tagList = tagList;
     }
-
 }

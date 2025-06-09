@@ -9,9 +9,12 @@ import com.chalnakchalnak.product_service.application.port.out.ProductRepository
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
+import com.chalnakchalnak.product_service.domain.ProductDomain;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -22,10 +25,10 @@ public class ProductRepository implements ProductRepositoryPort {
     private final ProductEntityMapper productEntityMapper;
 
     @Override
-    public ProductResponseDto getProduct(String productUuid) {
+    public ProductDomain getProduct(String productUuid) {
         ProductEntity productEntity = productJpaRepository.findByProductUuid(productUuid)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT));
-        return productEntityMapper.toProductResponseDto(productEntity);
+        return productEntityMapper.from(productEntity);
     }
 
     @Override
@@ -39,9 +42,8 @@ public class ProductRepository implements ProductRepositoryPort {
     }
 
     @Override
-    public void deleteProduct(String productUuid) {
-        ProductEntity productEntity = productJpaRepository.findByProductUuid(productUuid)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT));
-        productJpaRepository.deleteById(productEntity.getId());
+    @Transactional
+    public void softDeleteProduct(String productUuid) {
+        productJpaRepository.softDelete(productUuid);
     }
 }

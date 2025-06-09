@@ -4,6 +4,8 @@ import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateR
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
+import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSaveDto;
+import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +16,7 @@ public class ProductServiceMapper {
 
     public ProductDomain toProductDomain(ProductCreateRequestDto productCreateRequestDto) {
         return ProductDomain.builder()
-                .productUuid(UUID.randomUUID().toString())
+                .productUuid(productCreateRequestDto.getProductUuid())
                 .saleMemberUuid(productCreateRequestDto.getSaleMemberUuid())
                 .productImageUrList(productCreateRequestDto.getProductImageUrList())
                 .isDirectDeal(productCreateRequestDto.getIsDirectDeal())
@@ -25,6 +27,7 @@ public class ProductServiceMapper {
                 .description(productCreateRequestDto.getDescription())
                 .price(productCreateRequestDto.getPrice())
                 .ticketUuid(productCreateRequestDto.getTicketUuid())
+                .tagList(productCreateRequestDto.getTagList())
                 .build();
     }
 
@@ -45,9 +48,29 @@ public class ProductServiceMapper {
                 .build();
     }
 
+    public ProductResponseDto from(ProductDomain productDomain) {
+        return ProductResponseDto.builder()
+                .productUuid(productDomain.getProductUuid())
+                .saleMemberUuid(productDomain.getSaleMemberUuid())
+                .title(productDomain.getTitle())
+                .categoryId(productDomain.getCategoryId())
+                .description(productDomain.getDescription())
+                .productCondition(productDomain.getProductCondition())
+                .isDirectDeal(productDomain.getIsDirectDeal())
+                .directDealLocation(productDomain.getDirectDealLocation())
+                .isHide(productDomain.getIsHide())
+                .status(productDomain.getStatus())
+                .thumbnailUrl(productDomain.getThumbnailUrl())
+                .viewCount(productDomain.getViewCount())
+                .price(productDomain.getPrice())
+                .ticketUuid(productDomain.getTicketUuid())
+                .createdAt(productDomain.getCreatedAt())
+                .build();
+    }
+
     public ProductCreateSaveDto toProductSaveDto(ProductDomain productDomain) {
         return ProductCreateSaveDto.builder()
-                .productUuid(UUID.randomUUID().toString())
+                .productUuid(productDomain.getProductUuid())
                 .saleMemberUuid(productDomain.getSaleMemberUuid())
                 .title(productDomain.getTitle())
                 .categoryId(productDomain.getCategoryId())
@@ -76,6 +99,24 @@ public class ProductServiceMapper {
                 .thumbnailUrl(productDomain.getThumbnailUrl())
                 .price(productDomain.getPrice())
                 .ticketUuid(productDomain.getTicketUuid())
+                .build();
+    }
+
+    public OutboxSaveDto toTagCreateSaveDto(String productUuid, String payload) {
+        return OutboxSaveDto.builder()
+                .aggregateType("Product")
+                .aggregateId(productUuid)
+                .eventType("ProductCreated")
+                .payload(payload)
+                .build();
+    }
+
+    public OutboxSaveDto toTagDeleteSaveDto(String productUuid) {
+        return OutboxSaveDto.builder()
+                .aggregateType("Product")
+                .aggregateId(productUuid)
+                .eventType("ProductDeleted")
+                .payload("")
                 .build();
     }
 }
