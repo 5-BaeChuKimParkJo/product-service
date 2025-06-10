@@ -50,13 +50,14 @@ dependencies {
 	implementation 'software.amazon.awssdk:s3'
 	implementation 'software.amazon.awssdk:auth'
 
+	// CI
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// ⭐ QueryDSL Q파일 생성 경로 등록
 def querydslDir = "build/generated/querydsl"
 
 sourceSets {
