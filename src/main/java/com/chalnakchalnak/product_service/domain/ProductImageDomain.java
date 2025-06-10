@@ -10,18 +10,18 @@ public class ProductImageDomain {
 
     private String uploadFileUrl;
     private String productUuid;
-    private int index;
+    private int idx;
 
     @Builder
     public ProductImageDomain(String uploadFileUrl,
                               String productUuid,
-                              int index) {
+                              int idx) {
         this.uploadFileUrl = uploadFileUrl;
         this.productUuid = productUuid;
-        this.index = index;
+        this.idx = idx;
     }
 
     public void setIndex(int index) {
-        this.index = index;
+        this.idx = idx;
     }
 }

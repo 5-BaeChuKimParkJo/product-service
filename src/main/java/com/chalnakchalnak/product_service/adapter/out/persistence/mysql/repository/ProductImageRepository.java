@@ -9,8 +9,8 @@ import com.chalnakchalnak.product_service.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,21 +19,25 @@ public class ProductImageRepository implements ProductImageRepositoryPort {
     private final ProductImageJpaRepository productImageJpaRepository;
     private final ProductImageEntityMapper productImageEntityMapper;
 
+
+    @Override
+    public Optional<ProductImageEntity> getImageUrl(String productUuid, int idx) {
+        return  productImageJpaRepository.findByProductUuidAndIdx(productUuid, idx);
+    }
+
     @Override
     public void uploadImageUrl(ProductImageUrlSaveDto productImageUrlSaveDto) {
         productImageJpaRepository.save(productImageEntityMapper.toEntity(productImageUrlSaveDto));
     }
 
     @Override
-    @Transactional
     public void deleteImageUrl(String productUuid, int idx) {
         ProductImageEntity productImageEntity = productImageJpaRepository.findByProductUuidAndIdx(productUuid, idx)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_IMAGE));
         productImageJpaRepository.delete(productImageEntity);
     }
 
     @Override
-    @Transactional
     public void deleteAllImageUrl(String productUuid) {
         List<ProductImageEntity> productImageEntityList = productImageJpaRepository.findByProductUuid(productUuid);
         productImageJpaRepository.deleteAll(productImageEntityList);

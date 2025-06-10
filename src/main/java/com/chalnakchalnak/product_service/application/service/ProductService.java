@@ -20,8 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -59,6 +57,7 @@ public class ProductService implements ProductUseCase {
     }
 
     @Override
+    @Transactional
     public void updateProduct(ProductUpdateRequestDto productUpdateRequestDto) {
         ProductDomain productDomain = productServiceMapper.toProductDomain(productUpdateRequestDto);
 
@@ -72,6 +71,7 @@ public class ProductService implements ProductUseCase {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(String productUuid) {
 
         // 상품 소프트 딜리트
