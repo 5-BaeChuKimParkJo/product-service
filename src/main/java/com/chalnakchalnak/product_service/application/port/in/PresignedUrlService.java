@@ -9,4 +9,6 @@ public interface PresignedUrlService {
     PresignedUrlResponseDto generatePresignedUrl(PresignedUrlRequestDto presignedUrlRequestDto);
 
     void saveImageUrl(SaveImageUrlRequestDto saveImageUrlRequestDto);
+
+    void deleteImageUrl(String productUuid, int idx);
 }

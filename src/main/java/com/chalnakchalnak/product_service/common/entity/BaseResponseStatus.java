@@ -58,6 +58,9 @@ public enum BaseResponseStatus {
      */
     // S3
     S3_UPLOAD_FAIL(HttpStatus.BAD_REQUEST, 7001, "파일 업로드에 실패하였습니다."),
+
+    FAILED_TO_DELETE_THUMBNAIL(HttpStatus.INTERNAL_SERVER_ERROR, 2002, "썸네일 이미지는 삭제 불가능합니다."),
+    NO_EXISTS_IMAGE(HttpStatus.NOT_FOUND, 2003, "존재하지 않는 이미지입니다."),
     ;
 
     private final HttpStatusCode httpStatusCode;

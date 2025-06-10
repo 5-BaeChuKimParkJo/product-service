@@ -13,6 +13,7 @@ public class PresignedUrlServiceMapper {
         return ProductImageDomain.builder()
                 .uploadFileUrl(saveImageUrlRequestDto.getUploadFileUrl())
                 .productUuid(saveImageUrlRequestDto.getProductUuid())
+                .idx(saveImageUrlRequestDto.getIdx())
                 .build();
     }
 
@@ -20,6 +21,7 @@ public class PresignedUrlServiceMapper {
         return ProductImageUrlSaveDto.builder()
                 .uploadFileUrl(productImageDomain.getUploadFileUrl())
                 .productUuid(productImageDomain.getProductUuid())
+                .idx(productImageDomain.getIdx())
                 .build();
     }
 

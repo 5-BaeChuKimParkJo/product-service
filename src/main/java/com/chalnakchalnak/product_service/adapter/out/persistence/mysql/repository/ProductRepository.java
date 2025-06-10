@@ -6,15 +6,12 @@ import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.reposito
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
-import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -42,7 +39,6 @@ public class ProductRepository implements ProductRepositoryPort {
     }
 
     @Override
-    @Transactional
     public void softDeleteProduct(String productUuid) {
         productJpaRepository.softDelete(productUuid);
     }

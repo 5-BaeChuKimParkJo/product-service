@@ -45,9 +45,4 @@ public class ProductController {
     public void deleteProduct(@PathVariable String productUuid) {
         productUseCase.deleteProduct(productUuid);
     }
-
-    @Operation(summary = "일반 상품 이미지 삭제")
-    @DeleteMapping("/image")
-    public void deleteProductImage() {
-    }
 }
