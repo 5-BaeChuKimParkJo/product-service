@@ -8,8 +8,8 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: cabbage/category-service   ### 각자 서비스명에 수정 필요
-  SERVICE_NAME: category-service
+  ECR_REPOSITORY: cabbage/product-service   ### 각자 서비스명에 수정 필요
+  SERVICE_NAME: product-service
 
 jobs:
   build:
