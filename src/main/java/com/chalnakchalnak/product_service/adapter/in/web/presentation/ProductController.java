@@ -3,13 +3,17 @@ package com.chalnakchalnak.product_service.adapter.in.web.presentation;
 import com.chalnakchalnak.product_service.adapter.in.vo.ProductCreateRequestVo;
 import com.chalnakchalnak.product_service.adapter.in.vo.ProductResponseVo;
 import com.chalnakchalnak.product_service.adapter.in.vo.ProductUpdateRequestVo;
+import com.chalnakchalnak.product_service.adapter.in.vo.ProductUuidListRequestVo;
 import com.chalnakchalnak.product_service.adapter.in.web.mapper.ProductVoMapper;
 import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Tag(name = "Product", description = "상품 관련 API")
@@ -21,10 +25,19 @@ public class ProductController {
     private final ProductUseCase productUseCase;
     private final ProductVoMapper productVoMapper;
 
-    @Operation(summary = "상품 엔티티 단일 조회")
+    @Operation(summary = "상품 단일 조회")
     @GetMapping("/{productUuid}")
     public ProductResponseVo getProduct(@PathVariable String productUuid) {
         return productVoMapper.toProductResponseVo(productUseCase.getProduct(productUuid));
+    }
+
+    @Operation(summary = "상품 다건 조회")
+    @PostMapping("/list")
+    public List<ProductResponseVo> getProductList(@RequestBody @Valid ProductUuidListRequestVo productUuidListRequestVo) {
+        return productUseCase.getProductList(productVoMapper.toProductUuidListRequestDto(productUuidListRequestVo))
+                .stream()
+                .map(productResponseDto -> productVoMapper.toProductResponseVo(productResponseDto))
+                .toList();
     }
 
     @Operation(summary = "상품 등록")
