@@ -3,11 +3,15 @@ package com.chalnakchalnak.product_service.adapter.in.web.mapper;
 import com.chalnakchalnak.product_service.adapter.in.vo.ProductCreateRequestVo;
 import com.chalnakchalnak.product_service.adapter.in.vo.ProductResponseVo;
 import com.chalnakchalnak.product_service.adapter.in.vo.ProductUpdateRequestVo;
+import com.chalnakchalnak.product_service.adapter.in.vo.ProductUuidListRequestVo;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
+import com.chalnakchalnak.product_service.application.port.in.dto.ProductUuidListRequestDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateRequestDto;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -31,6 +35,12 @@ public class ProductVoMapper {
                 .price(productResponseDto.getPrice())
                 .ticketUuid(productResponseDto.getTicketUuid())
                 .createdAt(productResponseDto.getCreatedAt())
+                .build();
+    }
+
+    public ProductUuidListRequestDto toProductUuidListRequestDto(ProductUuidListRequestVo productUuidListRequestVo) {
+        return ProductUuidListRequestDto.builder()
+                .productUuidList(productUuidListRequestVo.getProductUuidList())
                 .build();
     }
 

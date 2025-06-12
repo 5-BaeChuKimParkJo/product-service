@@ -6,6 +6,7 @@ import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductImageUrlSaveDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
+import com.chalnakchalnak.product_service.application.port.in.dto.ProductUuidListRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.event.TagEventDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.OutboxRepositoryPort;
@@ -19,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -36,6 +39,15 @@ public class ProductService implements ProductUseCase {
     public ProductResponseDto getProduct(String productUuid) {
         return productServiceMapper.from(productRepositoryPort.getProduct(productUuid));
     }
+
+    @Override
+    public List<ProductResponseDto> getProductList(ProductUuidListRequestDto productUuidListRequestDto) {
+        return productUuidListRequestDto.getProductUuidList()
+                .stream()
+                .map(productUuid -> productServiceMapper.from(productRepositoryPort.getProduct(productUuid)))
+                .toList();
+    }
+
 
     @Override
     @Transactional
