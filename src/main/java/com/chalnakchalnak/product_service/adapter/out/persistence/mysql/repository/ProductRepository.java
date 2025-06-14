@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class ProductRepository implements ProductRepositoryPort {
@@ -26,6 +28,14 @@ public class ProductRepository implements ProductRepositoryPort {
         ProductEntity productEntity = productJpaRepository.findByProductUuid(productUuid)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT));
         return productEntityMapper.from(productEntity);
+    }
+
+    @Override
+    public List<ProductDomain> getAllProduct() {
+        return productJpaRepository.findAll()
+                .stream()
+                .map(productEntity -> productEntityMapper.from(productEntity))
+                .toList();
     }
 
     @Override

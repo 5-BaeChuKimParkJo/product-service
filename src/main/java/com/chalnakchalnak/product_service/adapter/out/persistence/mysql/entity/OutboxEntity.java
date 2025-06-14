@@ -26,6 +26,7 @@ public class OutboxEntity extends BaseEntity {
     @Lob
     private String payload;       // 직렬화된 JSON 문자열
 
+
     @Builder
     public OutboxEntity(Long id, String aggregateType, String aggregateId, String eventType, String payload) {
         this.id = id;

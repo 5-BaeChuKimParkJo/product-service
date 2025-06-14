@@ -9,6 +9,7 @@ import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,15 @@ public class ProductController {
     @PostMapping("/list")
     public List<ProductResponseVo> getProductList(@RequestBody @Valid ProductUuidListRequestVo productUuidListRequestVo) {
         return productUseCase.getProductList(productVoMapper.toProductUuidListRequestDto(productUuidListRequestVo))
+                .stream()
+                .map(productResponseDto -> productVoMapper.toProductResponseVo(productResponseDto))
+                .toList();
+    }
+
+    @Operation(summary = "상품 전체 조회")
+    @GetMapping("/list")
+    public List<ProductResponseVo> getProductList() {
+        return productUseCase.getAllProductList()
                 .stream()
                 .map(productResponseDto -> productVoMapper.toProductResponseVo(productResponseDto))
                 .toList();
