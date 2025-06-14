@@ -48,6 +48,14 @@ public class ProductService implements ProductUseCase {
                 .toList();
     }
 
+    @Override
+    public List<ProductResponseDto> getAllProductList() {
+        return productRepositoryPort.getAllProduct()
+                .stream()
+                .map(productDomain -> productServiceMapper.from(productDomain))
+                .toList();
+    }
+
 
     @Override
     @Transactional

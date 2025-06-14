@@ -13,6 +13,8 @@ public interface ProductUseCase {
 
     List<ProductResponseDto> getProductList(ProductUuidListRequestDto productUuidListRequestDto);
 
+    List<ProductResponseDto> getAllProductList();
+
     void createProduct(ProductCreateRequestDto productRequestDto);
 
     void updateProduct(ProductUpdateRequestDto productUpdateRequestDto);
