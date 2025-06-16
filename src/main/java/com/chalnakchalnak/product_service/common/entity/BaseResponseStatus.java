@@ -61,6 +61,7 @@ public enum BaseResponseStatus {
 
     FAILED_TO_DELETE_THUMBNAIL(HttpStatus.INTERNAL_SERVER_ERROR, 2002, "썸네일 이미지는 삭제 불가능합니다."),
     NO_EXISTS_IMAGE(HttpStatus.NOT_FOUND, 2003, "존재하지 않는 이미지입니다."),
+    UNABLE_TO_CALCULATE_HMAC(HttpStatus.INTERNAL_SERVER_ERROR, 2003, "HMAC을 계산할 수 없습니다"),
     ;
 
     private final HttpStatusCode httpStatusCode;

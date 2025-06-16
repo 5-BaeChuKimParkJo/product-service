@@ -29,12 +29,12 @@ public class ProductDomain {
     private String directDealLocation;
     private Boolean isHide;
     private Status status;
-    private String thumbnailUrl;
+    private String thumbnailKey;
     private Long viewCount;
     private Long price;
     private String ticketUuid;
     private List<String> tagList;
-    private List<String> productImageUrList;
+    private List<String> productImageKeyList;
     private Boolean isDeleted;
     private LocalDateTime createdAt;
 
@@ -49,11 +49,11 @@ public class ProductDomain {
                          String directDealLocation,
                          Boolean isHide,
                          Status status,
-                         String thumbnailUrl,
+                         String thumbnailKey,
                          Long viewCount,
                          Long price,
                          String ticketUuid,
-                         List<String> productImageUrList,
+                         List<String> productImageKeyList,
                          List<String> tagList,
                          Boolean isDeleted,
                          LocalDateTime createdAt) {
@@ -67,21 +67,21 @@ public class ProductDomain {
         this.directDealLocation = directDealLocation;
         this.isHide = isHide;
         this.status = status;
-        this.thumbnailUrl = thumbnailUrl;
+        this.thumbnailKey = thumbnailKey;
         this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;
-        this.productImageUrList = productImageUrList;
+        this.productImageKeyList = productImageKeyList;
         this.tagList = tagList;
         this.isDeleted = isDeleted;
         this.createdAt = createdAt;
     }
 
-    public void setThumbnailUrl(int index) {
-        if (productImageUrList.size() < index) {
+    public void setThumbnailKey(int index) {
+        if (productImageKeyList.size() < index) {
             throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
         }
-        this.thumbnailUrl = productImageUrList.get(index);
+        this.thumbnailKey = productImageKeyList.get(index);
     }
 
     public void plusViewCount() {

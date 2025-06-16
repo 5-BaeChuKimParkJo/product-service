@@ -21,7 +21,7 @@ public class ProductUpdateRequestDto {
     private String directDealLocation;
     private Boolean isHide;
     private Status status;
-    private String thumbnailUrl;
+    private String thumbnailKey;
     private Long price;
     private String ticketUuid;
     private List<String> tagList;
@@ -36,7 +36,7 @@ public class ProductUpdateRequestDto {
                                    String directDealLocation,
                                    Boolean isHide,
                                    Status status,
-                                   String thumbnailUrl,
+                                   String thumbnailKey,
                                    Long price,
                                    String ticketUuid,
                                    List<String> tagList) {
@@ -49,7 +49,7 @@ public class ProductUpdateRequestDto {
         this.directDealLocation = directDealLocation;
         this.isHide = isHide;
         this.status = status;
-        this.thumbnailUrl = thumbnailUrl;
+        this.thumbnailKey = thumbnailKey;
         this.price = price;
         this.ticketUuid = ticketUuid;
         this.tagList = tagList;

@@ -51,8 +51,8 @@ public class ProductEntity extends BaseEntity {
     private Status status;
 
     @Lob
-    @Column(name = "thumbnail_url", columnDefinition = "LONGTEXT")
-    private String thumbnailUrl;
+    @Column(name = "thumbnail_key", columnDefinition = "LONGTEXT")
+    private String thumbnailKey;
 
     @Column(name = "view_count")
     private Long viewCount;
@@ -77,7 +77,7 @@ public class ProductEntity extends BaseEntity {
                          String directDealLocation,
                          Boolean isHide,
                          Status status,
-                         String thumbnailUrl,
+                         String thumbnailKey,
                          Long viewCount,
                          Long price,
                          String ticketUuid,
@@ -92,7 +92,7 @@ public class ProductEntity extends BaseEntity {
         this.directDealLocation = directDealLocation;
         this.isHide = isHide;
         this.status = status;
-        this.thumbnailUrl = thumbnailUrl;
+        this.thumbnailKey = thumbnailKey;
         this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;

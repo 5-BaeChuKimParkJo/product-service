@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductImageUrlSaveDto {
 
-    private String uploadFileUrl;
+    private String imageKey;
     private String productUuid;
     private int idx;
 
     @Builder
-    public ProductImageUrlSaveDto(String uploadFileUrl,
+    public ProductImageUrlSaveDto(String imageKey,
                                   String productUuid,
                                   int idx) {
-        this.uploadFileUrl = uploadFileUrl;
+        this.imageKey = imageKey;
         this.productUuid = productUuid;
         this.idx = idx;
     }

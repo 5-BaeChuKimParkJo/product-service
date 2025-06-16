@@ -10,5 +10,5 @@ public interface PresignedUrlService {
 
     void saveImageUrl(SaveImageUrlRequestDto saveImageUrlRequestDto);
 
-    void deleteImageUrl(String productUuid, int idx);
+    void deleteImageKey(String productUuid, int idx);
 }

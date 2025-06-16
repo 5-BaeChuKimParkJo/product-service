@@ -30,9 +30,8 @@ public class ProductService implements ProductUseCase {
 
     private final ProductRepositoryPort productRepositoryPort;
     private final ProductImageRepositoryPort productImageRepositoryPort;
-    private final ProductServiceMapper productServiceMapper;
     private final OutboxRepositoryPort outboxRepositoryPort;
-
+    private final ProductServiceMapper productServiceMapper;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -62,15 +61,15 @@ public class ProductService implements ProductUseCase {
     public void createProduct(ProductCreateRequestDto productCreateRequestDto) {
         ProductDomain productDomain = productServiceMapper.toProductDomain(productCreateRequestDto);
         // 이미지가 있는 경우는 썸네일 지정: 0번째 사진
-        if(!productDomain.getProductImageUrList().isEmpty()) {
-            productDomain.setThumbnailUrl(0);
+        if(!productDomain.getProductImageKeyList().isEmpty()) {
+            productDomain.setThumbnailKey(0);
         }
         productDomain.setIsHide(false);
         productDomain.setStatus(Status.ACTIVE);
         productRepositoryPort.createProduct(productServiceMapper.toProductSaveDto(productDomain));
 
         // 이미지 업로드
-        uploadImage(productDomain);
+        uploadImageList(productDomain);
 
         // 태그 추가
         addTag(productDomain);
@@ -82,9 +81,9 @@ public class ProductService implements ProductUseCase {
         ProductDomain productDomain = productServiceMapper.toProductDomain(productUpdateRequestDto);
 
         productRepositoryPort.updateProduct(productServiceMapper.toUpdateSaveDto(productDomain));
-        
-        // 이미지 업로드
-        uploadImage(productDomain);
+
+        // 이미지 없로드
+        uploadImageList(productDomain);
 
         // 태그 추가
         addTag(productDomain);
@@ -98,7 +97,7 @@ public class ProductService implements ProductUseCase {
         productRepositoryPort.softDeleteProduct(productUuid);
 
         // 이미지 삭제
-        productImageRepositoryPort.deleteAllImageUrl(productUuid);
+        productImageRepositoryPort.deleteAllImageKey(productUuid);
 
         // 태그 삭제
         OutboxSaveDto outboxSaveDto = productServiceMapper.toTagDeleteSaveDto(productUuid);
@@ -106,21 +105,22 @@ public class ProductService implements ProductUseCase {
     }
 
 
-    private void uploadImage(ProductDomain productDomain) {
-        // 이미지 저장
-        int idx = 0;
-        for (String upload_file_url : productDomain.getProductImageUrList()) {
-            productImageRepositoryPort
-                    .uploadImageUrl(ProductImageUrlSaveDto.builder()
-                            .productUuid(productDomain.getProductUuid())
-                            .uploadFileUrl(upload_file_url)
-                            .idx(++idx).build());
+    private void uploadImageList(ProductDomain productDomain) {
+        if (productDomain.getProductImageKeyList() != null) {
+            int idx = 0;
+            for (String imageKey : productDomain.getProductImageKeyList()) {
+                productImageRepositoryPort
+                        .uploadImageKey(ProductImageUrlSaveDto.builder()
+                                .productUuid(productDomain.getProductUuid())
+                                .imageKey(imageKey)
+                                .idx(++idx).build());
+            }
         }
     }
 
     private void addTag(ProductDomain productDomain) {
         // 태그 존재 시
-        if (!productDomain.getTagList().isEmpty()) {
+        if (productDomain.getTagList() != null) {
             TagEventDto tagCreateEvent = TagEventDto.builder()
                     .productUuid(productDomain.getProductUuid())
                     .tagList(productDomain.getTagList())

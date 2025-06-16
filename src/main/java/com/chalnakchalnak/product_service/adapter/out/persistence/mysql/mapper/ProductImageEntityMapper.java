@@ -9,7 +9,7 @@ public class ProductImageEntityMapper {
 
     public ProductImageEntity toEntity(ProductImageUrlSaveDto productImageUrlSaveDto) {
         return ProductImageEntity.builder()
-                .image_url(productImageUrlSaveDto.getUploadFileUrl())
+                .imageKey(productImageUrlSaveDto.getImageKey())
                 .productUuid(productImageUrlSaveDto.getProductUuid())
                 .idx(productImageUrlSaveDto.getIdx())
                 .build();

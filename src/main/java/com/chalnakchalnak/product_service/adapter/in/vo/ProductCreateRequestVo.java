@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 public class ProductCreateRequestVo {
 
-    private List<String> productImageUrList;
+    private List<String> productImageKeyList;
     private Boolean isDirectDeal;
     private String directDealLocation;
     private String title;

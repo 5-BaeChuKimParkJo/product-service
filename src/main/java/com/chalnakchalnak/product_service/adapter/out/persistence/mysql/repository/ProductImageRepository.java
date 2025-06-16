@@ -26,19 +26,19 @@ public class ProductImageRepository implements ProductImageRepositoryPort {
     }
 
     @Override
-    public void uploadImageUrl(ProductImageUrlSaveDto productImageUrlSaveDto) {
+    public void uploadImageKey(ProductImageUrlSaveDto productImageUrlSaveDto) {
         productImageJpaRepository.save(productImageEntityMapper.toEntity(productImageUrlSaveDto));
     }
 
     @Override
-    public void deleteImageUrl(String productUuid, int idx) {
+    public void deleteImageKey(String productUuid, int idx) {
         ProductImageEntity productImageEntity = productImageJpaRepository.findByProductUuidAndIdx(productUuid, idx)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_IMAGE));
         productImageJpaRepository.delete(productImageEntity);
     }
 
     @Override
-    public void deleteAllImageUrl(String productUuid) {
+    public void deleteAllImageKey(String productUuid) {
         List<ProductImageEntity> productImageEntityList = productImageJpaRepository.findByProductUuid(productUuid);
         productImageJpaRepository.deleteAll(productImageEntityList);
     }
