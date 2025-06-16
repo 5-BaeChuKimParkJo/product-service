@@ -32,7 +32,7 @@ public class PresignedUrlController {
         return presignedUrlVoMapper.toPresignedResponseVo(presignedUrlResponseDto);
     }
 
-    @Operation(summary = "이미지 url DB저장")
+    @Operation(summary = "이미지 key DB저장")
     @PostMapping("/save-image-url")
     public void saveImageUrl(@Valid @RequestBody SaveImageUrlRequestVo saveImageUrlRequestVo) {
         presignedUrlService.saveImageUrl(presignedUrlVoMapper.toSaveImageUrlRequestDto(saveImageUrlRequestVo));
@@ -41,6 +41,6 @@ public class PresignedUrlController {
     @Operation(summary = "이미지 url 삭제")
     @DeleteMapping("/delete-image-url")
     public void deleteImageUrl(@RequestParam String productUuid, @RequestParam int idx) {
-        presignedUrlService.deleteImageUrl(productUuid, idx);
+        presignedUrlService.deleteImageKey(productUuid, idx);
     }
 }

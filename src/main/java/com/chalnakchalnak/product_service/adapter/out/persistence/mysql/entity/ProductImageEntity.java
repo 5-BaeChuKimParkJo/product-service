@@ -19,8 +19,8 @@ public class ProductImageEntity extends BaseEntity {
     @JsonIgnore
     private Long id;
 
-    @Column(name = "image_url", nullable = false)
-    private String image_url;
+    @Column(name = "image_key", nullable = false)
+    private String imageKey;
 
     @Column(name = "product_uuid", nullable = false)
     private String productUuid;
@@ -30,11 +30,11 @@ public class ProductImageEntity extends BaseEntity {
 
     @Builder
     public ProductImageEntity(Long id,
-                              String image_url,
+                              String imageKey,
                               String productUuid,
                               int idx) {
         this.id = id;
-        this.image_url = image_url;
+        this.imageKey = imageKey;
         this.productUuid = productUuid;
         this.idx = idx;
     }

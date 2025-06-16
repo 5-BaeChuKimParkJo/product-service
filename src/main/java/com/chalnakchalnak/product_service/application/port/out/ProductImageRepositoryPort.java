@@ -9,9 +9,9 @@ public interface ProductImageRepositoryPort {
 
     Optional<ProductImageEntity> getImageUrl(String productUuid, int idx);
 
-    void uploadImageUrl(ProductImageUrlSaveDto productImageUrlSaveDto);
+    void uploadImageKey(ProductImageUrlSaveDto productImageUrlSaveDto);
 
-    void deleteImageUrl(String productUuid, int idx);
+    void deleteImageKey(String productUuid, int idx);
 
-    void deleteAllImageUrl(String productUuid);
+    void deleteAllImageKey(String productUuid);
 }

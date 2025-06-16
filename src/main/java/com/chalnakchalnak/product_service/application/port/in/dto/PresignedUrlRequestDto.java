@@ -6,12 +6,14 @@ import lombok.Getter;
 @Getter
 public class PresignedUrlRequestDto {
 
-    private String fileName;
+    private String key;
     private String contentType;
+    private String productUuid;
 
     @Builder
-    public PresignedUrlRequestDto(String fileName, String contentType, String productUuid) {
-        this.fileName = fileName;
+    public PresignedUrlRequestDto(String key, String contentType, String productUuid) {
+        this.key = key;
         this.contentType = contentType;
+        this.productUuid = productUuid;
     }
 }

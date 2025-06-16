@@ -48,8 +48,8 @@ public class ProductCustomRepositoryImpl implements ProductJpaCustomRepository {
         if (productUpdateSaveDto.getStatus() != null) {
             update.set(c.status, productUpdateSaveDto.getStatus());
         }
-        if (productUpdateSaveDto.getThumbnailUrl() != null) {
-            update.set(c.thumbnailUrl, productUpdateSaveDto.getThumbnailUrl());
+        if (productUpdateSaveDto.getThumbnailKey() != null) {
+            update.set(c.thumbnailKey, productUpdateSaveDto.getThumbnailKey());
         }
         if (productUpdateSaveDto.getPrice() != null) {
             update.set(c.price, productUpdateSaveDto.getPrice());

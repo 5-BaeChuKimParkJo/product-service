@@ -8,33 +8,40 @@ import com.chalnakchalnak.product_service.application.port.in.dto.SaveImageUrlRe
 import com.chalnakchalnak.product_service.application.port.out.dto.PresignedUrlResponseDto;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+import java.util.UUID;
+
 @Component
 public class PresignedUrlVoMapper {
 
     public PresignedUrlRequestDto toPresignedUrlRequestDto(PresignedUrlRequestVo presignedUrlRequestVo) {
+        String ext = presignedUrlRequestVo.getContentType()
+                .substring(presignedUrlRequestVo.getContentType().indexOf("/") + 1);
+
         return PresignedUrlRequestDto.builder()
-                .fileName(presignedUrlRequestVo.getFileName())
+                .key("product/" + presignedUrlRequestVo.getProductUuid() + "/images/" + UUID.randomUUID() + "." + ext)
                 .contentType(presignedUrlRequestVo.getContentType())
+                .productUuid(presignedUrlRequestVo.getProductUuid())
                 .build();
     }
 
-    public PresignedUrlResponseDto toPresignedUrlResponseDto(String presignedUrl, String uploadFileUrl) {
+    public PresignedUrlResponseDto toPresignedUrlResponseDto(String url, Map<String, String> fields) {
         return PresignedUrlResponseDto.builder()
-                .presignedUrl(presignedUrl)
-                .uploadFileUrl(uploadFileUrl)
+                .url(url)
+                .fields(fields)
                 .build();
     }
 
     public PresignedUrlResponseVo toPresignedResponseVo(PresignedUrlResponseDto presignedUrlResponseDto) {
         return PresignedUrlResponseVo.builder()
-                .presignedUrl(presignedUrlResponseDto.getPresignedUrl())
-                .uploadFileUrl(presignedUrlResponseDto.getUploadFileUrl())
+                .url(presignedUrlResponseDto.getUrl())
+                .fields(presignedUrlResponseDto.getFields())
                 .build();
     }
 
     public SaveImageUrlRequestDto toSaveImageUrlRequestDto(SaveImageUrlRequestVo saveImageUrlRequestVo) {
         return SaveImageUrlRequestDto.builder()
-                .uploadFileUrl(saveImageUrlRequestVo.getUploadFileUrl())
+                .imageKey(saveImageUrlRequestVo.getImageKey())
                 .productUuid(saveImageUrlRequestVo.getProductUuid())
                 .idx(saveImageUrlRequestVo.getIdx())
                 .build();

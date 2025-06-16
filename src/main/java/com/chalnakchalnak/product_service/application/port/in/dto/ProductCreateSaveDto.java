@@ -20,7 +20,7 @@ public class ProductCreateSaveDto {
     private String directDealLocation;
     private Boolean isHide;
     private Status status;
-    private String thumbnailUrl;
+    private String thumbnailKey;
     private Long viewCount;
     private Long price;
     private String ticketUuid;
@@ -36,7 +36,7 @@ public class ProductCreateSaveDto {
                                 String directDealLocation,
                                 Boolean isHide,
                                 Status status,
-                                String thumbnailUrl,
+                                String thumbnailKey,
                                 Long viewCount,
                                 Long price,
                                 String ticketUuid) {
@@ -50,7 +50,7 @@ public class ProductCreateSaveDto {
         this.directDealLocation = directDealLocation;
         this.isHide = isHide;
         this.status = status;
-        this.thumbnailUrl = thumbnailUrl;
+        this.thumbnailKey = thumbnailKey;
         this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;
