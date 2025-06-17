@@ -1,7 +1,6 @@
 package com.chalnakchalnak.product_service.application.service;
 
 import com.chalnakchalnak.product_service.application.mapper.PresignedUrlServiceMapper;
-import com.chalnakchalnak.product_service.application.port.in.PresignedUrlService;
 import com.chalnakchalnak.product_service.application.port.in.dto.PresignedUrlRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.SaveImageUrlRequestDto;
@@ -25,7 +24,7 @@ import java.util.*;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PresignedUrlServiceImpl implements PresignedUrlService {
+public class PresignedUrlService implements com.chalnakchalnak.product_service.application.port.in.PresignedUrlService {
 
     private final ProductImageRepositoryPort productImageRepositoryPort;
     private final ProductRepositoryPort productRepositoryPort;

@@ -5,9 +5,9 @@ spring:
   application:
     name: product-service
   datasource:
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://127.0.0.1:3306/product_service?serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false #${MYSQL_URL}
+    username: root #${MYSQL_USERNAME}
+    password: 1234 #${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -21,18 +21,48 @@ spring:
 cloud:
   aws:
     credentials:
-      access-key: ${AWS_ACCESS_KEY_ID}
-      secret-key: ${AWS_SECRET_ACCESS_KEY}
+      access-key: AKIAWAA66UDXEJUKKZMG
+      secret-key: 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
     region:
-      static: ${AWS_REGION}
+      static: ap-northeast-2
     s3:
-      bucket: ${AWS_S3_BUCKET_NAME}
+      bucket: cabbage-dev-s3
 
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    enabled: true
-    path: /swagger-ui
-    config-url: /product-service/v3/api-docs/swagger-config
-    url: /product-service/v3/api-docs
+#server:
+#  port: 8080
+#
+#spring:
+#  application:
+#    name: product-service
+#  datasource:
+#    url: ${MYSQL_URL}
+#    username: ${MYSQL_USERNAME}
+#    password: ${MYSQL_PASSWORD}
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#
+#cloud:
+#  aws:
+#    credentials:
+#      access-key: ${AWS_ACCESS_KEY_ID}
+#      secret-key: ${AWS_SECRET_ACCESS_KEY}
+#    region:
+#      static: ${AWS_REGION}
+#    s3:
+#      bucket: ${AWS_S3_BUCKET_NAME}
+#
+#springdoc:
+#  api-docs:
+#    path: /v3/api-docs
+#  swagger-ui:
+#    enabled: true
+#    path: /swagger-ui
+#    config-url: /product-service/v3/api-docs/swagger-config
+#    url: /product-service/v3/api-docs

@@ -21,5 +21,5 @@ public class ProductUpdateRequestVo {
     private String thumbnailKey;
     private Long price;
     private String ticketUuid;
-    private List<String> tagList;
+    private List<Long> tagIdList;
 }

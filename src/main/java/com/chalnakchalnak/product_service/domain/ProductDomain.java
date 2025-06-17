@@ -33,7 +33,7 @@ public class ProductDomain {
     private Long viewCount;
     private Long price;
     private String ticketUuid;
-    private List<String> tagList;
+    private List<Long> tagIdList;
     private List<String> productImageKeyList;
     private Boolean isDeleted;
     private LocalDateTime createdAt;
@@ -54,7 +54,7 @@ public class ProductDomain {
                          Long price,
                          String ticketUuid,
                          List<String> productImageKeyList,
-                         List<String> tagList,
+                         List<Long> tagIdList,
                          Boolean isDeleted,
                          LocalDateTime createdAt) {
         this.productUuid = productUuid;
@@ -72,7 +72,7 @@ public class ProductDomain {
         this.price = price;
         this.ticketUuid = ticketUuid;
         this.productImageKeyList = productImageKeyList;
-        this.tagList = tagList;
+        this.tagIdList = tagIdList;
         this.isDeleted = isDeleted;
         this.createdAt = createdAt;
     }
