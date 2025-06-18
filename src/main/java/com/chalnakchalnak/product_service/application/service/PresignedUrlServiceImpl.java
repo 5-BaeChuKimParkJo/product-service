@@ -24,7 +24,7 @@ import java.util.*;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PresignedUrlService implements com.chalnakchalnak.product_service.application.port.in.PresignedUrlService {
+public class PresignedUrlServiceImpl implements com.chalnakchalnak.product_service.application.port.in.PresignedUrlService {
 
     private final ProductImageRepositoryPort productImageRepositoryPort;
     private final ProductRepositoryPort productRepositoryPort;
