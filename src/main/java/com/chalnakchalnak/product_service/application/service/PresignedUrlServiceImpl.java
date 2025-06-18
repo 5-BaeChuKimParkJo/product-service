@@ -48,11 +48,6 @@ public class PresignedUrlServiceImpl implements com.chalnakchalnak.product_servi
     @Override
     public PresignedUrlResponseDto generatePresignedUrl(PresignedUrlRequestDto presignedUrlRequestDto) {
 
-        // productUuid 존재 유무
-        if (!existsProduct(presignedUrlRequestDto.getProductUuid())) {
-            throw new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT);
-        }
-
         // 날짜 형식
         Date now = new Date();
         SimpleDateFormat dateFmt = new SimpleDateFormat("yyyyMMdd");
