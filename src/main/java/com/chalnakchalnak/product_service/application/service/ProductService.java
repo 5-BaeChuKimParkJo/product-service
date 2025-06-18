@@ -11,6 +11,8 @@ import com.chalnakchalnak.product_service.application.port.out.ProductImageRepos
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductTagListRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
+import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
+import com.chalnakchalnak.product_service.common.exception.BaseException;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +43,11 @@ public class ProductService implements ProductUseCase {
 
     @Override
     public List<ProductResponseDto> getProductList(ProductUuidListRequestDto productUuidListRequestDto) {
+
+        if (productUuidListRequestDto.getProductUuidList().size() == 0) {
+            throw new BaseException(BaseResponseStatus.FAILED_TO_GET_DATA);
+        }
+
         return productUuidListRequestDto.getProductUuidList()
                 .stream()
                 .map(productUuid -> productServiceMapper.from(productRepositoryPort.getProduct(productUuid)))
