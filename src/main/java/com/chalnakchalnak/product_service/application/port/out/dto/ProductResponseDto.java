@@ -26,6 +26,7 @@ public class ProductResponseDto {
     private Boolean isHide;
     private Status status;
     private String thumbnailKey;
+    private String thumbnailUrl;
     private Long viewCount;
     private Long price;
     private String ticketUuid;
@@ -43,6 +44,7 @@ public class ProductResponseDto {
                               Boolean isHide,
                               Status status,
                               String thumbnailKey,
+                              String thumbnailUrl,
                               Long viewCount,
                               Long price,
                               String ticketUuid,
@@ -58,6 +60,7 @@ public class ProductResponseDto {
         this.isHide = isHide;
         this.status = status;
         this.thumbnailKey = thumbnailKey;
+        this.thumbnailUrl = thumbnailUrl;
         this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;
