@@ -13,6 +13,4 @@ public class PresignedUrlRequestVo {
             message = "지원하지 않는 이미지 형식입니다."
     )
     private String contentType;
-
-    private String productUuid;
 }
