@@ -14,14 +14,15 @@ import java.util.UUID;
 @Component
 public class PresignedUrlVoMapper {
 
-    public PresignedUrlRequestDto toPresignedUrlRequestDto(PresignedUrlRequestVo presignedUrlRequestVo) {
+    public PresignedUrlRequestDto toPresignedUrlRequestDto(PresignedUrlRequestVo presignedUrlRequestVo, String memberUuid) {
         String ext = presignedUrlRequestVo.getContentType()
                 .substring(presignedUrlRequestVo.getContentType().indexOf("/") + 1);
 
+        String key = "product/" + memberUuid + "/images/" + UUID.randomUUID() + "." + ext;
+
         return PresignedUrlRequestDto.builder()
-                .key("product/" + presignedUrlRequestVo.getProductUuid() + "/images/" + UUID.randomUUID() + "." + ext)
+                .key(key)
                 .contentType(presignedUrlRequestVo.getContentType())
-                .productUuid(presignedUrlRequestVo.getProductUuid())
                 .build();
     }
 

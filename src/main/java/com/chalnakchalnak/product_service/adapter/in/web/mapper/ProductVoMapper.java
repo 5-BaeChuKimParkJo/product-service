@@ -8,17 +8,26 @@ import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateR
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUuidListRequestDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateRequestDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Component
 public class ProductVoMapper {
 
 
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
+    @Value("${cloud.aws.region.static}")
+    private String region;
+
     public ProductResponseVo toProductResponseVo(ProductResponseDto productResponseDto) {
+
+        String thumbnailUrl = !"".equals(productResponseDto.getThumbnailKey()) && productResponseDto.getThumbnailKey() != null ?
+                "https://" + bucket + ".s3." + region + ".amazonaws.com/" + productResponseDto.getThumbnailKey() : null;
+
         return ProductResponseVo.builder()
                 .productUuid(productResponseDto.getProductUuid())
                 .saleMemberUuid(productResponseDto.getSaleMemberUuid())
@@ -30,7 +39,7 @@ public class ProductVoMapper {
                 .directDealLocation(productResponseDto.getDirectDealLocation())
                 .isHide(productResponseDto.getIsHide())
                 .status(productResponseDto.getStatus())
-                .thumbnailKey(productResponseDto.getThumbnailKey())
+                .thumbnailUrl(thumbnailUrl)
                 .viewCount(productResponseDto.getViewCount())
                 .price(productResponseDto.getPrice())
                 .ticketUuid(productResponseDto.getTicketUuid())

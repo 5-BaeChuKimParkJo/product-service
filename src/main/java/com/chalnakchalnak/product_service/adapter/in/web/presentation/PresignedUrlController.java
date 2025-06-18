@@ -25,9 +25,10 @@ public class PresignedUrlController {
 
     @Operation(summary = "AWS S3 Presigned url 요청")
     @PostMapping("/presigned-url")
-    public PresignedUrlResponseVo getPresignedUrl(@RequestBody @Valid PresignedUrlRequestVo presignedUrlRequestVo) {
+    public PresignedUrlResponseVo getPresignedUrl(@RequestHeader("memberUuid") String memberUuid,
+                                                  @RequestBody @Valid PresignedUrlRequestVo presignedUrlRequestVo) {
         PresignedUrlResponseDto presignedUrlResponseDto =
-                presignedUrlService.generatePresignedUrl(presignedUrlVoMapper.toPresignedUrlRequestDto(presignedUrlRequestVo));
+                presignedUrlService.generatePresignedUrl(presignedUrlVoMapper.toPresignedUrlRequestDto(presignedUrlRequestVo, memberUuid));
 
         return presignedUrlVoMapper.toPresignedResponseVo(presignedUrlResponseDto);
     }

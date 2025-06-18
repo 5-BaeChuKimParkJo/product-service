@@ -36,7 +36,11 @@ public class SwaggerConfig {
     private Info apiInfo() {
         return new Info()
                 .title("MSA - PRODUCT SERVICE 문서")
+<<<<<<< BVFH-279-add-tag-middle-table
                 .description("PRODUCT API 테스트를 위한 Swagger UI")
+=======
+                .description("00 API 테스트를 위한 Swagger UI")
+>>>>>>> develop
                 .version("1.0.0");
     }
 
