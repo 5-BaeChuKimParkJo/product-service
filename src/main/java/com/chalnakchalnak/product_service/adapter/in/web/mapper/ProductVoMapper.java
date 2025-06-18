@@ -66,7 +66,7 @@ public class ProductVoMapper {
                 .description(productRequestVo.getDescription())
                 .price(productRequestVo.getPrice())
                 .ticketUuid(productRequestVo.getTicketUuid())
-                .tagList(productRequestVo.getTagList())
+                .tagIdList(productRequestVo.getTagIdList())
                 .build();
     }
 
@@ -84,7 +84,7 @@ public class ProductVoMapper {
                 .thumbnailKey(productUpdateRequestVo.getThumbnailKey())
                 .price(productUpdateRequestVo.getPrice())
                 .ticketUuid(productUpdateRequestVo.getTicketUuid())
-                .tagList(productUpdateRequestVo.getTagList())
+                .tagIdList(productUpdateRequestVo.getTagIdList())
                 .build();
     }
 

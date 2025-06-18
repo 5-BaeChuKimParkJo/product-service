@@ -20,7 +20,7 @@ public class ProductCreateRequestDto {
     private String description;
     private Long price;
     private String ticketUuid;
-    private List<String> tagList;
+    private List<Long> tagIdList;
 
     @Builder
     public ProductCreateRequestDto(String productUuid,
@@ -34,7 +34,7 @@ public class ProductCreateRequestDto {
                                    String description,
                                    Long price,
                                    String ticketUuid,
-                                   List<String> tagList) {
+                                   List<Long> tagIdList) {
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
         this.productImageKeyList = productImageKeyList;
@@ -46,6 +46,6 @@ public class ProductCreateRequestDto {
         this.description = description;
         this.price = price;
         this.ticketUuid = ticketUuid;
-        this.tagList = tagList;
+        this.tagIdList = tagIdList;
     }
 }
