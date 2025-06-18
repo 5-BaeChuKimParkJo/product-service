@@ -53,7 +53,7 @@ public enum BaseResponseStatus {
      */
     FAILED_TO_SAVE_TICKET(HttpStatus.INTERNAL_SERVER_ERROR, 2001, "티켓 저장에 실패했습니다."),
 
-    FAILED_TO_GET_DATA(HttpStatus.NOT_FOUND, 2004, "데이터 조회에 실패했습니다."),
+    FAILED_TO_GET_DATA(HttpStatus.NOT_FOUND, 2004, "데이터 조회에 실패했습니다. "),
 
     /**
      * 6000: gpt-api error
