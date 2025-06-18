@@ -1,7 +1,8 @@
 package com.chalnakchalnak.product_service.adapter.in.web.presentation;
 
-import com.chalnakchalnak.product_service.adapter.in.vo.ProductResponseVo;
-import com.chalnakchalnak.product_service.adapter.in.vo.ProductTagCreateRequestVo;
+import com.chalnakchalnak.product_service.adapter.in.vo.ProductTagListCreateRequestVo;
+import com.chalnakchalnak.product_service.adapter.in.web.mapper.ProductTagListVoMapper;
+import com.chalnakchalnak.product_service.application.port.in.ProductTagListUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -16,18 +17,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/product/tag")
 public class ProductTagListController {
 
-  //  private final ProductTagListUseCase productTagListUseCase;
+    private final ProductTagListUseCase productTagListUseCase;
+    private final ProductTagListVoMapper productTagListVoMapper;
 
-    @Operation(summary = "태그 추가")
+    @Operation(summary = "태그 추가", description = "상품에 포함된 태그를 모두 삭제한 후 다시 저장합니다.")
     @PostMapping
-    public ProductResponseVo crateProductTagList(@RequestBody @Valid
-                                                     ProductTagCreateRequestVo productTagCreateRequestVo) {
-        return null;
+    public void crateProductTagList(@RequestBody @Valid
+                                                 ProductTagListCreateRequestVo productTagListCreateRequestVo) {
+        productTagListUseCase
+                .crateProductTagList(productTagListVoMapper.toProductTagCreateRequestDto(productTagListCreateRequestVo));
     }
 
-    @Operation(summary = "태그 삭제")
-    @DeleteMapping
-    public ProductResponseVo getProduct(@RequestParam String productUuid, @RequestParam int idx) {
-        return null;
+    @Operation(summary = "태그 삭제", description = "상품에 포함된 태그를 모두 삭제합니다.")
+    @DeleteMapping("/{productUuid}")
+    public void getProduct(@PathVariable String productUuid) {
+        productTagListUseCase.deleteProductTagListByProductUuid(productUuid);
     }
 }

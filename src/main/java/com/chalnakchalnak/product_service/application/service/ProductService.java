@@ -84,11 +84,11 @@ public class ProductService implements ProductUseCase {
         // 이미지 없로드
         uploadImageList(productDomain);
 
-        // 태그 삭제
-        deleteTag(productDomain);
-        
-        // 태그 추가
-        addTag(productDomain);
+//        // 태그 삭제
+//        deleteTag(productDomain);
+//
+//        // 태그 추가
+//        addTag(productDomain);
     }
 
     @Override
