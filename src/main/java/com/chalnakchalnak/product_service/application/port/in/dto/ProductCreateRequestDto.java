@@ -11,7 +11,6 @@ public class ProductCreateRequestDto {
 
     private String productUuid;
     private String saleMemberUuid;
-    private List<String> productImageKeyList;
     private Boolean isDirectDeal;
     private String directDealLocation;
     private String title;
@@ -21,11 +20,11 @@ public class ProductCreateRequestDto {
     private Long price;
     private String ticketUuid;
     private List<Long> tagIdList;
+    private List<String> imageKeyList;
 
     @Builder
     public ProductCreateRequestDto(String productUuid,
                                    String saleMemberUuid,
-                                   List<String> productImageKeyList,
                                    Boolean isDirectDeal,
                                    String directDealLocation,
                                    String title,
@@ -34,10 +33,10 @@ public class ProductCreateRequestDto {
                                    String description,
                                    Long price,
                                    String ticketUuid,
-                                   List<Long> tagIdList) {
+                                   List<Long> tagIdList,
+                                   List<String> imageKeyList) {
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
-        this.productImageKeyList = productImageKeyList;
         this.isDirectDeal = isDirectDeal;
         this.directDealLocation = directDealLocation;
         this.title = title;
@@ -47,5 +46,6 @@ public class ProductCreateRequestDto {
         this.price = price;
         this.ticketUuid = ticketUuid;
         this.tagIdList = tagIdList;
+        this.imageKeyList = imageKeyList;
     }
 }

@@ -1,7 +1,6 @@
 package com.chalnakchalnak.product_service.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductCondition;
@@ -33,8 +32,8 @@ public class ProductDomain {
     private Long viewCount;
     private Long price;
     private String ticketUuid;
+    private List<String> imageKeyList;
     private List<Long> tagIdList;
-    private List<String> productImageKeyList;
     private Boolean isDeleted;
     private LocalDateTime createdAt;
 
@@ -53,7 +52,7 @@ public class ProductDomain {
                          Long viewCount,
                          Long price,
                          String ticketUuid,
-                         List<String> productImageKeyList,
+                         List<String> imageKeyList,
                          List<Long> tagIdList,
                          Boolean isDeleted,
                          LocalDateTime createdAt) {
@@ -71,17 +70,17 @@ public class ProductDomain {
         this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;
-        this.productImageKeyList = productImageKeyList;
         this.tagIdList = tagIdList;
+        this.imageKeyList = imageKeyList;
         this.isDeleted = isDeleted;
         this.createdAt = createdAt;
     }
 
     public void setThumbnailKey(int index) {
-        if (productImageKeyList.size() < index) {
+        if (imageKeyList.size() < index) {
             throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
         }
-        this.thumbnailKey = productImageKeyList.get(index);
+        this.thumbnailKey = imageKeyList.get(index);
     }
 
     public void plusViewCount() {

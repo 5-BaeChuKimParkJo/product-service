@@ -65,10 +65,10 @@ public class ProductService implements ProductUseCase {
 
     @Override
     @Transactional
-    public void createProduct(ProductCreateRequestDto productCreateRequestDto) {
+    public String createProduct(ProductCreateRequestDto productCreateRequestDto) {
         ProductDomain productDomain = productServiceMapper.toProductDomain(productCreateRequestDto);
         // 이미지가 있는 경우는 썸네일 지정: 0번째 사진
-        if(!productDomain.getProductImageKeyList().isEmpty()) {
+        if(!productDomain.getImageKeyList().isEmpty()) {
             productDomain.setThumbnailKey(0);
         }
         productDomain.setIsHide(false);
@@ -80,6 +80,8 @@ public class ProductService implements ProductUseCase {
 
         // 태그 추가
         addTag(productDomain);
+
+        return productDomain.getProductUuid();
     }
 
     @Override
@@ -109,9 +111,9 @@ public class ProductService implements ProductUseCase {
 
 
     private void uploadImageList(ProductDomain productDomain) {
-        if (productDomain.getProductImageKeyList() != null) {
+        if (productDomain.getImageKeyList() != null) {
             int idx = 0;
-            for (String imageKey : productDomain.getProductImageKeyList()) {
+            for (String imageKey : productDomain.getImageKeyList()) {
                 productImageRepositoryPort
                         .uploadImageKey(ProductImageUrlSaveDto.builder()
                                 .productUuid(productDomain.getProductUuid())

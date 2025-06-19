@@ -1,10 +1,13 @@
 package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.mapper;
 
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductEntity;
+import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductImageEntity;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ProductEntityMapper {
@@ -48,6 +51,29 @@ public class ProductEntityMapper {
                 .build();
     }
 
+    public ProductDomain from(ProductEntity productEntity, List<String> imageKeyList, List<Long> tagIdList) {
+        return ProductDomain.builder()
+                .productUuid(productEntity.getProductUuid())
+                .saleMemberUuid(productEntity.getSaleMemberUuid())
+                .title(productEntity.getTitle())
+                .categoryId(productEntity.getCategoryId())
+                .description(productEntity.getDescription())
+                .productCondition(productEntity.getProductCondition())
+                .isDirectDeal(productEntity.getIsDirectDeal())
+                .directDealLocation(productEntity.getDirectDealLocation())
+                .isHide(productEntity.getIsHide())
+                .status(productEntity.getStatus())
+                .thumbnailKey(productEntity.getThumbnailKey())
+                .viewCount(productEntity.getViewCount())
+                .price(productEntity.getPrice())
+                .ticketUuid(productEntity.getTicketUuid())
+                .imageKeyList(imageKeyList)
+                .tagIdList(tagIdList)
+                .isDeleted(productEntity.getIsDeleted())
+                .createdAt(productEntity.getCreatedAt())
+                .build();
+    }
+
     public ProductDomain from(ProductEntity productEntity) {
         return ProductDomain.builder()
                 .productUuid(productEntity.getProductUuid())
@@ -64,6 +90,7 @@ public class ProductEntityMapper {
                 .viewCount(productEntity.getViewCount())
                 .price(productEntity.getPrice())
                 .ticketUuid(productEntity.getTicketUuid())
+//                .productImageKeyList(imageKeyList)
                 .isDeleted(productEntity.getIsDeleted())
                 .createdAt(productEntity.getCreatedAt())
                 .build();

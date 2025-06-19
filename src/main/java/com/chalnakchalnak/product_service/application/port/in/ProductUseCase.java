@@ -15,7 +15,7 @@ public interface ProductUseCase {
 
     List<ProductResponseDto> getAllProductList();
 
-    void createProduct(ProductCreateRequestDto productRequestDto);
+    String createProduct(ProductCreateRequestDto productRequestDto);
 
     void updateProduct(ProductUpdateRequestDto productUpdateRequestDto);
 

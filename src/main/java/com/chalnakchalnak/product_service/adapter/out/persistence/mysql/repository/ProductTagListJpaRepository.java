@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ProductTagListJpaRepository extends JpaRepository<ProductTagListEntity, Long> {
 
+    List<ProductTagListEntity> findByProductUuid(String productUuid);
+
     @Query("SELECT ptl FROM ProductTagListEntity ptl WHERE ptl.productUuid = :productUuid")
     List<ProductTagListEntity> findProductTagListByProductUuid(@Param("productUuid") String productUuid);
 }

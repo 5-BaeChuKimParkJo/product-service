@@ -1,9 +1,6 @@
 package com.chalnakchalnak.product_service.adapter.in.web.mapper;
 
-import com.chalnakchalnak.product_service.adapter.in.vo.ProductCreateRequestVo;
-import com.chalnakchalnak.product_service.adapter.in.vo.ProductResponseVo;
-import com.chalnakchalnak.product_service.adapter.in.vo.ProductUpdateRequestVo;
-import com.chalnakchalnak.product_service.adapter.in.vo.ProductUuidListRequestVo;
+import com.chalnakchalnak.product_service.adapter.in.vo.*;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUuidListRequestDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
@@ -11,6 +8,7 @@ import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateR
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -23,10 +21,17 @@ public class ProductVoMapper {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    public ProductResponseVo toProductResponseVo(ProductResponseDto productResponseDto) {
+    public ProductUuidResponseVo toProductUuidResponseVo(String productUuid) {
+        return ProductUuidResponseVo.builder()
+                .productUuid(productUuid)
+                .build();
+    }
 
-        String thumbnailUrl = !"".equals(productResponseDto.getThumbnailKey()) && productResponseDto.getThumbnailKey() != null ?
-                "https://" + bucket + ".s3." + region + ".amazonaws.com/" + productResponseDto.getThumbnailKey() : null;
+    public ProductResponseVo toProductResponseVo(ProductResponseDto productResponseDto) {
+        List<String> imageUrlList = productResponseDto.getImageKeyList()
+                .stream()
+                .map(imageKey -> setUrl(imageKey))
+                .toList();
 
         return ProductResponseVo.builder()
                 .productUuid(productResponseDto.getProductUuid())
@@ -39,10 +44,12 @@ public class ProductVoMapper {
                 .directDealLocation(productResponseDto.getDirectDealLocation())
                 .isHide(productResponseDto.getIsHide())
                 .status(productResponseDto.getStatus())
-                .thumbnailUrl(thumbnailUrl)
+                .thumbnailUrl(setUrl(productResponseDto.getThumbnailKey()))
                 .viewCount(productResponseDto.getViewCount())
                 .price(productResponseDto.getPrice())
                 .ticketUuid(productResponseDto.getTicketUuid())
+                .imageUrlList(imageUrlList)
+                .tagIdList(productResponseDto.getTagIdList())
                 .createdAt(productResponseDto.getCreatedAt())
                 .build();
     }
@@ -57,7 +64,7 @@ public class ProductVoMapper {
         return ProductCreateRequestDto.builder()
                 .productUuid(UUID.randomUUID().toString())
                 .saleMemberUuid(memberUuid)
-                .productImageKeyList(productRequestVo.getProductImageKeyList())
+                .imageKeyList(productRequestVo.getImageKeyList())
                 .isDirectDeal(productRequestVo.getIsDirectDeal())
                 .directDealLocation(productRequestVo.getDirectDealLocation())
                 .title(productRequestVo.getTitle())
@@ -86,6 +93,12 @@ public class ProductVoMapper {
                 .ticketUuid(productUpdateRequestVo.getTicketUuid())
                 .tagIdList(productUpdateRequestVo.getTagIdList())
                 .build();
+    }
+
+
+    private String setUrl(String imageKey) {
+        return !"".equals(imageKey) && imageKey != null ?
+                "https://" + bucket + ".s3." + region + ".amazonaws.com/" + imageKey : null;
     }
 
 }
