@@ -30,6 +30,8 @@ public class ProductResponseDto {
     private Long viewCount;
     private Long price;
     private String ticketUuid;
+    private List<String> imageKeyList;
+    private List<Long> tagIdList;
     private LocalDateTime createdAt;
 
     @Builder
@@ -48,6 +50,8 @@ public class ProductResponseDto {
                               Long viewCount,
                               Long price,
                               String ticketUuid,
+                              List<String> imageKeyList,
+                              List<Long> tagIdList,
                               LocalDateTime createdAt) {
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
@@ -64,6 +68,8 @@ public class ProductResponseDto {
         this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;
+        this.imageKeyList = imageKeyList;
+        this.tagIdList = tagIdList;
         this.createdAt = createdAt;
     }
 

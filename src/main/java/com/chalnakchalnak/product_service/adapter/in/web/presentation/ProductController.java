@@ -1,18 +1,13 @@
 package com.chalnakchalnak.product_service.adapter.in.web.presentation;
 
-import com.chalnakchalnak.product_service.adapter.in.vo.ProductCreateRequestVo;
-import com.chalnakchalnak.product_service.adapter.in.vo.ProductResponseVo;
-import com.chalnakchalnak.product_service.adapter.in.vo.ProductUpdateRequestVo;
-import com.chalnakchalnak.product_service.adapter.in.vo.ProductUuidListRequestVo;
+import com.chalnakchalnak.product_service.adapter.in.vo.*;
 import com.chalnakchalnak.product_service.adapter.in.web.mapper.ProductVoMapper;
 import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,9 +48,10 @@ public class ProductController {
 
     @Operation(summary = "상품 등록")
     @PostMapping
-    public void createProduct(@RequestHeader("memberUuid") String memberUuid,
-                              @RequestBody ProductCreateRequestVo productRequestVo) {
-        productUseCase.createProduct(productVoMapper.toProductCreateRequestDto(productRequestVo, memberUuid));
+    public ProductUuidResponseVo createProduct(@RequestHeader("memberUuid") String memberUuid,
+                                               @RequestBody ProductCreateRequestVo productRequestVo) {
+        String productUuid = productUseCase.createProduct(productVoMapper.toProductCreateRequestDto(productRequestVo, memberUuid));
+        return productVoMapper.toProductUuidResponseVo(productUuid);
     }
 
     @Operation(summary = "상품 수정")

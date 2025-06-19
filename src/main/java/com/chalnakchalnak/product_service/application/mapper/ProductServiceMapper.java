@@ -18,7 +18,6 @@ public class ProductServiceMapper {
         return ProductDomain.builder()
                 .productUuid(productCreateRequestDto.getProductUuid())
                 .saleMemberUuid(productCreateRequestDto.getSaleMemberUuid())
-                .productImageKeyList(productCreateRequestDto.getProductImageKeyList())
                 .isDirectDeal(productCreateRequestDto.getIsDirectDeal())
                 .directDealLocation(productCreateRequestDto.getDirectDealLocation())
                 .title(productCreateRequestDto.getTitle())
@@ -28,6 +27,7 @@ public class ProductServiceMapper {
                 .price(productCreateRequestDto.getPrice())
                 .ticketUuid(productCreateRequestDto.getTicketUuid())
                 .tagIdList(productCreateRequestDto.getTagIdList())
+                .imageKeyList(productCreateRequestDto.getImageKeyList())
                 .build();
     }
 
@@ -65,6 +65,8 @@ public class ProductServiceMapper {
                 .viewCount(productDomain.getViewCount())
                 .price(productDomain.getPrice())
                 .ticketUuid(productDomain.getTicketUuid())
+                .imageKeyList(productDomain.getImageKeyList())
+                .tagIdList(productDomain.getTagIdList())
                 .createdAt(productDomain.getCreatedAt())
                 .build();
     }
@@ -77,6 +79,8 @@ public class ProductServiceMapper {
                 .categoryId(productDomain.getCategoryId())
                 .description(productDomain.getDescription())
                 .productCondition(productDomain.getProductCondition())
+                .isHide(productDomain.getIsHide())
+                .status(productDomain.getStatus())
                 .isDirectDeal(productDomain.getIsDirectDeal())
                 .directDealLocation(productDomain.getDirectDealLocation())
                 .thumbnailKey(productDomain.getThumbnailKey())

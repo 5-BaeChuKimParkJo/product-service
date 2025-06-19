@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class ProductResponseVo {
@@ -24,6 +25,8 @@ public class ProductResponseVo {
     private Long viewCount;
     private Long price;
     private String ticketUuid;
+    private List<String> imageUrlList;
+    private List<Long> tagIdList;
     private LocalDateTime createdAt;
 
     @Builder
@@ -41,6 +44,8 @@ public class ProductResponseVo {
                              Long viewCount,
                              Long price,
                              String ticketUuid,
+                             List<String> imageUrlList,
+                             List<Long> tagIdList,
                              LocalDateTime createdAt) {
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
@@ -56,6 +61,8 @@ public class ProductResponseVo {
         this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;
+        this.imageUrlList = imageUrlList;
+        this.tagIdList = tagIdList;
         this.createdAt = createdAt;
     }
 }
