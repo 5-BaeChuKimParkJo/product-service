@@ -48,7 +48,7 @@ public class ProductController {
 
     @Operation(summary = "상품 등록")
     @PostMapping
-    public ProductUuidResponseVo createProduct(@RequestHeader("memberUuid") String memberUuid,
+    public ProductUuidResponseVo createProduct(@RequestHeader("X-Member-Uuid") String memberUuid,
                                                @RequestBody ProductCreateRequestVo productRequestVo) {
         String productUuid = productUseCase.createProduct(productVoMapper.toProductCreateRequestDto(productRequestVo, memberUuid));
         return productVoMapper.toProductUuidResponseVo(productUuid);

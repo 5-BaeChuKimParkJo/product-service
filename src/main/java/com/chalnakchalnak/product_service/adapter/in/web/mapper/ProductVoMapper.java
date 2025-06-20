@@ -8,6 +8,7 @@ import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateR
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,10 +29,14 @@ public class ProductVoMapper {
     }
 
     public ProductResponseVo toProductResponseVo(ProductResponseDto productResponseDto) {
-        List<String> imageUrlList = productResponseDto.getImageKeyList()
-                .stream()
-                .map(imageKey -> setUrl(imageKey))
-                .toList();
+
+        List<String> imageUrlList = new ArrayList<>();
+        if (productResponseDto.getImageKeyList() != null) {
+            imageUrlList = productResponseDto.getImageKeyList()
+                    .stream()
+                    .map(imageKey -> setUrl(imageKey))
+                    .toList();
+        }
 
         return ProductResponseVo.builder()
                 .productUuid(productResponseDto.getProductUuid())
