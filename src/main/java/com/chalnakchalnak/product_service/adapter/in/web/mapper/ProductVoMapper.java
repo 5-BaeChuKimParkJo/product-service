@@ -29,9 +29,10 @@ public class ProductVoMapper {
     }
 
     public ProductResponseVo toProductResponseVo(ProductResponseDto productResponseDto) {
+
         List<String> imageUrlList = new ArrayList<>();
         if (productResponseDto.getImageKeyList() != null) {
-            productResponseDto.getImageKeyList()
+            imageUrlList = productResponseDto.getImageKeyList()
                     .stream()
                     .map(imageKey -> setUrl(imageKey))
                     .toList();
