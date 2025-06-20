@@ -23,16 +23,25 @@ public class OutboxEntity extends BaseEntity {
 
     private String eventType;     // ex: "OrderCreated"
 
+    private String op;                // c / u / d
+
     @Lob
     private String payload;       // 직렬화된 JSON 문자열
 
-
     @Builder
-    public OutboxEntity(Long id, String aggregateType, String aggregateId, String eventType, String payload) {
+    public OutboxEntity(Long id,
+                        String aggregateType,
+                        String aggregateId,
+                        String eventType,
+                        String op,
+                        String payload,
+                        Boolean _deleted) {
         this.id = id;
         this.aggregateType = aggregateType;
         this.aggregateId = aggregateId;
         this.eventType = eventType;
+        this.op = op;
         this.payload = payload;
     }
+
 }

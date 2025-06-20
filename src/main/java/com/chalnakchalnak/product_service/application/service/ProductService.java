@@ -1,12 +1,9 @@
 package com.chalnakchalnak.product_service.application.service;
 
-import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductTagListEntity;
-import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
+import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.*;
 import com.chalnakchalnak.product_service.application.mapper.ProductServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
 import com.chalnakchalnak.product_service.application.port.in.dto.*;
-import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSaveDto;
-import com.chalnakchalnak.product_service.application.port.out.OutboxRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductImageRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductTagListRepositoryPort;
@@ -14,10 +11,10 @@ import com.chalnakchalnak.product_service.application.port.out.dto.ProductRespon
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.chalnakchalnak.product_service.util.OutboxUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +29,10 @@ public class ProductService implements ProductUseCase {
     private final ProductRepositoryPort productRepositoryPort;
     private final ProductImageRepositoryPort productImageRepositoryPort;
     private final ProductTagListRepositoryPort productTagListRepositoryPort;
-    private final OutboxRepositoryPort outboxRepositoryPort;
     private final ProductServiceMapper productServiceMapper;
-    private final ObjectMapper objectMapper;
+
+    private final OutboxUtil outboxUtil;
+
 
     @Override
     public ProductResponseDto getProduct(String productUuid) {
@@ -81,6 +79,17 @@ public class ProductService implements ProductUseCase {
         // 태그 추가
         addTag(productDomain);
 
+        try {
+            // 아웃박스 저장
+            outboxUtil.createOutbox(productDomain,
+                                    AggregateType.PRODUCT.getName(),
+                                    productDomain.getProductUuid(),
+                                    EventType.PRODUCT_CREATE.getName(),
+                                    Op.C.getName());
+        } catch (JsonProcessingException e) {
+            throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
+        }
+
         return productDomain.getProductUuid();
     }
 
@@ -99,6 +108,18 @@ public class ProductService implements ProductUseCase {
 //
 //        // 태그 추가
 //        addTag(productDomain);
+
+
+        try {
+            // 아웃박스 저장
+            outboxUtil.createOutbox(productDomain,
+                    AggregateType.PRODUCT.getName(),
+                    productDomain.getProductUuid(),
+                    EventType.PRODUCT_UPDATE.getName(),
+                    Op.U.getName());
+        } catch (JsonProcessingException e) {
+            throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
+        }
     }
 
     @Override
@@ -107,6 +128,19 @@ public class ProductService implements ProductUseCase {
 
         // 상품 소프트 딜리트
         productRepositoryPort.softDeleteProduct(productUuid);
+
+        ProductDomain productDomain = productRepositoryPort.getProduct(productUuid);
+
+        try {
+            // 아웃박스 저장
+            outboxUtil.createOutbox(productDomain,
+                    AggregateType.PRODUCT.getName(),
+                    productDomain.getProductUuid(),
+                    EventType.PRODUCT_DELETE.getName(),
+                    Op.D.getName());
+        } catch (JsonProcessingException e) {
+            throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
+        }
     }
 
 
@@ -120,6 +154,18 @@ public class ProductService implements ProductUseCase {
                                 .imageKey(imageKey)
                                 .idx(++idx).build());
             }
+
+            try {
+                // 아웃박스 저장
+                outboxUtil.createOutbox(productDomain,
+                        AggregateType.PRODUCT.getName(),
+                        productDomain.getProductUuid(),
+                        EventType.PRODUCT_UPDATE.getName(),
+                        Op.U.getName());
+            } catch (JsonProcessingException e) {
+                throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
+            }
+
         }
     }
 
@@ -130,6 +176,17 @@ public class ProductService implements ProductUseCase {
                     .stream()
                     .forEach(productTagListEntity ->
                             productTagListRepositoryPort.deleteProductTagList(productTagListEntity));
+
+            try {
+                // 아웃박스 저장
+                outboxUtil.createOutbox(productDomain,
+                        AggregateType.PRODUCT.getName(),
+                        productDomain.getProductUuid(),
+                        EventType.PRODUCT_UPDATE.getName(),
+                        Op.U.getName());
+            } catch (JsonProcessingException e) {
+                throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
+            }
         }
     }
 
@@ -146,6 +203,18 @@ public class ProductService implements ProductUseCase {
                                     .build())
                     .forEach(productTagCreateSaveDto
                             -> productTagListRepositoryPort.createProductTagList(productTagCreateSaveDto));
+
+            try {
+                // 아웃박스 저장
+                outboxUtil.createOutbox(productDomain,
+                        AggregateType.PRODUCT.getName(),
+                        productDomain.getProductUuid(),
+                        EventType.PRODUCT_UPDATE.getName(),
+                        Op.U.getName());
+            } catch (JsonProcessingException e) {
+                throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
+            }
         }
     }
+
 }

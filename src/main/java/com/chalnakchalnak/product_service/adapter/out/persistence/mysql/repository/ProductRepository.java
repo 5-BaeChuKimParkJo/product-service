@@ -30,7 +30,7 @@ public class ProductRepository implements ProductRepositoryPort {
 
     @Override
     public ProductDomain getProduct(String productUuid) {
-        ProductEntity productEntity = productJpaRepository.findByProductUuid(productUuid)
+        ProductEntity productEntity = productJpaRepository.findByProductUuidAndIsDeletedFalse(productUuid)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT));
 
         List<String> imageKeyList = productImageJpaRepository.findByProductUuid(productUuid)
