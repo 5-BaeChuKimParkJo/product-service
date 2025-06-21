@@ -57,8 +57,8 @@ public class ProductRepository implements ProductRepositoryPort {
     }
 
     @Override
-    public void createProduct(ProductCreateSaveDto productSaveDto) {
-        productJpaRepository.save(productEntityMapper.toEntity(productSaveDto));
+    public ProductEntity createProduct(ProductCreateSaveDto productSaveDto) {
+        return productJpaRepository.save(productEntityMapper.toEntity(productSaveDto));
     }
 
     @Override

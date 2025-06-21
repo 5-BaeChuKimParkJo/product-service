@@ -4,7 +4,6 @@ import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateR
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
-import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
 import org.springframework.stereotype.Component;
@@ -107,21 +106,4 @@ public class ProductServiceMapper {
                 .build();
     }
 
-    public OutboxSaveDto toTagCreateSaveDto(String productUuid, String payload) {
-        return OutboxSaveDto.builder()
-                .aggregateType("Product")
-                .aggregateId(productUuid)
-                .eventType("ProductCreated")
-                .payload(payload)
-                .build();
-    }
-
-    public OutboxSaveDto toTagDeleteSaveDto(String productUuid) {
-        return OutboxSaveDto.builder()
-                .aggregateType("Product")
-                .aggregateId(productUuid)
-                .eventType("ProductDeleted")
-                .payload("")
-                .build();
-    }
 }

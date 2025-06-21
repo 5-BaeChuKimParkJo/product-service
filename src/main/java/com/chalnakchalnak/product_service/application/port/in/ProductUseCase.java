@@ -4,6 +4,7 @@ import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateR
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUuidListRequestDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface ProductUseCase {
 
     List<ProductResponseDto> getAllProductList();
 
-    String createProduct(ProductCreateRequestDto productRequestDto);
+    String createProduct(ProductCreateRequestDto productCreateRequestDto);
 
     void updateProduct(ProductUpdateRequestDto productUpdateRequestDto);
 

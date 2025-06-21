@@ -1,9 +1,12 @@
 package com.chalnakchalnak.product_service.application.service;
 
+import com.chalnakchalnak.product_service.adapter.out.kafka.KafkaPort;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.*;
+import com.chalnakchalnak.product_service.application.mapper.OutboxServiceMapper;
 import com.chalnakchalnak.product_service.application.mapper.ProductServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
 import com.chalnakchalnak.product_service.application.port.in.dto.*;
+import com.chalnakchalnak.product_service.application.port.out.OutboxRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductImageRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductTagListRepositoryPort;
@@ -11,7 +14,6 @@ import com.chalnakchalnak.product_service.application.port.out.dto.ProductRespon
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
-import com.chalnakchalnak.product_service.util.OutboxUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +31,12 @@ public class ProductService implements ProductUseCase {
     private final ProductRepositoryPort productRepositoryPort;
     private final ProductImageRepositoryPort productImageRepositoryPort;
     private final ProductTagListRepositoryPort productTagListRepositoryPort;
+    private final OutboxRepositoryPort outboxRepositoryPort;
     private final ProductServiceMapper productServiceMapper;
+    private final OutboxServiceMapper outboxServiceMapper;
+    private final KafkaPort kafkaPort;
 
-    private final OutboxUtil outboxUtil;
-
+    private final String productServiceOutbox = "product-service.outbox";
 
     @Override
     public ProductResponseDto getProduct(String productUuid) {
@@ -71,7 +75,8 @@ public class ProductService implements ProductUseCase {
         }
         productDomain.setIsHide(false);
         productDomain.setStatus(Status.ACTIVE);
-        productRepositoryPort.createProduct(productServiceMapper.toProductSaveDto(productDomain));
+        ProductEntity productEntity = productRepositoryPort
+                                            .createProduct(productServiceMapper.toProductSaveDto(productDomain));
 
         // 이미지 업로드
         uploadImageList(productDomain);
@@ -79,15 +84,23 @@ public class ProductService implements ProductUseCase {
         // 태그 추가
         addTag(productDomain);
 
+
+        OutboxEntity outboxEntity = null;
+        // 아웃박스 저장
         try {
-            // 아웃박스 저장
-            outboxUtil.createOutbox(productDomain,
-                                    AggregateType.PRODUCT.getName(),
-                                    productDomain.getProductUuid(),
-                                    EventType.PRODUCT_CREATE.getName(),
-                                    Op.C.getName());
+            outboxEntity = outboxRepositoryPort.saveEvent(outboxServiceMapper.toOutboxSaveDto(productDomain,
+                                                                                AggregateType.PRODUCT,
+                                                                                productEntity.getId(),
+                                                                                EventType.PRODUCT_CREATE,
+                                                                                Op.C));
         } catch (JsonProcessingException e) {
             throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
+        }
+
+        try {
+            kafkaPort.productEvent(productServiceOutbox, outboxEntity);
+        } catch (JsonProcessingException e) {
+            throw new BaseException(BaseResponseStatus.FAILED_TO_SEND_MESSAGE);
         }
 
         return productDomain.getProductUuid();
@@ -110,16 +123,6 @@ public class ProductService implements ProductUseCase {
 //        addTag(productDomain);
 
 
-        try {
-            // 아웃박스 저장
-            outboxUtil.createOutbox(productDomain,
-                    AggregateType.PRODUCT.getName(),
-                    productDomain.getProductUuid(),
-                    EventType.PRODUCT_UPDATE.getName(),
-                    Op.U.getName());
-        } catch (JsonProcessingException e) {
-            throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
-        }
     }
 
     @Override
@@ -131,16 +134,6 @@ public class ProductService implements ProductUseCase {
 
         ProductDomain productDomain = productRepositoryPort.getProduct(productUuid);
 
-        try {
-            // 아웃박스 저장
-            outboxUtil.createOutbox(productDomain,
-                    AggregateType.PRODUCT.getName(),
-                    productDomain.getProductUuid(),
-                    EventType.PRODUCT_DELETE.getName(),
-                    Op.D.getName());
-        } catch (JsonProcessingException e) {
-            throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
-        }
     }
 
 
@@ -155,16 +148,6 @@ public class ProductService implements ProductUseCase {
                                 .idx(++idx).build());
             }
 
-            try {
-                // 아웃박스 저장
-                outboxUtil.createOutbox(productDomain,
-                        AggregateType.PRODUCT.getName(),
-                        productDomain.getProductUuid(),
-                        EventType.PRODUCT_UPDATE.getName(),
-                        Op.U.getName());
-            } catch (JsonProcessingException e) {
-                throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
-            }
 
         }
     }
@@ -177,16 +160,6 @@ public class ProductService implements ProductUseCase {
                     .forEach(productTagListEntity ->
                             productTagListRepositoryPort.deleteProductTagList(productTagListEntity));
 
-            try {
-                // 아웃박스 저장
-                outboxUtil.createOutbox(productDomain,
-                        AggregateType.PRODUCT.getName(),
-                        productDomain.getProductUuid(),
-                        EventType.PRODUCT_UPDATE.getName(),
-                        Op.U.getName());
-            } catch (JsonProcessingException e) {
-                throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
-            }
         }
     }
 
@@ -204,16 +177,6 @@ public class ProductService implements ProductUseCase {
                     .forEach(productTagCreateSaveDto
                             -> productTagListRepositoryPort.createProductTagList(productTagCreateSaveDto));
 
-            try {
-                // 아웃박스 저장
-                outboxUtil.createOutbox(productDomain,
-                        AggregateType.PRODUCT.getName(),
-                        productDomain.getProductUuid(),
-                        EventType.PRODUCT_UPDATE.getName(),
-                        Op.U.getName());
-            } catch (JsonProcessingException e) {
-                throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
-            }
         }
     }
 

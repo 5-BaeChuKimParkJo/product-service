@@ -13,7 +13,7 @@ public interface ProductRepositoryPort {
 
     List<ProductDomain> getAllProduct();
 
-    void createProduct(ProductCreateSaveDto productSaveDto);
+    ProductEntity createProduct(ProductCreateSaveDto productSaveDto);
 
     void updateProduct(ProductUpdateSaveDto productUpdateSaveDto);
 

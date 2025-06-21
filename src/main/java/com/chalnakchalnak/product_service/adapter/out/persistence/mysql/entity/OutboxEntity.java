@@ -19,7 +19,7 @@ public class OutboxEntity extends BaseEntity {
 
     private String aggregateType; // ex: "Order"
 
-    private String aggregateId;   // ex: 주문 ID
+    private Long aggregateId;   // ex: 주문 ID
 
     private String eventType;     // ex: "OrderCreated"
 
@@ -28,20 +28,24 @@ public class OutboxEntity extends BaseEntity {
     @Lob
     private String payload;       // 직렬화된 JSON 문자열
 
+    @Column(name = "status")
+    private OutboxStatus status;
+
     @Builder
     public OutboxEntity(Long id,
                         String aggregateType,
-                        String aggregateId,
+                        Long aggregateId,
                         String eventType,
                         String op,
                         String payload,
-                        Boolean _deleted) {
+                        OutboxStatus status) {
         this.id = id;
         this.aggregateType = aggregateType;
         this.aggregateId = aggregateId;
         this.eventType = eventType;
         this.op = op;
         this.payload = payload;
+        this.status = status;
     }
 
 }
