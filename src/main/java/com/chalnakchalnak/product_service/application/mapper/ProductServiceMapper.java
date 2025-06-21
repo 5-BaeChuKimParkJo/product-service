@@ -83,7 +83,7 @@ public class ProductServiceMapper {
                 .isDirectDeal(productDomain.getIsDirectDeal())
                 .directDealLocation(productDomain.getDirectDealLocation())
                 .thumbnailKey(productDomain.getThumbnailKey())
-                .viewCount(0L)
+                .viewCount(productDomain.getViewCount())
                 .price(productDomain.getPrice())
                 .ticketUuid(productDomain.getTicketUuid())
                 .build();

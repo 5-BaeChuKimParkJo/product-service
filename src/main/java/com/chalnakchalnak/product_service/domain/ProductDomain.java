@@ -83,6 +83,10 @@ public class ProductDomain {
         this.thumbnailKey = imageKeyList.get(index);
     }
 
+    public void setZeroVeiw() {
+        this.viewCount = 0L;
+    }
+
     public void plusViewCount() {
         this.viewCount++;
     }

@@ -73,6 +73,7 @@ public class ProductService implements ProductUseCase {
         if(!productDomain.getImageKeyList().isEmpty()) {
             productDomain.setThumbnailKey(0);
         }
+        productDomain.setZeroVeiw();
         productDomain.setIsHide(false);
         productDomain.setStatus(Status.ACTIVE);
         ProductEntity productEntity = productRepositoryPort
@@ -84,11 +85,10 @@ public class ProductService implements ProductUseCase {
         // 태그 추가
         addTag(productDomain);
 
-
         OutboxEntity outboxEntity = null;
         // 아웃박스 저장
         try {
-            outboxEntity = outboxRepositoryPort.saveEvent(outboxServiceMapper.toOutboxSaveDto(productDomain,
+            outboxEntity = outboxRepositoryPort.saveEvent(outboxServiceMapper.toOutboxSaveDto(productEntity,
                                                                                 AggregateType.PRODUCT,
                                                                                 productEntity.getId(),
                                                                                 EventType.PRODUCT_CREATE,
@@ -97,11 +97,11 @@ public class ProductService implements ProductUseCase {
             throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
         }
 
-        try {
-            kafkaPort.productEvent(productServiceOutbox, outboxEntity);
-        } catch (JsonProcessingException e) {
-            throw new BaseException(BaseResponseStatus.FAILED_TO_SEND_MESSAGE);
-        }
+//        try {
+//            kafkaPort.productEvent(productServiceOutbox, outboxEntity);
+//        } catch (JsonProcessingException e) {
+//            throw new BaseException(BaseResponseStatus.FAILED_TO_SEND_MESSAGE);
+//        }
 
         return productDomain.getProductUuid();
     }

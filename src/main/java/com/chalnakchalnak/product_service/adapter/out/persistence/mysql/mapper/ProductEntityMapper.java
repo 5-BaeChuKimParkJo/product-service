@@ -45,6 +45,7 @@ public class ProductEntityMapper {
                 .isHide(productSaveDto.getIsHide())
                 .status(productSaveDto.getStatus())
                 .thumbnailKey(productSaveDto.getThumbnailKey())
+                .viewCount(productSaveDto.getViewCount())
                 .price(productSaveDto.getPrice())
                 .ticketUuid(productSaveDto.getTicketUuid())
                 .isDeleted(false)

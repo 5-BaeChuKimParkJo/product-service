@@ -28,24 +28,19 @@ public class OutboxEntity extends BaseEntity {
     @Lob
     private String payload;       // 직렬화된 JSON 문자열
 
-    @Column(name = "status")
-    private OutboxStatus status;
-
     @Builder
     public OutboxEntity(Long id,
                         String aggregateType,
                         Long aggregateId,
                         String eventType,
                         String op,
-                        String payload,
-                        OutboxStatus status) {
+                        String payload) {
         this.id = id;
         this.aggregateType = aggregateType;
         this.aggregateId = aggregateId;
         this.eventType = eventType;
         this.op = op;
         this.payload = payload;
-        this.status = status;
     }
 
 }
