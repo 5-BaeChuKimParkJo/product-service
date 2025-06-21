@@ -7,8 +7,5 @@ import java.util.List;
 
 public interface OutboxRepositoryPort {
 
-    List<OutboxEntity> getPendigOutboxList();
-
     OutboxEntity saveEvent(OutboxSaveDto outboxSaveDto);
-
 }

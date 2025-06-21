@@ -17,11 +17,6 @@ public class OutboxRepository implements OutboxRepositoryPort {
     private final OutboxEntityMapper outboxEntityMapper;
 
     @Override
-    public List<OutboxEntity> getPendigOutboxList() {
-        return outboxJpaRepository.findPendingOutbox();
-    }
-
-    @Override
     public OutboxEntity saveEvent(OutboxSaveDto outboxSaveDto) {
         return outboxJpaRepository.save(outboxEntityMapper.toOutboxEntityMapper(outboxSaveDto));
     }

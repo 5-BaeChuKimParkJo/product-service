@@ -7,7 +7,4 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface OutboxJpaRepository extends JpaRepository<OutboxEntity, Long> {
-
-    @Query("")
-    List<OutboxEntity> findPendingOutbox();
 }
