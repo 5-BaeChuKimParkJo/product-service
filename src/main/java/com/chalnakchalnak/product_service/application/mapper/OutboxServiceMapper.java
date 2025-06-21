@@ -3,7 +3,6 @@ package com.chalnakchalnak.product_service.application.mapper;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.AggregateType;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.EventType;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Op;
-import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.OutboxStatus;
 import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSaveDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +29,6 @@ public class OutboxServiceMapper {
                 .eventType(eventType.getName())
                 .op(op.getName())
                 .payload(json)
-                .status(OutboxStatus.PENDING)
                 .build();
     }
 }
