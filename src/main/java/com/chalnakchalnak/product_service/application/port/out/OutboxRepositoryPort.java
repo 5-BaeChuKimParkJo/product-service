@@ -7,5 +7,11 @@ import java.util.List;
 
 public interface OutboxRepositoryPort {
 
+    OutboxEntity findOutbox(Long outboxId);
+
+    List<OutboxEntity> findAll();
+
     OutboxEntity saveEvent(OutboxSaveDto outboxSaveDto);
+
+    void deleteOutbox(OutboxEntity outboxEntity);
 }

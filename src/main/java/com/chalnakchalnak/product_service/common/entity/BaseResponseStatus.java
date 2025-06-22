@@ -2,6 +2,7 @@ package com.chalnakchalnak.product_service.common.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
@@ -67,6 +68,7 @@ public enum BaseResponseStatus {
 
     // outbox
     FAILED_TO_SAVE_OUTBOX(HttpStatus.INTERNAL_SERVER_ERROR, 2004, "아웃박스 저장에 실패했습니다."),
+    NO_EXISTS_OUTBOX(HttpStatus.NOT_FOUND, 2005, "존재하지 않는 아웃박스입니다."),
 
     // kafka
     FAILED_TO_SEND_MESSAGE(HttpStatus.INTERNAL_SERVER_ERROR, 2005, "메세지 발행에 실패했습니다."),

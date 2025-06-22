@@ -28,6 +28,14 @@ public class ProductRepository implements ProductRepositoryPort {
     private final ProductJpaCustomRepository productJpaCustomRepository;
     private final ProductEntityMapper productEntityMapper;
 
+
+    @Override
+    public Long getProductId(String productUuid) {
+        return productJpaRepository.findByProductUuid(productUuid)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT))
+                .getId();
+    }
+
     @Override
     public ProductDomain getProduct(String productUuid) {
         ProductEntity productEntity = productJpaRepository.findByProductUuidAndIsDeletedFalse(productUuid)
@@ -64,6 +72,11 @@ public class ProductRepository implements ProductRepositoryPort {
     @Override
     public void updateProduct(ProductUpdateSaveDto productUpdateSaveDto) {
         productJpaCustomRepository.updateProductDynamic(productUpdateSaveDto);
+    }
+
+    @Override
+    public Boolean exists(String productUuid) {
+        return productJpaRepository.findByProductUuidAndIsDeletedFalse(productUuid).isPresent();
     }
 
     @Override

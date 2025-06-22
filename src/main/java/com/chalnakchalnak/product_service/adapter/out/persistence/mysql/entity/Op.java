@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum Op {
 
     C("c", "쓰기"),
-    U("", "수정"),
+    U("u", "수정"),
     D("d", "삭제"),
     ;
 

@@ -54,6 +54,7 @@ public class ProductEntityMapper {
 
     public ProductDomain from(ProductEntity productEntity, List<String> imageKeyList, List<Long> tagIdList) {
         return ProductDomain.builder()
+                .id(productEntity.getId())
                 .productUuid(productEntity.getProductUuid())
                 .saleMemberUuid(productEntity.getSaleMemberUuid())
                 .title(productEntity.getTitle())

@@ -19,7 +19,8 @@ public class OutboxServiceMapper {
                                              AggregateType aggregateType,
                                              Long aggregateId,
                                              EventType eventType,
-                                             Op op) throws JsonProcessingException {
+                                             Op op,
+                                             String topic) throws JsonProcessingException {
 
         String json = objectMapper.writeValueAsString(domainObject);
 
@@ -29,6 +30,7 @@ public class OutboxServiceMapper {
                 .eventType(eventType.getName())
                 .op(op.getName())
                 .payload(json)
+                .topic(topic)
                 .build();
     }
 }

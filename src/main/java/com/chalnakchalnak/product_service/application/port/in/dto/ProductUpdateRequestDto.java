@@ -25,6 +25,7 @@ public class ProductUpdateRequestDto {
     private Long price;
     private String ticketUuid;
     private List<Long> tagIdList;
+    private List<String> imageKeyList;
 
     @Builder
     public ProductUpdateRequestDto(String productUuid,
@@ -39,7 +40,8 @@ public class ProductUpdateRequestDto {
                                    String thumbnailKey,
                                    Long price,
                                    String ticketUuid,
-                                   List<Long> tagIdList) {
+                                   List<Long> tagIdList,
+                                   List<String> imageKeyList) {
         this.productUuid = productUuid;
         this.title = title;
         this.categoryId = categoryId;
@@ -53,5 +55,6 @@ public class ProductUpdateRequestDto {
         this.price = price;
         this.ticketUuid = ticketUuid;
         this.tagIdList = tagIdList;
+        this.imageKeyList = imageKeyList;
     }
 }

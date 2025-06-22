@@ -18,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ProductDomain {
 
+    private Long id;
     private String productUuid;
     private String saleMemberUuid;
     private String title;
@@ -38,7 +39,8 @@ public class ProductDomain {
     private LocalDateTime createdAt;
 
     @Builder
-    public ProductDomain(String productUuid,
+    public ProductDomain(Long id,
+                         String productUuid,
                          String saleMemberUuid,
                          String title,
                          String categoryId,
@@ -56,6 +58,7 @@ public class ProductDomain {
                          List<Long> tagIdList,
                          Boolean isDeleted,
                          LocalDateTime createdAt) {
+        this.id = id;
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
         this.title = title;

@@ -14,6 +14,7 @@ public class OutboxEntityMapper {
                 .eventType(outboxSaveDto.getEventType())
                 .op(outboxSaveDto.getOp())
                 .payload(outboxSaveDto.getPayload())
+                .topic(outboxSaveDto.getTopic())
                 .build();
     }
 }
