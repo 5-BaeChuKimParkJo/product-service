@@ -36,8 +36,6 @@ public class ProductService implements ProductUseCase {
     private final ProductServiceMapper productServiceMapper;
     private final ApplicationEventPublisher publisher;
 
-    private final String productServiceOutbox = "product-service.outbox";
-
     @Override
     public ProductResponseDto getProduct(String productUuid) {
         return productServiceMapper.from(productRepositoryPort.getProduct(productUuid));
