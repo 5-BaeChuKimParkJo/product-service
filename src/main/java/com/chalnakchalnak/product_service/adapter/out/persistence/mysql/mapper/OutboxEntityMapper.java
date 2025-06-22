@@ -7,12 +7,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class OutboxEntityMapper {
 
-    public OutboxEntity toEntity(OutboxSaveDto outboxSaveDto) {
+    public OutboxEntity toOutboxEntityMapper(OutboxSaveDto outboxSaveDto) {
         return OutboxEntity.builder()
                 .aggregateType(outboxSaveDto.getAggregateType())
                 .aggregateId(outboxSaveDto.getAggregateId())
                 .eventType(outboxSaveDto.getEventType())
+                .op(outboxSaveDto.getOp())
                 .payload(outboxSaveDto.getPayload())
+                .topic(outboxSaveDto.getTopic())
                 .build();
     }
 }

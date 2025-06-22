@@ -45,6 +45,7 @@ public class ProductEntityMapper {
                 .isHide(productSaveDto.getIsHide())
                 .status(productSaveDto.getStatus())
                 .thumbnailKey(productSaveDto.getThumbnailKey())
+                .viewCount(productSaveDto.getViewCount())
                 .price(productSaveDto.getPrice())
                 .ticketUuid(productSaveDto.getTicketUuid())
                 .isDeleted(false)
@@ -53,6 +54,7 @@ public class ProductEntityMapper {
 
     public ProductDomain from(ProductEntity productEntity, List<String> imageKeyList, List<Long> tagIdList) {
         return ProductDomain.builder()
+                .id(productEntity.getId())
                 .productUuid(productEntity.getProductUuid())
                 .saleMemberUuid(productEntity.getSaleMemberUuid())
                 .title(productEntity.getTitle())

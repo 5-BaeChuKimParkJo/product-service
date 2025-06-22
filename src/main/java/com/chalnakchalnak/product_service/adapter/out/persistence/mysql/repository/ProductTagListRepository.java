@@ -30,4 +30,9 @@ public class ProductTagListRepository implements ProductTagListRepositoryPort {
     public void deleteProductTagList(ProductTagListEntity productTagListEntity) {
         productTagJpaRepository.delete(productTagListEntity);
     }
+
+    @Override
+    public void deleteAllTagIdByProductUuid(String productUuid) {
+        productTagJpaRepository.deleteByProductUuid(productUuid);
+    }
 }

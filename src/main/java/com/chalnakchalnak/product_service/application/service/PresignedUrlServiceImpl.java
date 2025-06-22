@@ -1,5 +1,6 @@
 package com.chalnakchalnak.product_service.application.service;
 
+import com.chalnakchalnak.product_service.adapter.out.event.ProductUpdateEvent;
 import com.chalnakchalnak.product_service.application.mapper.PresignedUrlServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.dto.PresignedUrlRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
@@ -14,6 +15,7 @@ import com.chalnakchalnak.product_service.util.PresignedUrlUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,7 @@ public class PresignedUrlServiceImpl implements com.chalnakchalnak.product_servi
     private final ProductImageRepositoryPort productImageRepositoryPort;
     private final ProductRepositoryPort productRepositoryPort;
     private final PresignedUrlServiceMapper presignedUrlServiceMapper;
+    private final ApplicationEventPublisher publisher;
 
     private final String algorithm = "AWS4-HMAC-SHA256";
     private final String service = "s3";
@@ -118,9 +121,13 @@ public class PresignedUrlServiceImpl implements com.chalnakchalnak.product_servi
         }
         productImageRepositoryPort
                 .uploadImageKey(presignedUrlServiceMapper.toProductImageUrlSaveDto(productImageDomain));
+        
+        // 이벤트 발행
+        publisher.publishEvent(new ProductUpdateEvent(productRepositoryPort.getProduct(saveImageUrlRequestDto.getProductUuid())));
     }
 
     @Override
+    @Transactional
     public void deleteImageKey(String productUuid, int idx) {
 
         // 썸네일 삭제 불가
@@ -128,12 +135,8 @@ public class PresignedUrlServiceImpl implements com.chalnakchalnak.product_servi
             throw new BaseException(BaseResponseStatus.FAILED_TO_DELETE_THUMBNAIL);
         }
         productImageRepositoryPort.deleteImageKey(productUuid, idx);
-    }
 
-    private boolean existsProduct(String productUuid) {
-        if (productRepositoryPort.getProduct(productUuid) != null) {
-            return true;
-        }
-        return false;
+        // 이벤트 발행
+        publisher.publishEvent(new ProductUpdateEvent(productRepositoryPort.getProduct(productUuid)));
     }
 }

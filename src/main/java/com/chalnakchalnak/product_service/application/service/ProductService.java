@@ -1,11 +1,13 @@
 package com.chalnakchalnak.product_service.application.service;
 
-import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductTagListEntity;
-import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
+import com.chalnakchalnak.product_service.adapter.out.event.ProductCreateEvent;
+import com.chalnakchalnak.product_service.adapter.out.event.ProductDeleteEvent;
+import com.chalnakchalnak.product_service.adapter.out.event.ProductUpdateEvent;
+import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.*;
+import com.chalnakchalnak.product_service.application.mapper.OutboxServiceMapper;
 import com.chalnakchalnak.product_service.application.mapper.ProductServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
 import com.chalnakchalnak.product_service.application.port.in.dto.*;
-import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.OutboxRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductImageRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
@@ -14,10 +16,9 @@ import com.chalnakchalnak.product_service.application.port.out.dto.ProductRespon
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +33,8 @@ public class ProductService implements ProductUseCase {
     private final ProductRepositoryPort productRepositoryPort;
     private final ProductImageRepositoryPort productImageRepositoryPort;
     private final ProductTagListRepositoryPort productTagListRepositoryPort;
-    private final OutboxRepositoryPort outboxRepositoryPort;
     private final ProductServiceMapper productServiceMapper;
-    private final ObjectMapper objectMapper;
+    private final ApplicationEventPublisher publisher;
 
     @Override
     public ProductResponseDto getProduct(String productUuid) {
@@ -62,7 +62,6 @@ public class ProductService implements ProductUseCase {
                 .toList();
     }
 
-
     @Override
     @Transactional
     public String createProduct(ProductCreateRequestDto productCreateRequestDto) {
@@ -71,6 +70,7 @@ public class ProductService implements ProductUseCase {
         if(!productDomain.getImageKeyList().isEmpty()) {
             productDomain.setThumbnailKey(0);
         }
+        productDomain.setZeroVeiw();
         productDomain.setIsHide(false);
         productDomain.setStatus(Status.ACTIVE);
         productRepositoryPort.createProduct(productServiceMapper.toProductSaveDto(productDomain));
@@ -79,7 +79,10 @@ public class ProductService implements ProductUseCase {
         uploadImageList(productDomain);
 
         // 태그 추가
-        addTag(productDomain);
+        addTags(productDomain);
+
+        // 이벤트 발행
+        publisher.publishEvent(new ProductCreateEvent(productRepositoryPort.getProduct(productCreateRequestDto.getProductUuid())));
 
         return productDomain.getProductUuid();
     }
@@ -92,48 +95,59 @@ public class ProductService implements ProductUseCase {
         productRepositoryPort.updateProduct(productServiceMapper.toUpdateSaveDto(productDomain));
 
         // 이미지 없로드
-        uploadImageList(productDomain);
+//        uploadImageList(productDomain);
 
-//        // 태그 삭제
-//        deleteTag(productDomain);
-//
-//        // 태그 추가
-//        addTag(productDomain);
+        // 태그 삭제
+        deleteAllTags(productUpdateRequestDto.getProductUuid());
+
+        // 태그 추가
+        addTags(productDomain);
+
+        // 이벤트 발행
+        publisher.publishEvent(new ProductUpdateEvent(productRepositoryPort.getProduct(productUpdateRequestDto.getProductUuid())));
     }
 
     @Override
     @Transactional
     public void deleteProduct(String productUuid) {
 
+        if (!productRepositoryPort.exists(productUuid)) {
+            throw new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT);
+        }
+
         // 상품 소프트 딜리트
         productRepositoryPort.softDeleteProduct(productUuid);
+
+        // 이미지 삭제
+        productImageRepositoryPort.deleteAllImageKey(productUuid);
+
+        // 태그 삭제
+        deleteAllTags(productUuid);
+
+        // 이벤트 발행
+        publisher.publishEvent(new ProductDeleteEvent(productRepositoryPort.getProductId(productUuid)));
     }
 
 
     private void uploadImageList(ProductDomain productDomain) {
         if (productDomain.getImageKeyList() != null) {
-            int idx = 0;
+            int idx = productImageRepositoryPort.getMaxImageIdx(productDomain.getProductUuid());
             for (String imageKey : productDomain.getImageKeyList()) {
                 productImageRepositoryPort
                         .uploadImageKey(ProductImageUrlSaveDto.builder()
                                 .productUuid(productDomain.getProductUuid())
                                 .imageKey(imageKey)
-                                .idx(++idx).build());
+                                .idx(idx++)
+                                .build());
             }
         }
     }
 
-    private void deleteTag(ProductDomain productDomain) {
-        // 태그 존재 시
-        if (productDomain.getTagIdList() != null) {
-            productTagListRepositoryPort.getProductTagListByProductUuid(productDomain.getProductUuid())
-                    .stream()
-                    .forEach(productTagListEntity ->
-                            productTagListRepositoryPort.deleteProductTagList(productTagListEntity));
-        }
+    private void deleteAllTags(String productUuid) {
+        productTagListRepositoryPort.deleteAllTagIdByProductUuid(productUuid);
     }
 
-    private void addTag(ProductDomain productDomain) {
+    private void addTags(ProductDomain productDomain) {
         // 태그 존재 시
         if (productDomain.getTagIdList() != null) {
             AtomicInteger idx = new AtomicInteger(0);
@@ -148,4 +162,5 @@ public class ProductService implements ProductUseCase {
                             -> productTagListRepositoryPort.createProductTagList(productTagCreateSaveDto));
         }
     }
+
 }

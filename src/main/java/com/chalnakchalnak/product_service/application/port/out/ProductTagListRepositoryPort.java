@@ -12,4 +12,6 @@ public interface ProductTagListRepositoryPort {
     void createProductTagList(ProductTagListSaveDto productTagSaveDto);
 
     void deleteProductTagList(ProductTagListEntity productTagListEntity);
+
+    void deleteAllTagIdByProductUuid(String productUuid);
 }

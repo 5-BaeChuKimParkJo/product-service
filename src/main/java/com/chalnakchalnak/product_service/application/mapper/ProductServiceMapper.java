@@ -4,7 +4,6 @@ import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateR
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
-import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
 import org.springframework.stereotype.Component;
@@ -46,6 +45,7 @@ public class ProductServiceMapper {
                 .price(productUpdateRequestDto.getPrice())
                 .ticketUuid(productUpdateRequestDto.getTicketUuid())
                 .tagIdList(productUpdateRequestDto.getTagIdList())
+                .imageKeyList(productUpdateRequestDto.getImageKeyList())
                 .build();
     }
 
@@ -84,7 +84,7 @@ public class ProductServiceMapper {
                 .isDirectDeal(productDomain.getIsDirectDeal())
                 .directDealLocation(productDomain.getDirectDealLocation())
                 .thumbnailKey(productDomain.getThumbnailKey())
-                .viewCount(0L)
+                .viewCount(productDomain.getViewCount())
                 .price(productDomain.getPrice())
                 .ticketUuid(productDomain.getTicketUuid())
                 .build();
@@ -107,21 +107,4 @@ public class ProductServiceMapper {
                 .build();
     }
 
-    public OutboxSaveDto toTagCreateSaveDto(String productUuid, String payload) {
-        return OutboxSaveDto.builder()
-                .aggregateType("Product")
-                .aggregateId(productUuid)
-                .eventType("ProductCreated")
-                .payload(payload)
-                .build();
-    }
-
-    public OutboxSaveDto toTagDeleteSaveDto(String productUuid) {
-        return OutboxSaveDto.builder()
-                .aggregateType("Product")
-                .aggregateId(productUuid)
-                .eventType("ProductDeleted")
-                .payload("")
-                .build();
-    }
 }

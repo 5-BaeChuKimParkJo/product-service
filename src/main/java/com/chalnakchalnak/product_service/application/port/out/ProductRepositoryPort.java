@@ -9,13 +9,17 @@ import java.util.List;
 
 public interface ProductRepositoryPort {
 
+    Long getProductId(String productUuid);
+
     ProductDomain getProduct(String productUuid);
 
     List<ProductDomain> getAllProduct();
 
-    void createProduct(ProductCreateSaveDto productSaveDto);
+    ProductEntity createProduct(ProductCreateSaveDto productSaveDto);
 
     void updateProduct(ProductUpdateSaveDto productUpdateSaveDto);
+
+    Boolean exists(String productUuid);
 
     void softDeleteProduct(String productUuid);
 }
