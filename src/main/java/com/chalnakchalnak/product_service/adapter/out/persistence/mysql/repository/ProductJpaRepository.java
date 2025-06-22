@@ -12,9 +12,14 @@ import java.util.Optional;
 public interface ProductJpaRepository extends JpaRepository<ProductEntity, Long> {
     Optional<ProductEntity> findByProductUuid(String productUuid);
 
+    @Query("SELECT p FROM ProductEntity p WHERE p.productUuid = :productUuid AND p.isDeleted != true AND p.isHide != true")
+    Optional<ProductEntity> findByProductUuidAndActive(@Param("productUuid") String productUuid);
+
     Optional<ProductEntity> findByProductUuidAndIsDeletedFalse(String productUuid);
 
     List<ProductEntity> findAllByIsDeletedFalse();
+
+    List<ProductEntity> findBySaleMemberUuidAndIsHideTrue(String saleMemberUuid);
 
     @Modifying
     @Query("UPDATE ProductEntity p SET p.isDeleted = true WHERE p.productUuid = :productUuid")

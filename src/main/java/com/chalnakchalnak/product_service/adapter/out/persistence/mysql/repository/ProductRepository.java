@@ -10,7 +10,9 @@ import com.chalnakchalnak.product_service.application.port.out.ProductRepository
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
+import com.chalnakchalnak.product_service.util.CacheUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class ProductRepository implements ProductRepositoryPort {
     private final ProductTagListJpaRepository productTagListJpaRepository;
     private final ProductJpaCustomRepository productJpaCustomRepository;
     private final ProductEntityMapper productEntityMapper;
+    private final CacheUtil cacheUtil;
 
 
     @Override
@@ -37,8 +40,9 @@ public class ProductRepository implements ProductRepositoryPort {
     }
 
     @Override
+    @Cacheable(value = "productDomain", key = "#productUuid")
     public ProductDomain getProduct(String productUuid) {
-        ProductEntity productEntity = productJpaRepository.findByProductUuidAndIsDeletedFalse(productUuid)
+        ProductEntity productEntity = productJpaRepository.findByProductUuidAndActive(productUuid)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT));
 
         List<String> imageKeyList = productImageJpaRepository.findByProductUuid(productUuid)
@@ -57,8 +61,37 @@ public class ProductRepository implements ProductRepositoryPort {
     }
 
     @Override
+    public ProductDomain getProductForOutbox(String productUuid) {
+        ProductEntity productEntity = productJpaRepository.findByProductUuid(productUuid)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT));
+
+        List<String> imageKeyList = productImageJpaRepository.findByProductUuid(productUuid)
+                .stream()
+                .sorted(Comparator.comparing(productImageEntity -> productImageEntity.getIdx()))
+                .map(productImageEntity -> productImageEntity.getImageKey())
+                .toList();
+
+        List<Long> tagIdList = productTagListJpaRepository.findByProductUuid(productUuid)
+                .stream()
+                .sorted(Comparator.comparing(productTagListEntity -> productTagListEntity.getIdx()))
+                .map(productTagListEntity -> productTagListEntity.getTagId())
+                .toList();
+
+        return productEntityMapper.from(productEntity, imageKeyList, tagIdList);
+    }
+
+
+    @Override
     public List<ProductDomain> getAllProduct() {
         return productJpaRepository.findAll()
+                .stream()
+                .map(productEntity -> productEntityMapper.from(productEntity))
+                .toList();
+    }
+
+    @Override
+    public List<ProductDomain> getHideProductList(String memberUuid) {
+        return productJpaRepository.findBySaleMemberUuidAndIsHideTrue(memberUuid)
                 .stream()
                 .map(productEntity -> productEntityMapper.from(productEntity))
                 .toList();
@@ -72,6 +105,8 @@ public class ProductRepository implements ProductRepositoryPort {
     @Override
     public void updateProduct(ProductUpdateSaveDto productUpdateSaveDto) {
         productJpaCustomRepository.updateProductDynamic(productUpdateSaveDto);
+
+        cacheUtil.evictCache("productDomain", productUpdateSaveDto.getProductUuid());
     }
 
     @Override
@@ -82,5 +117,7 @@ public class ProductRepository implements ProductRepositoryPort {
     @Override
     public void softDeleteProduct(String productUuid) {
         productJpaRepository.softDelete(productUuid);
+
+        cacheUtil.evictCache("productDomain", productUuid);
     }
 }

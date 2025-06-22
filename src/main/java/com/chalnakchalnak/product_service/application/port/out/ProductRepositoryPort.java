@@ -13,7 +13,11 @@ public interface ProductRepositoryPort {
 
     ProductDomain getProduct(String productUuid);
 
+    ProductDomain getProductForOutbox(String productUuid);
+
     List<ProductDomain> getAllProduct();
+
+    List<ProductDomain> getHideProductList(String memberUuid);
 
     ProductEntity createProduct(ProductCreateSaveDto productSaveDto);
 

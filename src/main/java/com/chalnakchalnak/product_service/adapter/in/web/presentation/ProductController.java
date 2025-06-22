@@ -46,6 +46,15 @@ public class ProductController {
                 .toList();
     }
 
+    @Operation(summary = "숨김 상품 조회")
+    @GetMapping("/hide/list")
+    public List<ProductResponseVo> getHideProductList(@RequestHeader("X-Member-Uuid") String memberUuid) {
+        return productUseCase.getHideProductList(memberUuid)
+                .stream()
+                .map(productResponseDto -> productVoMapper.toProductResponseVo(productResponseDto))
+                .toList();
+    }
+
     @Operation(summary = "상품 등록")
     @PostMapping
     public ProductUuidResponseVo createProduct(@RequestHeader("X-Member-Uuid") String memberUuid,
@@ -54,7 +63,7 @@ public class ProductController {
         return productVoMapper.toProductUuidResponseVo(productUuid);
     }
 
-    @Operation(summary = "상품 수정")
+    @Operation(summary = "상품 동적 수정")
     @PutMapping
     public void updateProduct(@RequestBody ProductUpdateRequestVo productUpdateRequestVo) {
         productUseCase.updateProduct(productVoMapper.toProductUpdateRequestDto(productUpdateRequestVo));

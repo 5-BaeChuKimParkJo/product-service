@@ -1,5 +1,6 @@
 package com.chalnakchalnak.product_service.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,12 +12,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Locale;
-import java.util.UUID;
-
 @Getter
 @NoArgsConstructor
-public class ProductDomain {
+public class ProductDomain implements Serializable {
 
     private Long id;
     private String productUuid;
