@@ -63,6 +63,14 @@ public class ProductService implements ProductUseCase {
     }
 
     @Override
+    public List<ProductResponseDto> getHideProductList(String memberUuid) {
+        return productRepositoryPort.getHideProductList(memberUuid)
+                .stream()
+                .map(productDomain -> productServiceMapper.from(productDomain))
+                .toList();
+    }
+
+    @Override
     @Transactional
     public String createProduct(ProductCreateRequestDto productCreateRequestDto) {
         ProductDomain productDomain = productServiceMapper.toProductDomain(productCreateRequestDto);
@@ -82,7 +90,7 @@ public class ProductService implements ProductUseCase {
         addTags(productDomain);
 
         // 이벤트 발행
-        publisher.publishEvent(new ProductCreateEvent(productRepositoryPort.getProduct(productCreateRequestDto.getProductUuid())));
+        publisher.publishEvent(new ProductCreateEvent(productRepositoryPort.getProductForOutbox(productCreateRequestDto.getProductUuid())));
 
         return productDomain.getProductUuid();
     }
@@ -104,7 +112,7 @@ public class ProductService implements ProductUseCase {
         addTags(productDomain);
 
         // 이벤트 발행
-        publisher.publishEvent(new ProductUpdateEvent(productRepositoryPort.getProduct(productUpdateRequestDto.getProductUuid())));
+        publisher.publishEvent(new ProductUpdateEvent(productRepositoryPort.getProductForOutbox(productUpdateRequestDto.getProductUuid())));
     }
 
     @Override

@@ -16,6 +16,8 @@ public interface ProductUseCase {
 
     List<ProductResponseDto> getAllProductList();
 
+    List<ProductResponseDto> getHideProductList(String memberUuid);
+
     String createProduct(ProductCreateRequestDto productCreateRequestDto);
 
     void updateProduct(ProductUpdateRequestDto productUpdateRequestDto);
