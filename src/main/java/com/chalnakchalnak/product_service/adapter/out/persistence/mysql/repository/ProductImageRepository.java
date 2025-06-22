@@ -21,6 +21,11 @@ public class ProductImageRepository implements ProductImageRepositoryPort {
 
 
     @Override
+    public int getMaxImageIdx(String productUuid) {
+        return productImageJpaRepository.findMaxImageIdx(productUuid);
+    }
+
+    @Override
     public Optional<ProductImageEntity> getImageUrl(String productUuid, int idx) {
         return  productImageJpaRepository.findByProductUuidAndIdx(productUuid, idx);
     }

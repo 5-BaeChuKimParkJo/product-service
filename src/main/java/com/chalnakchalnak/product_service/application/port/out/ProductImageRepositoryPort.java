@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface ProductImageRepositoryPort {
 
+    int getMaxImageIdx(String productUuid);
+
     Optional<ProductImageEntity> getImageUrl(String productUuid, int idx);
 
     void uploadImageKey(ProductImageUrlSaveDto productImageUrlSaveDto);

@@ -95,7 +95,7 @@ public class ProductService implements ProductUseCase {
         productRepositoryPort.updateProduct(productServiceMapper.toUpdateSaveDto(productDomain));
 
         // 이미지 없로드
-        uploadImageList(productDomain);
+//        uploadImageList(productDomain);
 
         // 태그 삭제
         deleteAllTags(productUpdateRequestDto.getProductUuid());
@@ -131,13 +131,14 @@ public class ProductService implements ProductUseCase {
 
     private void uploadImageList(ProductDomain productDomain) {
         if (productDomain.getImageKeyList() != null) {
-            int idx = 0;
+            int idx = productImageRepositoryPort.getMaxImageIdx(productDomain.getProductUuid());
             for (String imageKey : productDomain.getImageKeyList()) {
                 productImageRepositoryPort
                         .uploadImageKey(ProductImageUrlSaveDto.builder()
                                 .productUuid(productDomain.getProductUuid())
                                 .imageKey(imageKey)
-                                .idx(++idx).build());
+                                .idx(idx++)
+                                .build());
             }
         }
     }
