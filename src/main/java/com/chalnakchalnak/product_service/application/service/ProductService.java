@@ -9,6 +9,7 @@ import com.chalnakchalnak.product_service.application.mapper.PresignedUrlService
 import com.chalnakchalnak.product_service.application.mapper.ProductServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
 import com.chalnakchalnak.product_service.application.port.in.dto.*;
+import com.chalnakchalnak.product_service.application.port.in.dto.event.DealCompleteRequestDto;
 import com.chalnakchalnak.product_service.application.port.out.ProductImageRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductTagListRepositoryPort;
@@ -141,7 +142,6 @@ public class ProductService implements ProductUseCase {
         // 이벤트 발행
         publisher.publishEvent(new ProductDeleteEvent(productRepositoryPort.getProductId(productUuid)));
     }
-
 
     private void uploadImageList(ProductDomain productDomain) {
         if (productDomain.getImageList() != null) {
