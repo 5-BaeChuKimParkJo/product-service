@@ -103,38 +103,43 @@ public class PresignedUrlServiceImpl implements com.chalnakchalnak.product_servi
     @Transactional
     public void saveImageUrl(SaveImageUrlRequestDto saveImageUrlRequestDto) {
 
-        // 상품uuid, idx 존재 -> delete -> insert
+        // 상품uuid, order 존재 -> update
         if(productImageRepositoryPort
-                .getImageUrl(saveImageUrlRequestDto.getProductUuid(), saveImageUrlRequestDto.getIdx())
+                .getImageUrl(saveImageUrlRequestDto.getProductUuid(), saveImageUrlRequestDto.getOrder())
                 .isPresent()) {
+            productImageRepositoryPort.updateImageKey(saveImageUrlRequestDto.getProductUuid(),
+                    saveImageUrlRequestDto.getOrder(),
+                    saveImageUrlRequestDto.getKey());
+        }
+        // 존재하지 않으면 -> insert
+        else {
+
+            ProductImageDomain productImageDomain = presignedUrlServiceMapper.toProductImageDomain(saveImageUrlRequestDto);
+            // 썸네일 수정
+            if (productImageDomain.getOrder() == 1) {
+                productRepositoryPort.updateProduct(ProductUpdateSaveDto.builder()
+                        .productUuid(saveImageUrlRequestDto.getProductUuid())
+                        .thumbnailKey(saveImageUrlRequestDto.getKey())
+                        .build());
+            }
             productImageRepositoryPort
-                    .deleteImageKey(saveImageUrlRequestDto.getProductUuid(), saveImageUrlRequestDto.getIdx());
+                    .uploadImageKey(presignedUrlServiceMapper.toProductImageUrlSaveDto(productImageDomain));
+
         }
 
-        ProductImageDomain productImageDomain = presignedUrlServiceMapper.toProductImageDomain(saveImageUrlRequestDto);
-        // 썸네일 수정
-        if (productImageDomain.getOrder() == 1) {
-            productRepositoryPort.updateProduct(ProductUpdateSaveDto.builder()
-                                                .productUuid(saveImageUrlRequestDto.getProductUuid())
-                                                .thumbnailKey(saveImageUrlRequestDto.getImageKey())
-                                                .build());
-        }
-        productImageRepositoryPort
-                .uploadImageKey(presignedUrlServiceMapper.toProductImageUrlSaveDto(productImageDomain));
-        
         // 이벤트 발행
         publisher.publishEvent(new ProductUpdateEvent(productRepositoryPort.getProduct(saveImageUrlRequestDto.getProductUuid())));
     }
 
     @Override
     @Transactional
-    public void deleteImageKey(String productUuid, int idx) {
+    public void deleteImageKey(String productUuid, int order) {
 
         // 썸네일 삭제 불가
-        if (idx == 1) {
+        if (order == 1) {
             throw new BaseException(BaseResponseStatus.FAILED_TO_DELETE_THUMBNAIL);
         }
-        productImageRepositoryPort.deleteImageKey(productUuid, idx);
+        productImageRepositoryPort.deleteImageKey(productUuid, order);
 
         // 이벤트 발행
         publisher.publishEvent(new ProductUpdateEvent(productRepositoryPort.getProduct(productUuid)));

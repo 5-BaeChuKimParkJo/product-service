@@ -42,9 +42,9 @@ public class PresignedUrlVoMapper {
 
     public SaveImageUrlRequestDto toSaveImageUrlRequestDto(SaveImageUrlRequestVo saveImageUrlRequestVo) {
         return SaveImageUrlRequestDto.builder()
-                .imageKey(saveImageUrlRequestVo.getImageKey())
+                .key(saveImageUrlRequestVo.getKey())
                 .productUuid(saveImageUrlRequestVo.getProductUuid())
-                .idx(saveImageUrlRequestVo.getIdx())
+                .order(saveImageUrlRequestVo.getOrder())
                 .build();
     }
 }

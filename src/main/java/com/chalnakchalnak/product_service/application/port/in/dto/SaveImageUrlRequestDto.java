@@ -6,15 +6,15 @@ import lombok.Getter;
 @Getter
 public class SaveImageUrlRequestDto {
 
-    private String imageKey;
+    private String key;
     private String productUuid;
-    private int idx;
+    private int order;
 
     @Builder
-    public SaveImageUrlRequestDto(String imageKey, String productUuid, int idx) {
-        this.imageKey = imageKey;
+    public SaveImageUrlRequestDto(String key, String productUuid, int order) {
+        this.key = key;
         this.productUuid = productUuid;
-        this.idx = idx;
+        this.order = order;
     }
 
 }

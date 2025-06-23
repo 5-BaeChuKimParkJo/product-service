@@ -20,9 +20,9 @@ public class PresignedUrlServiceMapper {
 
     public ProductImageDomain toProductImageDomain(SaveImageUrlRequestDto saveImageUrlRequestDto) {
         return ProductImageDomain.builder()
-                .key(saveImageUrlRequestDto.getImageKey())
+                .key(saveImageUrlRequestDto.getKey())
                 .productUuid(saveImageUrlRequestDto.getProductUuid())
-                .order(saveImageUrlRequestDto.getIdx())
+                .order(saveImageUrlRequestDto.getOrder())
                 .build();
     }
 
@@ -31,6 +31,14 @@ public class PresignedUrlServiceMapper {
                 .key(productImageDomain.getKey())
                 .productUuid(productImageDomain.getProductUuid())
                 .order(productImageDomain.getOrder())
+                .build();
+    }
+
+    public ProductImageUrlSaveDto toProductImageUrlSaveDto(String key, String productUuid, int order) {
+        return ProductImageUrlSaveDto.builder()
+                .key(key)
+                .productUuid(productUuid)
+                .order(order)
                 .build();
     }
 
