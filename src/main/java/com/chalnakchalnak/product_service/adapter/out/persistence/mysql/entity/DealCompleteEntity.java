@@ -1,5 +1,6 @@
 package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity;
 
+import com.chalnakchalnak.product_service.common.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,53 +14,56 @@ import java.time.LocalDateTime;
 @Table(name = "deal_complete")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DealCompleteEntity {
+public class DealCompleteEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Long id;
 
-    @Column(name = "sale_member_uuid")
+    @Column(name = "sale_member_uuid", nullable = false)
     private String saleMemberUuid;
 
-    @Column(name = "sale_member_nickname")
+    @Column(name = "sale_member_nickname", nullable = false)
     private String saleMemberNickname;
 
-    @Column(name = "buy_member_uuid")
+    @Column(name = "buy_member_uuid", nullable = false)
     private String buyMemberUuid;
 
-    @Column(name = "buy_member_nickname")
+    @Column(name = "buy_member_nickname", nullable = false)
     private String buyMemberNickname;
 
-    @Column(name = "product_uuid")
+    @Column(name = "product_uuid", nullable = false)
     private String productUuid;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Lob
-    @Column(name = "thumbnail_key", columnDefinition = "LONGTEXT")
+    @Column(name = "description", columnDefinition = "LONGTEXT")
     private String description;
 
-    @Column(name = "is_direct_deal")
+    @Column(name = "is_direct_deal", nullable = false)
     private Boolean isDirectDeal;
 
     @Column(name = "direct_deal_location")
     private String directDealLocation;
 
-    @Column(name = "status")
+    @Column(name = "product_condition", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private ProductCondition productCondition;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Long price;
 
-    @Column(name = "deal_start_at")
+    @Column(name = "deal_start_at", nullable = false)
     private LocalDateTime dealStartAt;
 
-    @Column(name = "deal_complete_at")
+    @Column(name = "deal_complete_at", nullable = false)
     private LocalDateTime dealCompleteAt;
+
+    @Column(name = "chatroom_uuid", nullable = false)
+    private String chatroomUuid;
 
     @Builder
     public DealCompleteEntity(Long id,
@@ -72,10 +76,11 @@ public class DealCompleteEntity {
                               String description,
                               Boolean isDirectDeal,
                               String directDealLocation,
-                              Status status,
+                              ProductCondition productCondition,
                               Long price,
                               LocalDateTime dealStartAt,
-                              LocalDateTime dealCompleteAt) {
+                              LocalDateTime dealCompleteAt,
+                              String chatroomUuid) {
         this.id = id;
         this.saleMemberUuid = saleMemberUuid;
         this.saleMemberNickname = saleMemberNickname;
@@ -86,10 +91,11 @@ public class DealCompleteEntity {
         this.description = description;
         this.isDirectDeal = isDirectDeal;
         this.directDealLocation = directDealLocation;
-        this.status = status;
+        this.productCondition = productCondition;
         this.price = price;
         this.dealStartAt = dealStartAt;
         this.dealCompleteAt = dealCompleteAt;
+        this.chatroomUuid = chatroomUuid;
     }
 
 }

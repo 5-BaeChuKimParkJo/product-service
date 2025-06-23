@@ -74,14 +74,4 @@ public class ProductController {
     public void deleteProduct(@PathVariable String productUuid) {
         productUseCase.deleteProduct(productUuid);
     }
-
-    @Operation(summary = "거래 완료")
-    @PostMapping("/complete")
-    public void completeDeal(@RequestHeader("X-Member-Uuid") String memberUuid,
-                             @RequestBody DealCompleteRequestVo dealCompleteRequestVo) {
-        // 판매자 uuid, 판매자 닉네임,
-        // 구매자 uuid, 구매자 닉네임
-        // 상품 uuid, 상품 게시글 제목, 게시글 설명, 직접 거래 여부, 직접 거래 장소, 상품 상태, 상품 가격
-        // 거래 시작 시간, 거래 완료 시간
-    }
 }

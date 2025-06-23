@@ -3,6 +3,7 @@ package com.chalnakchalnak.product_service.application.port.in;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateRequestDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUuidListRequestDto;
+import com.chalnakchalnak.product_service.application.port.in.dto.event.DealCompleteRequestDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
