@@ -48,6 +48,7 @@ public class ProductEntity extends BaseEntity {
     private Boolean isHide;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Lob
