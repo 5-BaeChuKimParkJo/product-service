@@ -5,11 +5,10 @@ import com.chalnakchalnak.product_service.adapter.out.event.ProductCreateEvent;
 import com.chalnakchalnak.product_service.adapter.out.event.ProductDeleteEvent;
 import com.chalnakchalnak.product_service.adapter.out.event.ProductUpdateEvent;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.*;
-import com.chalnakchalnak.product_service.application.mapper.OutboxServiceMapper;
+import com.chalnakchalnak.product_service.application.mapper.PresignedUrlServiceMapper;
 import com.chalnakchalnak.product_service.application.mapper.ProductServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
 import com.chalnakchalnak.product_service.application.port.in.dto.*;
-import com.chalnakchalnak.product_service.application.port.out.OutboxRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductImageRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductTagListRepositoryPort;
@@ -35,6 +34,7 @@ public class ProductService implements ProductUseCase {
     private final ProductImageRepositoryPort productImageRepositoryPort;
     private final ProductTagListRepositoryPort productTagListRepositoryPort;
     private final ProductServiceMapper productServiceMapper;
+    private final PresignedUrlServiceMapper presignedUrlServiceMapper;
     private final ApplicationEventPublisher publisher;
 
     @Override
@@ -103,8 +103,19 @@ public class ProductService implements ProductUseCase {
 
         productRepositoryPort.updateProduct(productServiceMapper.toUpdateSaveDto(productDomain));
 
-        // 이미지 없로드
-//        uploadImageList(productDomain);
+        if (productUpdateRequestDto.getImageList() != null) {
+            for (Images images : productUpdateRequestDto.getImageList()) {
+                ProductImageEntity productImageEntity = productImageRepositoryPort.getImageUrl(productUpdateRequestDto.getProductUuid(), images.getOrder())
+                        .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_IMAGE));
+
+                // 저장된 키와 요청된 키가 다르다면 -> 업데이트
+                if (!productImageEntity.getKey().equals(images.getKey())) {
+                    productImageRepositoryPort.updateImageKey(productUpdateRequestDto.getProductUuid(),
+                                                                images.getOrder(),
+                                                                images.getKey());
+                }
+            }
+        }
 
         // 태그 삭제
         deleteAllTags(productUpdateRequestDto.getProductUuid());

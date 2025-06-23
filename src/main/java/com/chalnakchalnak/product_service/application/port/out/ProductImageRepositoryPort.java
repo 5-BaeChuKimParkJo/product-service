@@ -9,11 +9,13 @@ public interface ProductImageRepositoryPort {
 
     int getMaxImageIdx(String productUuid);
 
-    Optional<ProductImageEntity> getImageUrl(String productUuid, int idx);
+    Optional<ProductImageEntity> getImageUrl(String productUuid, int order);
 
     void uploadImageKey(ProductImageUrlSaveDto productImageUrlSaveDto);
 
-    void deleteImageKey(String productUuid, int idx);
+    void updateImageKey(String productUuid, int order, String key);
+
+    void deleteImageKey(String productUuid, int order);
 
     void deleteAllImageKey(String productUuid);
 }
