@@ -1,5 +1,6 @@
 package com.chalnakchalnak.product_service.application.service;
 
+import com.chalnakchalnak.product_service.adapter.in.vo.Images;
 import com.chalnakchalnak.product_service.adapter.out.event.ProductCreateEvent;
 import com.chalnakchalnak.product_service.adapter.out.event.ProductDeleteEvent;
 import com.chalnakchalnak.product_service.adapter.out.event.ProductUpdateEvent;
@@ -75,7 +76,7 @@ public class ProductService implements ProductUseCase {
     public String createProduct(ProductCreateRequestDto productCreateRequestDto) {
         ProductDomain productDomain = productServiceMapper.toProductDomain(productCreateRequestDto);
         // 이미지가 있는 경우는 썸네일 지정: 0번째 사진
-        if(!productDomain.getImageKeyList().isEmpty()) {
+        if(!productDomain.getImageList().isEmpty()) {
             productDomain.setThumbnailKey(0);
         }
         productDomain.setZeroVeiw();
@@ -126,26 +127,20 @@ public class ProductService implements ProductUseCase {
         // 상품 소프트 딜리트
         productRepositoryPort.softDeleteProduct(productUuid);
 
-        // 이미지 삭제
-        productImageRepositoryPort.deleteAllImageKey(productUuid);
-
-        // 태그 삭제
-        deleteAllTags(productUuid);
-
         // 이벤트 발행
         publisher.publishEvent(new ProductDeleteEvent(productRepositoryPort.getProductId(productUuid)));
     }
 
 
     private void uploadImageList(ProductDomain productDomain) {
-        if (productDomain.getImageKeyList() != null) {
+        if (productDomain.getImageList() != null) {
             int idx = productImageRepositoryPort.getMaxImageIdx(productDomain.getProductUuid());
-            for (String imageKey : productDomain.getImageKeyList()) {
+            for (Images image : productDomain.getImageList()) {
                 productImageRepositoryPort
                         .uploadImageKey(ProductImageUrlSaveDto.builder()
                                 .productUuid(productDomain.getProductUuid())
-                                .imageKey(imageKey)
-                                .idx(idx++)
+                                .key(image.getKey())
+                                .order(idx++)
                                 .build());
             }
         }

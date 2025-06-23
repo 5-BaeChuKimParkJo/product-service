@@ -2,6 +2,7 @@ package com.chalnakchalnak.product_service.adapter.in.vo;
 
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductCondition;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -25,7 +26,7 @@ public class ProductResponseVo {
     private Long viewCount;
     private Long price;
     private String ticketUuid;
-    private List<String> imageUrlList;
+    private List<ImageUrl> images;
     private List<Long> tagIdList;
     private LocalDateTime createdAt;
 
@@ -44,7 +45,7 @@ public class ProductResponseVo {
                              Long viewCount,
                              Long price,
                              String ticketUuid,
-                             List<String> imageUrlList,
+                             List<ImageUrl> images,
                              List<Long> tagIdList,
                              LocalDateTime createdAt) {
         this.productUuid = productUuid;
@@ -61,7 +62,7 @@ public class ProductResponseVo {
         this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;
-        this.imageUrlList = imageUrlList;
+        this.images = images;
         this.tagIdList = tagIdList;
         this.createdAt = createdAt;
     }

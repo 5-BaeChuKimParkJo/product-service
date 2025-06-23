@@ -1,10 +1,14 @@
 package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.mapper;
 
+import com.chalnakchalnak.product_service.adapter.in.vo.ImageUrl;
+import com.chalnakchalnak.product_service.adapter.in.vo.Images;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductEntity;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductImageEntity;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
+import com.chalnakchalnak.product_service.application.port.out.dto.ImageResponseDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
+import com.chalnakchalnak.product_service.domain.ProductImageDomain;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -52,7 +56,7 @@ public class ProductEntityMapper {
                 .build();
     }
 
-    public ProductDomain from(ProductEntity productEntity, List<String> imageKeyList, List<Long> tagIdList) {
+    public ProductDomain from(ProductEntity productEntity, List<ImageUrl> imageUrlList, List<Long> tagIdList) {
         return ProductDomain.builder()
                 .id(productEntity.getId())
                 .productUuid(productEntity.getProductUuid())
@@ -69,7 +73,7 @@ public class ProductEntityMapper {
                 .viewCount(productEntity.getViewCount())
                 .price(productEntity.getPrice())
                 .ticketUuid(productEntity.getTicketUuid())
-                .imageKeyList(imageKeyList)
+                .imageUrlList(imageUrlList)
                 .tagIdList(tagIdList)
                 .isDeleted(productEntity.getIsDeleted())
                 .createdAt(productEntity.getCreatedAt())
@@ -92,7 +96,6 @@ public class ProductEntityMapper {
                 .viewCount(productEntity.getViewCount())
                 .price(productEntity.getPrice())
                 .ticketUuid(productEntity.getTicketUuid())
-//                .productImageKeyList(imageKeyList)
                 .isDeleted(productEntity.getIsDeleted())
                 .createdAt(productEntity.getCreatedAt())
                 .build();

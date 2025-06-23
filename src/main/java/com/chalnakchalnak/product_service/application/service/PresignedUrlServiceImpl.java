@@ -113,7 +113,7 @@ public class PresignedUrlServiceImpl implements com.chalnakchalnak.product_servi
 
         ProductImageDomain productImageDomain = presignedUrlServiceMapper.toProductImageDomain(saveImageUrlRequestDto);
         // 썸네일 수정
-        if (productImageDomain.getIdx() == 1) {
+        if (productImageDomain.getOrder() == 1) {
             productRepositoryPort.updateProduct(ProductUpdateSaveDto.builder()
                                                 .productUuid(saveImageUrlRequestDto.getProductUuid())
                                                 .thumbnailKey(saveImageUrlRequestDto.getImageKey())

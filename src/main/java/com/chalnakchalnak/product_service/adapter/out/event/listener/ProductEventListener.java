@@ -8,9 +8,11 @@ import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.A
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.EventType;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Op;
 import com.chalnakchalnak.product_service.application.mapper.OutboxServiceMapper;
+import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.OutboxRepositoryPort;
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
+import com.chalnakchalnak.product_service.domain.ProductDomain;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,12 +41,12 @@ public class ProductEventListener {
 
         // 아웃박스 저장
         try {
-            outboxRepositoryPort.saveEvent(outboxServiceMapper.toOutboxSaveDto(productCreateEvent.getProductDomain(),
-                    AggregateType.PRODUCT,
-                    productCreateEvent.getProductDomain().getId(),
-                    EventType.PRODUCT_CREATE,
-                    Op.C,
-                    TOPIC1));
+
+            ProductDomain productDomain = productCreateEvent.getProductDomain();
+
+            OutboxSaveDto outboxSaveDto = outboxServiceMapper.toOutboxSaveDto(productDomain, AggregateType.PRODUCT, productDomain.getId(), EventType.PRODUCT_CREATE, Op.C, TOPIC1);
+
+            outboxRepositoryPort.saveEvent(outboxSaveDto);
 
             eventPublisher.publishEvent(new ProductOutboxPublishEvent());
 

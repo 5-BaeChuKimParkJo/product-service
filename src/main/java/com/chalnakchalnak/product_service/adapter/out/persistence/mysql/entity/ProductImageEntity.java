@@ -20,22 +20,22 @@ public class ProductImageEntity extends BaseEntity {
     private Long id;
 
     @Column(name = "image_key", nullable = false)
-    private String imageKey;
+    private String key;
 
     @Column(name = "product_uuid", nullable = false)
     private String productUuid;
 
-    @Column(name = "idx", nullable = false)
-    private int idx;
+    @Column(name = "ord", nullable = false)
+    private int order;
 
     @Builder
     public ProductImageEntity(Long id,
-                              String imageKey,
+                              String key,
                               String productUuid,
-                              int idx) {
+                              int order) {
         this.id = id;
-        this.imageKey = imageKey;
+        this.key = key;
         this.productUuid = productUuid;
-        this.idx = idx;
+        this.order = order;
     }
 }

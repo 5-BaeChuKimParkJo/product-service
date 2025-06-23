@@ -8,16 +8,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductImageUrlSaveDto {
 
-    private String imageKey;
+    private String key;
     private String productUuid;
-    private int idx;
+    private int order;
 
     @Builder
-    public ProductImageUrlSaveDto(String imageKey,
+    public ProductImageUrlSaveDto(String key,
                                   String productUuid,
-                                  int idx) {
-        this.imageKey = imageKey;
+                                  int order) {
+        this.key = key;
         this.productUuid = productUuid;
-        this.idx = idx;
+        this.order = order;
     }
 }

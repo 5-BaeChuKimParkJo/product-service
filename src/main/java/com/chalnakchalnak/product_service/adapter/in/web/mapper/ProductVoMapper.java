@@ -8,13 +8,10 @@ import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateR
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Component
 public class ProductVoMapper {
-
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -29,15 +26,6 @@ public class ProductVoMapper {
     }
 
     public ProductResponseVo toProductResponseVo(ProductResponseDto productResponseDto) {
-
-        List<String> imageUrlList = new ArrayList<>();
-        if (productResponseDto.getImageKeyList() != null) {
-            imageUrlList = productResponseDto.getImageKeyList()
-                    .stream()
-                    .map(imageKey -> setUrl(imageKey))
-                    .toList();
-        }
-
         return ProductResponseVo.builder()
                 .productUuid(productResponseDto.getProductUuid())
                 .saleMemberUuid(productResponseDto.getSaleMemberUuid())
@@ -53,7 +41,7 @@ public class ProductVoMapper {
                 .viewCount(productResponseDto.getViewCount())
                 .price(productResponseDto.getPrice())
                 .ticketUuid(productResponseDto.getTicketUuid())
-                .imageUrlList(imageUrlList)
+                .images(productResponseDto.getImageUrlList())
                 .tagIdList(productResponseDto.getTagIdList())
                 .createdAt(productResponseDto.getCreatedAt())
                 .build();
@@ -69,7 +57,7 @@ public class ProductVoMapper {
         return ProductCreateRequestDto.builder()
                 .productUuid(UUID.randomUUID().toString())
                 .saleMemberUuid(memberUuid)
-                .imageKeyList(productRequestVo.getImageKeyList())
+                .imageList(productRequestVo.getImageList())
                 .isDirectDeal(productRequestVo.getIsDirectDeal())
                 .directDealLocation(productRequestVo.getDirectDealLocation())
                 .title(productRequestVo.getTitle())
@@ -97,14 +85,14 @@ public class ProductVoMapper {
                 .price(productUpdateRequestVo.getPrice())
                 .ticketUuid(productUpdateRequestVo.getTicketUuid())
                 .tagIdList(productUpdateRequestVo.getTagIdList())
-                .imageKeyList(productUpdateRequestVo.getImageKeyList())
+                .imageList(productUpdateRequestVo.getImageList())
                 .build();
     }
 
 
-    private String setUrl(String imageKey) {
-        return !"".equals(imageKey) && imageKey != null ?
-                "https://" + bucket + ".s3." + region + ".amazonaws.com/" + imageKey : null;
+    private String setUrl(String key) {
+        return  !"".equals(key) && key != null ?
+                "https://" + bucket + ".s3." + region + ".amazonaws.com/" + key : null;
     }
 
 }

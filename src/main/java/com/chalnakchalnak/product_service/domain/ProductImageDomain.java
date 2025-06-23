@@ -3,25 +3,27 @@ package com.chalnakchalnak.product_service.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Getter
 @NoArgsConstructor
+@Component
 public class ProductImageDomain {
 
-    private String imageKey;
+    private String key;
+    private String url;
     private String productUuid;
-    private int idx;
+    private int order;
 
     @Builder
-    public ProductImageDomain(String imageKey,
+    public ProductImageDomain(String key,
+                              String url,
                               String productUuid,
-                              int idx) {
-        this.imageKey = imageKey;
+                              int order) {
+        this.key = key;
+        this.url = url;
         this.productUuid = productUuid;
-        this.idx = idx;
-    }
-
-    public void setIndex(int index) {
-        this.idx = idx;
+        this.order = order;
     }
 }
