@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class SaveImageUrlRequestVo {
 
-    private String imageKey;
+    private String key;
     private String productUuid;
-    private int idx;
+    private int order;
 }

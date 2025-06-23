@@ -41,7 +41,7 @@ public class PresignedUrlController {
 
     @Operation(summary = "이미지 url 삭제")
     @DeleteMapping("/delete-image-url")
-    public void deleteImageUrl(@RequestParam String productUuid, @RequestParam int idx) {
-        presignedUrlService.deleteImageKey(productUuid, idx);
+    public void deleteImageUrl(@RequestParam String productUuid, @RequestParam int order) {
+        presignedUrlService.deleteImageKey(productUuid, order);
     }
 }
