@@ -10,11 +10,12 @@ import java.util.Optional;
 
 public interface ProductImageJpaRepository extends JpaRepository<ProductImageEntity, Long> {
 
-    @Query("SELECT COALESCE(MAX(p.idx), 1) FROM ProductImageEntity p WHERE p.productUuid = :productUuid")
+    @Query("SELECT COALESCE(MAX(p.order), 1) FROM ProductImageEntity p WHERE p.productUuid = :productUuid")
     int findMaxImageIdx(@Param("productUuid") String productUuid);
 
-    @Query("SELECT p FROM ProductImageEntity p WHERE p.productUuid = :productUuid AND p.idx = :idx")
-    Optional<ProductImageEntity> findByProductUuidAndIdx(@Param("productUuid") String productUuid, @Param("idx") int idx);
+    @Query("SELECT p FROM ProductImageEntity p WHERE p.productUuid = :productUuid AND p.order = :order")
+    Optional<ProductImageEntity> findByProductUuidAndIdx(@Param("productUuid") String productUuid, @Param("order") int order);
 
-    List<ProductImageEntity> findByProductUuid(String productUuid);
+    @Query("SELECT p FROM ProductImageEntity p WHERE p.productUuid = :productUuid")
+    List<ProductImageEntity> findByProductUuid(@Param("productUuid") String productUuid);
 }

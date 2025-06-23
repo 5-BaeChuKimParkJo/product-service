@@ -1,22 +1,19 @@
 package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.repository;
 
+import com.chalnakchalnak.product_service.adapter.in.vo.ImageUrl;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductEntity;
-import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductImageEntity;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.mapper.ProductEntityMapper;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.repository.custom.ProductJpaCustomRepository;
+import com.chalnakchalnak.product_service.application.mapper.PresignedUrlServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductUpdateSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
-import com.chalnakchalnak.product_service.util.CacheUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,8 +26,7 @@ public class ProductRepository implements ProductRepositoryPort {
     private final ProductTagListJpaRepository productTagListJpaRepository;
     private final ProductJpaCustomRepository productJpaCustomRepository;
     private final ProductEntityMapper productEntityMapper;
-    private final CacheUtil cacheUtil;
-
+    private final PresignedUrlServiceMapper presignedUrlServiceMapper;
 
     @Override
     public Long getProductId(String productUuid) {
@@ -40,15 +36,14 @@ public class ProductRepository implements ProductRepositoryPort {
     }
 
     @Override
-    @Cacheable(value = "productDomain", key = "#productUuid")
     public ProductDomain getProduct(String productUuid) {
         ProductEntity productEntity = productJpaRepository.findByProductUuidAndActive(productUuid)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT));
 
-        List<String> imageKeyList = productImageJpaRepository.findByProductUuid(productUuid)
+        List<ImageUrl> productImageDomainList = productImageJpaRepository.findByProductUuid(productUuid)
                 .stream()
-                .sorted(Comparator.comparing(productImageEntity -> productImageEntity.getIdx()))
-                .map(productImageEntity -> productImageEntity.getImageKey())
+                .sorted(Comparator.comparing(productImageEntity -> productImageEntity.getOrder()))
+                .map(productImageEntity -> presignedUrlServiceMapper.toImageUrl(productImageEntity))
                 .toList();
 
         List<Long> tagIdList = productTagListJpaRepository.findByProductUuid(productUuid)
@@ -57,7 +52,7 @@ public class ProductRepository implements ProductRepositoryPort {
                 .map(productTagListEntity -> productTagListEntity.getTagId())
                 .toList();
 
-        return productEntityMapper.from(productEntity, imageKeyList, tagIdList);
+        return productEntityMapper.from(productEntity, productImageDomainList, tagIdList);
     }
 
     @Override
@@ -65,10 +60,10 @@ public class ProductRepository implements ProductRepositoryPort {
         ProductEntity productEntity = productJpaRepository.findByProductUuid(productUuid)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_PRODUCT));
 
-        List<String> imageKeyList = productImageJpaRepository.findByProductUuid(productUuid)
+        List<ImageUrl> imageUrlList = productImageJpaRepository.findByProductUuid(productUuid)
                 .stream()
-                .sorted(Comparator.comparing(productImageEntity -> productImageEntity.getIdx()))
-                .map(productImageEntity -> productImageEntity.getImageKey())
+                .sorted(Comparator.comparing(productImageEntity -> productImageEntity.getOrder()))
+                .map(productImageEntity -> presignedUrlServiceMapper.toImageUrl(productImageEntity))
                 .toList();
 
         List<Long> tagIdList = productTagListJpaRepository.findByProductUuid(productUuid)
@@ -77,7 +72,7 @@ public class ProductRepository implements ProductRepositoryPort {
                 .map(productTagListEntity -> productTagListEntity.getTagId())
                 .toList();
 
-        return productEntityMapper.from(productEntity, imageKeyList, tagIdList);
+        return productEntityMapper.from(productEntity, imageUrlList, tagIdList);
     }
 
 
@@ -105,8 +100,6 @@ public class ProductRepository implements ProductRepositoryPort {
     @Override
     public void updateProduct(ProductUpdateSaveDto productUpdateSaveDto) {
         productJpaCustomRepository.updateProductDynamic(productUpdateSaveDto);
-
-        cacheUtil.evictCache("productDomain", productUpdateSaveDto.getProductUuid());
     }
 
     @Override
@@ -117,7 +110,5 @@ public class ProductRepository implements ProductRepositoryPort {
     @Override
     public void softDeleteProduct(String productUuid) {
         productJpaRepository.softDelete(productUuid);
-
-        cacheUtil.evictCache("productDomain", productUuid);
     }
 }

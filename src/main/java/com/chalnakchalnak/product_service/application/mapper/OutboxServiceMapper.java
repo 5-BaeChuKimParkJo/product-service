@@ -7,8 +7,10 @@ import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSa
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class OutboxServiceMapper {
@@ -23,7 +25,6 @@ public class OutboxServiceMapper {
                                              String topic) throws JsonProcessingException {
 
         String json = objectMapper.writeValueAsString(domainObject);
-
         return  OutboxSaveDto.builder()
                 .aggregateType(aggregateType.getName())
                 .aggregateId(aggregateId)

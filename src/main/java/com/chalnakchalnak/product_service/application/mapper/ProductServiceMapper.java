@@ -26,7 +26,7 @@ public class ProductServiceMapper {
                 .price(productCreateRequestDto.getPrice())
                 .ticketUuid(productCreateRequestDto.getTicketUuid())
                 .tagIdList(productCreateRequestDto.getTagIdList())
-                .imageKeyList(productCreateRequestDto.getImageKeyList())
+                .imageList(productCreateRequestDto.getImageList())
                 .build();
     }
 
@@ -45,7 +45,7 @@ public class ProductServiceMapper {
                 .price(productUpdateRequestDto.getPrice())
                 .ticketUuid(productUpdateRequestDto.getTicketUuid())
                 .tagIdList(productUpdateRequestDto.getTagIdList())
-                .imageKeyList(productUpdateRequestDto.getImageKeyList())
+                .imageList(productUpdateRequestDto.getImageList())
                 .build();
     }
 
@@ -65,7 +65,7 @@ public class ProductServiceMapper {
                 .viewCount(productDomain.getViewCount())
                 .price(productDomain.getPrice())
                 .ticketUuid(productDomain.getTicketUuid())
-                .imageKeyList(productDomain.getImageKeyList())
+                .imageUrlList(productDomain.getImageUrlList())
                 .tagIdList(productDomain.getTagIdList())
                 .createdAt(productDomain.getCreatedAt())
                 .build();

@@ -4,17 +4,20 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.chalnakchalnak.product_service.adapter.in.vo.ImageUrl;
+import com.chalnakchalnak.product_service.adapter.in.vo.Images;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductCondition;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ProductDomain implements Serializable {
+public class ProductDomain {
 
     private Long id;
     private String productUuid;
@@ -31,7 +34,8 @@ public class ProductDomain implements Serializable {
     private Long viewCount;
     private Long price;
     private String ticketUuid;
-    private List<String> imageKeyList;
+    private List<Images> imageList;
+    private List<ImageUrl> imageUrlList;
     private List<Long> tagIdList;
     private Boolean isDeleted;
     private LocalDateTime createdAt;
@@ -52,7 +56,8 @@ public class ProductDomain implements Serializable {
                          Long viewCount,
                          Long price,
                          String ticketUuid,
-                         List<String> imageKeyList,
+                         List<Images> imageList,
+                         List<ImageUrl> imageUrlList,
                          List<Long> tagIdList,
                          Boolean isDeleted,
                          LocalDateTime createdAt) {
@@ -72,16 +77,17 @@ public class ProductDomain implements Serializable {
         this.price = price;
         this.ticketUuid = ticketUuid;
         this.tagIdList = tagIdList;
-        this.imageKeyList = imageKeyList;
+        this.imageList = imageList;
+        this.imageUrlList = imageUrlList;
         this.isDeleted = isDeleted;
         this.createdAt = createdAt;
     }
 
     public void setThumbnailKey(int index) {
-        if (imageKeyList.size() < index) {
+        if (imageList.size() < index) {
             throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
         }
-        this.thumbnailKey = imageKeyList.get(index);
+        this.thumbnailKey = imageList.get(index).getKey();
     }
 
     public void setZeroVeiw() {

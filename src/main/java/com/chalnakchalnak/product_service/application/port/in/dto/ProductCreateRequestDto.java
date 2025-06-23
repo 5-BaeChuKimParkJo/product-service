@@ -1,5 +1,6 @@
 package com.chalnakchalnak.product_service.application.port.in.dto;
 
+import com.chalnakchalnak.product_service.adapter.in.vo.Images;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductCondition;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class ProductCreateRequestDto {
     private Long price;
     private String ticketUuid;
     private List<Long> tagIdList;
-    private List<String> imageKeyList;
+    private List<Images> imageList;
 
     @Builder
     public ProductCreateRequestDto(String productUuid,
@@ -34,7 +35,7 @@ public class ProductCreateRequestDto {
                                    Long price,
                                    String ticketUuid,
                                    List<Long> tagIdList,
-                                   List<String> imageKeyList) {
+                                   List<Images> imageList) {
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
         this.isDirectDeal = isDirectDeal;
@@ -46,6 +47,6 @@ public class ProductCreateRequestDto {
         this.price = price;
         this.ticketUuid = ticketUuid;
         this.tagIdList = tagIdList;
-        this.imageKeyList = imageKeyList;
+        this.imageList = imageList;
     }
 }

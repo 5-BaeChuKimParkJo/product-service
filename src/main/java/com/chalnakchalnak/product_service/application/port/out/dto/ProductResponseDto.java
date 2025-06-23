@@ -3,6 +3,7 @@ package com.chalnakchalnak.product_service.application.port.out.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.chalnakchalnak.product_service.adapter.in.vo.ImageUrl;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductCondition;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
 import jakarta.persistence.Column;
@@ -30,7 +31,7 @@ public class ProductResponseDto {
     private Long viewCount;
     private Long price;
     private String ticketUuid;
-    private List<String> imageKeyList;
+    private List<ImageUrl> imageUrlList;
     private List<Long> tagIdList;
     private LocalDateTime createdAt;
 
@@ -50,7 +51,7 @@ public class ProductResponseDto {
                               Long viewCount,
                               Long price,
                               String ticketUuid,
-                              List<String> imageKeyList,
+                              List<ImageUrl> imageUrlList,
                               List<Long> tagIdList,
                               LocalDateTime createdAt) {
         this.productUuid = productUuid;
@@ -68,7 +69,7 @@ public class ProductResponseDto {
         this.viewCount = viewCount;
         this.price = price;
         this.ticketUuid = ticketUuid;
-        this.imageKeyList = imageKeyList;
+        this.imageUrlList = imageUrlList;
         this.tagIdList = tagIdList;
         this.createdAt = createdAt;
     }

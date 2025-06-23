@@ -26,8 +26,8 @@ public class ProductImageRepository implements ProductImageRepositoryPort {
     }
 
     @Override
-    public Optional<ProductImageEntity> getImageUrl(String productUuid, int idx) {
-        return  productImageJpaRepository.findByProductUuidAndIdx(productUuid, idx);
+    public Optional<ProductImageEntity> getImageUrl(String productUuid, int order) {
+        return  productImageJpaRepository.findByProductUuidAndIdx(productUuid, order);
     }
 
     @Override
@@ -36,8 +36,8 @@ public class ProductImageRepository implements ProductImageRepositoryPort {
     }
 
     @Override
-    public void deleteImageKey(String productUuid, int idx) {
-        ProductImageEntity productImageEntity = productImageJpaRepository.findByProductUuidAndIdx(productUuid, idx)
+    public void deleteImageKey(String productUuid, int order) {
+        ProductImageEntity productImageEntity = productImageJpaRepository.findByProductUuidAndIdx(productUuid, order)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_IMAGE));
         productImageJpaRepository.delete(productImageEntity);
     }
