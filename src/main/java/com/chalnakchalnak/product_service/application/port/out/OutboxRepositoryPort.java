@@ -9,6 +9,8 @@ public interface OutboxRepositoryPort {
 
     OutboxEntity findOutbox(Long outboxId);
 
+    List<OutboxEntity> findByTopic(String topic);
+
     List<OutboxEntity> findAll();
 
     OutboxEntity saveEvent(OutboxSaveDto outboxSaveDto);

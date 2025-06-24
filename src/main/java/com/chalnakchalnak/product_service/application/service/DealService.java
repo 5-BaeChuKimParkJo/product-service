@@ -1,5 +1,6 @@
 package com.chalnakchalnak.product_service.application.service;
 
+import com.chalnakchalnak.product_service.adapter.out.event.ProductUpdateEvent;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
 import com.chalnakchalnak.product_service.application.mapper.DealServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.DealUseCase;
@@ -11,6 +12,7 @@ import com.chalnakchalnak.product_service.domain.DealCompleteDomain;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +24,7 @@ public class DealService implements DealUseCase {
     private final DealRepositoryPort dealRepositoryPort;
     private final ProductRepositoryPort productRepositoryPort;
     private final DealServiceMapper dealServiceMapper;
-
+    private final ApplicationEventPublisher publisher;
 
     @Transactional
     @Override
@@ -45,5 +47,8 @@ public class DealService implements DealUseCase {
                                                     .productUuid(dealCompleteRequestDto.getProductUuid())
                                                     .status(Status.ENDED)
                                                     .build());
+
+
+        publisher.publishEvent(new ProductUpdateEvent(productRepositoryPort.getProductForOutbox(dealCompleteRequestDto.getProductUuid())));
     }
 }

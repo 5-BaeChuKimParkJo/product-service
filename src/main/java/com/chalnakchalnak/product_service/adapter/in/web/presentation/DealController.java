@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@Tag(name = "Product", description = "상품 관련 API")
+@Tag(name = "Deal", description = "거래 관련 API")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/product")
@@ -23,13 +23,6 @@ public class DealController {
     @Operation(summary = "거래 완료")
     @PostMapping("/complete")
     public void completeDeal(@RequestBody DealCompleteRequestVo dealCompleteRequestVo) {
-
         dealCompleteUseCase.completeDeal(dealVoMapper.toDealCompleteRequestDto(dealCompleteRequestVo));
-
-
-        // 판매자 uuid, 판매자 닉네임,
-        // 구매자 uuid, 구매자 닉네임
-        // 상품 uuid, 상품 게시글 제목, 게시글 설명, 직접 거래 여부, 직접 거래 장소, 상품 상태, 상품 가격
-        // 거래 시작 시간, 거래 완료 시간
     }
 }

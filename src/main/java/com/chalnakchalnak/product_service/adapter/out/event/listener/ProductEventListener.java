@@ -7,6 +7,7 @@ import com.chalnakchalnak.product_service.adapter.out.event.ProductUpdateEvent;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.AggregateType;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.EventType;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Op;
+import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.OutboxEntity;
 import com.chalnakchalnak.product_service.application.mapper.OutboxServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.OutboxRepositoryPort;
@@ -14,13 +15,16 @@ import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.util.concurrent.ListenableFuture;
 
 import java.util.List;
 
@@ -33,6 +37,7 @@ public class ProductEventListener {
     private final OutboxServiceMapper outboxServiceMapper;
     private final KafkaTemplate kafkaTemplate;
     private final ApplicationEventPublisher eventPublisher;
+    private final ObjectMapper objectMapper;
 
     private final String TOPIC1 = "product-service.outbox";
 
@@ -41,14 +46,15 @@ public class ProductEventListener {
 
         // 아웃박스 저장
         try {
-
             ProductDomain productDomain = productCreateEvent.getProductDomain();
-
-            OutboxSaveDto outboxSaveDto = outboxServiceMapper.toOutboxSaveDto(productDomain, AggregateType.PRODUCT, productDomain.getId(), EventType.PRODUCT_CREATE, Op.C, TOPIC1);
-
+            OutboxSaveDto outboxSaveDto = outboxServiceMapper.toOutboxSaveDto(productDomain,
+                                                                                AggregateType.PRODUCT,
+                                                                                productDomain.getId(),
+                                                                                EventType.PRODUCT_CREATE,
+                                                                                Op.C,
+                                                                                TOPIC1);
             outboxRepositoryPort.saveEvent(outboxSaveDto);
-
-            eventPublisher.publishEvent(new ProductOutboxPublishEvent());
+            eventPublisher.publishEvent(new ProductOutboxPublishEvent(TOPIC1));
 
         } catch (JsonProcessingException e) {
             throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
@@ -67,7 +73,7 @@ public class ProductEventListener {
                     Op.U,
                     TOPIC1));
 
-            eventPublisher.publishEvent(new ProductOutboxPublishEvent());
+            eventPublisher.publishEvent(new ProductOutboxPublishEvent(TOPIC1));
 
         } catch (JsonProcessingException e) {
             throw new BaseException(BaseResponseStatus.FAILED_TO_SAVE_OUTBOX);
@@ -86,7 +92,7 @@ public class ProductEventListener {
                     Op.D,
                     TOPIC1));
 
-            eventPublisher.publishEvent(new ProductOutboxPublishEvent());
+            eventPublisher.publishEvent(new ProductOutboxPublishEvent(TOPIC1));
 
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -94,15 +100,24 @@ public class ProductEventListener {
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handleProductEvent(ProductOutboxPublishEvent event) {
+    public void handleProductEvent(ProductOutboxPublishEvent event) throws JsonProcessingException {
 
-        log.info("AFTER_COMMIT!!!!");
-        log.info("event {}", event);
-//        List<OutboxEntity> outboxList = outboxRepositoryPort.findAll();
+//        List<OutboxEntity> outboxList = outboxRepositoryPort.findByTopic(event.getTopic());
 //        for (OutboxEntity outboxEntity : outboxList) {
-//            kafkaTemplate.send(outboxEntity.getTopic(), outboxEntity);
-//            outboxRepositoryPort.deleteOutbox(outboxEntity);
+//            String json = objectMapper.writeValueAsString(outboxEntity);
+//            kafkaTemplate.send(outboxEntity.getTopic(), json)
+//                    .whenComplete((result, ex) -> {
+//                        if (ex == null) {
+//                            outboxRepositoryPort.deleteOutbox(outboxEntity);
+//
+//                            log.error("✅ Kafka 전송 성공, result {}", result);
+//                        } else {
+//                            // ❌ Kafka 전송 실패
+//                            log.error("Kafka 전송 실패: {}", ex);
+//                            // (선택) 실패 횟수 증가 또는 재시도 예약
+//                        }
+//                    });
 //        }
-    }
 
+    }
 }
