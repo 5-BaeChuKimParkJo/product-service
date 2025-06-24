@@ -13,7 +13,7 @@ public interface ProductImageRepositoryPort {
 
     void uploadImageKey(ProductImageUrlSaveDto productImageUrlSaveDto);
 
-    void updateImageKey(String productUuid, int order, String key);
+    void updateImageKey(ProductImageUrlSaveDto productImageUrlSaveDto);
 
     void deleteImageKey(String productUuid, int order);
 
