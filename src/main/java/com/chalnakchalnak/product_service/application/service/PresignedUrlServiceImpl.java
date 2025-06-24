@@ -107,9 +107,11 @@ public class PresignedUrlServiceImpl implements com.chalnakchalnak.product_servi
         if(productImageRepositoryPort
                 .getImageUrl(saveImageUrlRequestDto.getProductUuid(), saveImageUrlRequestDto.getOrder())
                 .isPresent()) {
-            productImageRepositoryPort.updateImageKey(saveImageUrlRequestDto.getProductUuid(),
-                    saveImageUrlRequestDto.getOrder(),
-                    saveImageUrlRequestDto.getKey());
+
+            productImageRepositoryPort.updateImageKey(presignedUrlServiceMapper
+                                                            .toProductImageUrlSaveDto(saveImageUrlRequestDto.getKey(),
+                                                                                        saveImageUrlRequestDto.getProductUuid(),
+                                                                                        saveImageUrlRequestDto.getOrder()));
         }
         // 존재하지 않으면 -> insert
         else {

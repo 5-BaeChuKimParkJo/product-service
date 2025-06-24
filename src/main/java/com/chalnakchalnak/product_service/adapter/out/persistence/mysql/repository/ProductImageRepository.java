@@ -36,8 +36,10 @@ public class ProductImageRepository implements ProductImageRepositoryPort {
     }
 
     @Override
-    public void updateImageKey(String productUuid, int order, String key) {
-        productImageJpaRepository.updateProductImage(productUuid, order, key);
+    public void updateImageKey(ProductImageUrlSaveDto productImageUrlSaveDto) {
+        productImageJpaRepository.updateProductImage(productImageUrlSaveDto.getProductUuid(),
+                                                    productImageUrlSaveDto.getOrder(),
+                                                    productImageUrlSaveDto.getKey());
     }
 
     @Override

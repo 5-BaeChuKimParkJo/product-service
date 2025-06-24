@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -106,14 +107,23 @@ public class ProductService implements ProductUseCase {
 
         if (productUpdateRequestDto.getImageList() != null) {
             for (Images images : productUpdateRequestDto.getImageList()) {
-                ProductImageEntity productImageEntity = productImageRepositoryPort.getImageUrl(productUpdateRequestDto.getProductUuid(), images.getOrder())
-                        .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXISTS_IMAGE));
+                Optional<ProductImageEntity> optionalProductImage = productImageRepositoryPort
+                        .getImageUrl(productUpdateRequestDto.getProductUuid(), images.getOrder());
 
-                // 저장된 키와 요청된 키가 다르다면 -> 업데이트
-                if (!productImageEntity.getKey().equals(images.getKey())) {
-                    productImageRepositoryPort.updateImageKey(productUpdateRequestDto.getProductUuid(),
-                                                                images.getOrder(),
-                                                                images.getKey());
+                // 상품uuid && 순서 존재 -> update
+                if (optionalProductImage.isPresent()) {
+                    productImageRepositoryPort
+                            .updateImageKey(presignedUrlServiceMapper
+                                                    .toProductImageUrlSaveDto(images.getKey(),
+                                                                                productUpdateRequestDto.getProductUuid(),
+                                                                                images.getOrder()));
+                }
+                // insert
+                else {
+                    productImageRepositoryPort
+                            .uploadImageKey(presignedUrlServiceMapper.toProductImageUrlSaveDto(images.getKey(),
+                                                                                                productUpdateRequestDto.getProductUuid(),
+                                                                                                images.getOrder()));
                 }
             }
         }
