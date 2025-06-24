@@ -6,6 +6,7 @@ import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSa
 import com.chalnakchalnak.product_service.application.port.out.OutboxRepositoryPort;
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +26,11 @@ public class OutboxRepository implements OutboxRepositoryPort {
     }
 
     @Override
+    public List<OutboxEntity> findByTopic(String topic) {
+        return outboxJpaRepository.findByTopic(topic);
+    }
+
+    @Override
     public List<OutboxEntity> findAll() {
         return outboxJpaRepository.findAll();
     }
@@ -34,6 +40,7 @@ public class OutboxRepository implements OutboxRepositoryPort {
         return outboxJpaRepository.save(outboxEntityMapper.toOutboxEntityMapper(outboxSaveDto));
     }
 
+    @Transactional
     @Override
     public void deleteOutbox(OutboxEntity outboxEntity) {
         outboxJpaRepository.delete(outboxEntity);

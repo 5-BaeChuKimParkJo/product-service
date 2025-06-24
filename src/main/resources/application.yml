@@ -18,6 +18,32 @@ spring:
       hibernate:
         format_sql: true
 
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS}
+    producer:
+      key-deserializer: org.apache.kafka.common.serialization.StringSerializer
+      value-deserializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: ${KAFKA_ACKS}
+      retries: ${KAFKA_RETRIES}
+      batch-size: 16384
+      linger-ms: 1
+      buffer-memory: 33554432
+      properties:
+        request.timeout.ms: ${KAFKA_REQUEST_TIMEOUT_MS}
+        delivery.timeout.ms: ${KAFKA_DELIVERY_TIMEOUT_MS}
+        max.block.ms: ${KAFKA_MAX_BLOCK_MS}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP_ID}
+      auto-offset-reset: latest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      max-poll-records: 2000
+    listener:
+      ack-mode: manual_immediate
+      type: batch
+
+
 cloud:
   aws:
     credentials:
