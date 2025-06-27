@@ -15,22 +15,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductKafkaConsumer {
 
-    private final ObjectMapper objectMapper;
+//    private final ObjectMapper objectMapper;
 
-    @KafkaListener(
-            topics = "product-service.outbox",
-            groupId = "product-group-1",
-            containerFactory = "kafkaListenerContainerFactory"
-    )
-    public void consumeProductEvent(List<ConsumerRecord<String, String>> records) {
-        for (ConsumerRecord<String, String> record : records) {
-            String message = record.value();
-            try {
-
-
-            } catch (Exception e) {
-                log.error("❌ Kafka 메시지 파싱 실패", e);
-            }
-        }
-    }
+//    @KafkaListener(
+//            topics = "product-service.outbox",
+//            groupId = "product-group-1",
+//            containerFactory = "kafkaListenerContainerFactory"
+//    )
+//    public void consumeProductEvent(List<ConsumerRecord<String, String>> records) {
+//        for (ConsumerRecord<String, String> record : records) {
+//            String message = record.value();
+//            try {
+//
+//
+//            } catch (Exception e) {
+//                log.error("❌ Kafka 메시지 파싱 실패", e);
+//            }
+//        }
+//    }
 }
