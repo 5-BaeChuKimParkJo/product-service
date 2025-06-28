@@ -1,6 +1,6 @@
 package com.chalnakchalnak.product_service.application.service;
 
-import com.chalnakchalnak.product_service.adapter.in.vo.Images;
+import com.chalnakchalnak.product_service.adapter.in.vo.Image;
 import com.chalnakchalnak.product_service.adapter.out.event.ProductCreateEvent;
 import com.chalnakchalnak.product_service.adapter.out.event.ProductDeleteEvent;
 import com.chalnakchalnak.product_service.adapter.out.event.ProductUpdateEvent;
@@ -9,7 +9,6 @@ import com.chalnakchalnak.product_service.application.mapper.PresignedUrlService
 import com.chalnakchalnak.product_service.application.mapper.ProductServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.ProductUseCase;
 import com.chalnakchalnak.product_service.application.port.in.dto.*;
-import com.chalnakchalnak.product_service.application.port.in.dto.event.DealCompleteRequestDto;
 import com.chalnakchalnak.product_service.application.port.out.ProductImageRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductRepositoryPort;
 import com.chalnakchalnak.product_service.application.port.out.ProductTagListRepositoryPort;
@@ -105,12 +104,12 @@ public class ProductService implements ProductUseCase {
 
         productRepositoryPort.updateProduct(productServiceMapper.toUpdateSaveDto(productDomain));
 
-        if (productUpdateRequestDto.getImageList() != null) {
+        if (productUpdateRequestDto.getImages() != null) {
 
             // 요청되지 않은 productUuid&&order 삭제하기
             deleteNotContainsImage(productUpdateRequestDto);
 
-            for (Images images : productUpdateRequestDto.getImageList()) {
+            for (Image images : productUpdateRequestDto.getImages()) {
                 Optional<ProductImageEntity> optionalProductImage = productImageRepositoryPort
                         .getImageUrl(productUpdateRequestDto.getProductUuid(), images.getOrder());
 
@@ -160,7 +159,7 @@ public class ProductService implements ProductUseCase {
     private void uploadImageList(ProductDomain productDomain) {
         if (productDomain.getImageList() != null) {
             int idx = productImageRepositoryPort.getMaxImageIdx(productDomain.getProductUuid());
-            for (Images image : productDomain.getImageList()) {
+            for (Image image : productDomain.getImageList()) {
                 productImageRepositoryPort
                         .uploadImageKey(ProductImageUrlSaveDto.builder()
                                 .productUuid(productDomain.getProductUuid())
@@ -193,7 +192,7 @@ public class ProductService implements ProductUseCase {
 
     // 요청되지 않은 productUuid&&order 삭제하기
     private void deleteNotContainsImage(ProductUpdateRequestDto productUpdateRequestDto) {
-        List<Integer> requestedOrderList = productUpdateRequestDto.getImageList()
+        List<Integer> requestedOrderList = productUpdateRequestDto.getImages()
                 .stream()
                 .map(images -> images.getOrder())
                 .toList();

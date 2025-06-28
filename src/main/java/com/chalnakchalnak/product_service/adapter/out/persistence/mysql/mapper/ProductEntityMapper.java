@@ -1,14 +1,10 @@
 package com.chalnakchalnak.product_service.adapter.out.persistence.mysql.mapper;
 
 import com.chalnakchalnak.product_service.adapter.in.vo.ImageUrl;
-import com.chalnakchalnak.product_service.adapter.in.vo.Images;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductEntity;
-import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductImageEntity;
 import com.chalnakchalnak.product_service.application.port.in.dto.ProductCreateSaveDto;
-import com.chalnakchalnak.product_service.application.port.out.dto.ImageResponseDto;
 import com.chalnakchalnak.product_service.application.port.out.dto.ProductResponseDto;
 import com.chalnakchalnak.product_service.domain.ProductDomain;
-import com.chalnakchalnak.product_service.domain.ProductImageDomain;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
