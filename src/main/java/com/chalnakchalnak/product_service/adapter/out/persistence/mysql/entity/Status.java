@@ -6,5 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Status {
-    ACTIVE, DEALING, ENDED
+    ACTIVE("활성화"), DEALING("거래중"), ENDED("거래종료");
+
+    private final String label;
 }
