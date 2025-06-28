@@ -21,7 +21,7 @@ public interface ProductJpaRepository extends JpaRepository<ProductEntity, Long>
 
     List<ProductEntity> findBySaleMemberUuidAndIsHideTrue(String saleMemberUuid);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE ProductEntity p SET p.isDeleted = true WHERE p.productUuid = :productUuid")
     void softDelete(@Param("productUuid") String productUuid);
 }

@@ -7,7 +7,6 @@ import com.chalnakchalnak.product_service.adapter.out.event.ProductUpdateEvent;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.AggregateType;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.EventType;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Op;
-import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.OutboxEntity;
 import com.chalnakchalnak.product_service.application.mapper.OutboxServiceMapper;
 import com.chalnakchalnak.product_service.application.port.in.dto.event.OutboxSaveDto;
 import com.chalnakchalnak.product_service.application.port.out.OutboxRepositoryPort;
@@ -20,14 +19,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
-import org.springframework.util.concurrent.ListenableFuture;
-
-import java.util.List;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor

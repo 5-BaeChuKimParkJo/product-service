@@ -106,6 +106,10 @@ public class ProductService implements ProductUseCase {
         productRepositoryPort.updateProduct(productServiceMapper.toUpdateSaveDto(productDomain));
 
         if (productUpdateRequestDto.getImageList() != null) {
+
+            // 요청되지 않은 productUuid&&order 삭제하기
+            deleteNotContainsImage(productUpdateRequestDto);
+
             for (Images images : productUpdateRequestDto.getImageList()) {
                 Optional<ProductImageEntity> optionalProductImage = productImageRepositoryPort
                         .getImageUrl(productUpdateRequestDto.getProductUuid(), images.getOrder());
@@ -185,6 +189,32 @@ public class ProductService implements ProductUseCase {
                     .forEach(productTagCreateSaveDto
                             -> productTagListRepositoryPort.createProductTagList(productTagCreateSaveDto));
         }
+    }
+
+    // 요청되지 않은 productUuid&&order 삭제하기
+    private void deleteNotContainsImage(ProductUpdateRequestDto productUpdateRequestDto) {
+        List<Integer> requestedOrderList = productUpdateRequestDto.getImageList()
+                .stream()
+                .map(images -> images.getOrder())
+                .toList();
+        List<Integer> savedOrderList = productImageRepositoryPort.getImageUrlList(productUpdateRequestDto.getProductUuid())
+                .stream()
+                .map(productImageEntity -> productImageEntity.getOrder())
+                .toList();
+
+        List<Integer> deletedImageKeys = savedOrderList.stream()
+                .filter(savedKey -> !requestedOrderList.contains(savedKey))
+                .toList();
+
+        //  썸네일 삭제 불가능
+        if (deletedImageKeys.contains(1)) {
+            throw new BaseException(BaseResponseStatus.FAILED_TO_DELETE_THUMBNAIL);
+        }
+
+        deletedImageKeys
+                .stream()
+                .forEach(order -> productImageRepositoryPort
+                                                .deleteImageKey(productUpdateRequestDto.getProductUuid(), order));
     }
 
 }

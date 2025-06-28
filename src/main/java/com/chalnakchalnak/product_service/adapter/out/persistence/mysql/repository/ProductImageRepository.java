@@ -26,6 +26,11 @@ public class ProductImageRepository implements ProductImageRepositoryPort {
     }
 
     @Override
+    public List<ProductImageEntity> getImageUrlList(String productUuid) {
+        return productImageJpaRepository.findByProductUuid(productUuid);
+    }
+
+    @Override
     public Optional<ProductImageEntity> getImageUrl(String productUuid, int order) {
         return  productImageJpaRepository.findByProductUuidAndOrder(productUuid, order);
     }
