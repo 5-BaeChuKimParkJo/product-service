@@ -85,7 +85,7 @@ public class ProductVoMapper {
                 .price(productUpdateRequestVo.getPrice())
                 .ticketUuid(productUpdateRequestVo.getTicketUuid())
                 .tagIdList(productUpdateRequestVo.getTagIdList())
-                .imageList(productUpdateRequestVo.getImageList())
+                .images(productUpdateRequestVo.getImages())
                 .build();
     }
 

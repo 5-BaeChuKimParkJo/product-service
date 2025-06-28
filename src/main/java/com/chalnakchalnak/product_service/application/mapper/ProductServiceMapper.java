@@ -45,7 +45,7 @@ public class ProductServiceMapper {
                 .price(productUpdateRequestDto.getPrice())
                 .ticketUuid(productUpdateRequestDto.getTicketUuid())
                 .tagIdList(productUpdateRequestDto.getTagIdList())
-                .imageList(productUpdateRequestDto.getImageList())
+                .imageList(productUpdateRequestDto.getImages())
                 .build();
     }
 

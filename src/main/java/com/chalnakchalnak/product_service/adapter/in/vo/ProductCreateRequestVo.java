@@ -17,5 +17,5 @@ public class ProductCreateRequestVo {
     private Long price;
     private String ticketUuid;
     private List<Long> tagIdList;
-    private List<Images> imageList;
+    private List<Image> imageList;
 }

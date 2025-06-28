@@ -1,16 +1,14 @@
 package com.chalnakchalnak.product_service.domain;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.chalnakchalnak.product_service.adapter.in.vo.ImageUrl;
-import com.chalnakchalnak.product_service.adapter.in.vo.Images;
+import com.chalnakchalnak.product_service.adapter.in.vo.Image;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.ProductCondition;
 import com.chalnakchalnak.product_service.adapter.out.persistence.mysql.entity.Status;
 import com.chalnakchalnak.product_service.common.entity.BaseResponseStatus;
 import com.chalnakchalnak.product_service.common.exception.BaseException;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +32,7 @@ public class ProductDomain {
     private Long viewCount;
     private Long price;
     private String ticketUuid;
-    private List<Images> imageList;
+    private List<Image> imageList;
     private List<ImageUrl> imageUrlList;
     private List<Long> tagIdList;
     private Boolean isDeleted;
@@ -56,7 +54,7 @@ public class ProductDomain {
                          Long viewCount,
                          Long price,
                          String ticketUuid,
-                         List<Images> imageList,
+                         List<Image> imageList,
                          List<ImageUrl> imageUrlList,
                          List<Long> tagIdList,
                          Boolean isDeleted,

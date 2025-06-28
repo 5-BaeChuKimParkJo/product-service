@@ -4,13 +4,13 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Images {
+public class Image {
 
     private String key;
     private int order;
 
     @Builder
-    public Images(String key, int order) {
+    public Image(String key, int order) {
         this.key = key;
         this.order = order;
     }
