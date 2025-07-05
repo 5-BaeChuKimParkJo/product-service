@@ -54,9 +54,6 @@ public class ProductCustomRepositoryImpl implements ProductJpaCustomRepository {
         if (productUpdateSaveDto.getPrice() != null) {
             update.set(c.price, productUpdateSaveDto.getPrice());
         }
-        if (productUpdateSaveDto.getTicketUuid() != null || productUpdateSaveDto.getTicketUuid() == null) {
-            update.set(c.ticketUuid, productUpdateSaveDto.getTicketUuid());
-        }
         return update
                 .where(c.productUuid.eq(productUpdateSaveDto.getProductUuid()))
                 .execute();
