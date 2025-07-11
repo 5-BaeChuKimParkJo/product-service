@@ -53,9 +53,6 @@ public enum BaseResponseStatus {
     // outbox
     FAILED_TO_SAVE_OUTBOX(HttpStatus.INTERNAL_SERVER_ERROR, 2206, "아웃박스 저장에 실패했습니다."),
     NO_EXISTS_OUTBOX(HttpStatus.NOT_FOUND, 2207, "존재하지 않는 아웃박스입니다."),
-
-    // kafka
-    FAILED_TO_SEND_MESSAGE(HttpStatus.INTERNAL_SERVER_ERROR, 2208, "메세지 발행에 실패했습니다."),
     ;
 
     private final HttpStatusCode httpStatusCode;
