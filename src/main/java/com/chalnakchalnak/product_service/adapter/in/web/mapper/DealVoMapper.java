@@ -9,9 +9,7 @@ public class DealVoMapper {
 
     public DealCompleteRequestDto toDealCompleteRequestDto(DealCompleteRequestVo dealCompleteRequestVo) {
         return DealCompleteRequestDto.builder()
-                .saleMemberNickname(dealCompleteRequestVo.getSaleMemberNickname())
                 .buyMemberUuid(dealCompleteRequestVo.getBuyMemberUuid())
-                .buyMemberNickname(dealCompleteRequestVo.getBuyMemberNickname())
                 .productUuid(dealCompleteRequestVo.getProductUuid())
                 .dealStartAt(dealCompleteRequestVo.getDealStartAt())
                 .chatRoomUuid(dealCompleteRequestVo.getChatRoomUuid())

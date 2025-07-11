@@ -67,6 +67,11 @@ public class DealCompleteDomain {
         this.price = productDomain.getPrice();
     }
 
+    public void setNickname(String saleMemberNickname, String buyMemberNickname) {
+        this.saleMemberNickname = saleMemberNickname;
+        this.buyMemberNickname = buyMemberNickname;
+    }
+
     public void setDealCompleteAtNow() {
         this.dealCompleteAt = LocalDateTime.now();
     }
