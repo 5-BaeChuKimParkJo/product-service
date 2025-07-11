@@ -10,9 +10,7 @@ public class DealServiceMapper {
 
     public DealCompleteDomain toDealCompleteDomain(DealCompleteRequestDto dealCompleteRequestDto) {
         return DealCompleteDomain.builder()
-                .saleMemberNickname(dealCompleteRequestDto.getSaleMemberNickname())
                 .buyMemberUuid(dealCompleteRequestDto.getBuyMemberUuid())
-                .buyMemberNickname(dealCompleteRequestDto.getBuyMemberNickname())
                 .productUuid(dealCompleteRequestDto.getProductUuid())
                 .dealStartAt(dealCompleteRequestDto.getDealStartAt())
                 .chatroomUuid(dealCompleteRequestDto.getChatRoomUuid())
@@ -20,8 +18,7 @@ public class DealServiceMapper {
     }
 
     public DealCompleteSaveDto toDealCompleteSaveDto(DealCompleteDomain dealCompleteDomain) {
-        return DealCompleteSaveDto.builder()
-                .saleMemberUuid(dealCompleteDomain.getSaleMemberUuid())
+        return DealCompleteSaveDto.builder().saleMemberUuid(dealCompleteDomain.getSaleMemberUuid())
                 .saleMemberNickname(dealCompleteDomain.getSaleMemberNickname())
                 .buyMemberUuid(dealCompleteDomain.getBuyMemberUuid())
                 .buyMemberNickname(dealCompleteDomain.getBuyMemberNickname())
