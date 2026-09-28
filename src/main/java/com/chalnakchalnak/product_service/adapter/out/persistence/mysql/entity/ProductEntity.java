@@ -31,8 +31,7 @@ public class ProductEntity extends BaseEntity {
     @Column(name = "category_id", nullable = false)
     private String categoryId;
 
-    @Lob
-    @Column(name = "description", columnDefinition = "LONGTEXT")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "product_condition", nullable = false)
@@ -51,8 +50,7 @@ public class ProductEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Lob
-    @Column(name = "thumbnail_key", columnDefinition = "LONGTEXT")
+    @Column(name = "thumbnail_key", columnDefinition = "TEXT")
     private String thumbnailKey;
 
     @Column(name = "view_count")
